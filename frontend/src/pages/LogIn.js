@@ -1,15 +1,25 @@
 import React from 'react'
+import { Box, Heading } from '@chakra-ui/react'
 
 import Form from '../components/Form'
 
 const LogIn = () => {
   return (
-    <section>
-      <h2 style={{ textAlign: 'center', fontSize: '2rem', margin: '1rem' }}>
+    <Box as='section'>
+      <Heading
+        as='h2'
+        textAlign='center'
+        fontSize='3xl'
+        fontWeight='semi'
+        m='10'
+      >
         Log In
-      </h2>
+      </Heading>
+      {/* <h2 style={{ textAlign: 'center', fontSize: '2rem', margin: '1rem' }}>
+        Log In
+      </h2> */}
       <Form mode={'login'} />
-    </section>
+    </Box>
   )
 }
 

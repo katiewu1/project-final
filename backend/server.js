@@ -121,6 +121,27 @@ app.get('/', (req, res) => {
 //   // user profile
 // })
 
+// find all users store in the DB
+app.get('/users', async (req, res) => {
+  // http://localhost:8080/users?id=61e5df19d37e482c297f9e06
+  const userId = req.query.id
+  try {
+    if (userId) {
+      const user = await User.findById(userId)
+      res.status(200).json({ response: user, success: true })
+    } else {
+      const allUsers = await User.find()
+      res.status(200).json({ response: allUsers, success: true })
+    }
+  } catch (err) {
+    res.status(400).json({
+      message: 'No users found',
+      response: err,
+      success: false,
+    })
+  }
+})
+
 app.post('/users', async (req, res) => {
   // app.post('/users/:userId', async (req, res) => {
   // req.query - ?compose=new
@@ -183,6 +204,7 @@ app.delete('/users/:collectionId', async (req, res) => {
   // delete the collection
 })
 
+// create a user account
 app.post('/signup', async (req, res) => {
   const { firstname, lastname, email, password } = req.body
 
@@ -219,15 +241,13 @@ app.post('/signup', async (req, res) => {
         response: error,
         success: false,
       })
-    }
-    // else if (error.code === 11000 && error.keyPattern.email) {
-    //   res.status(400).json({
-    //     message: 'Validation failed: email already exist',
-    //     response: error,
-    //     success: false,
-    //   })
-    // }
-    else if (password === '') {
+    } else if (error.code === 11000 && error.keyPattern.email) {
+      res.status(400).json({
+        message: 'Validation failed: email already exist',
+        response: error,
+        success: false,
+      })
+    } else if (password === '') {
       res.status(400).json({
         message: 'Validation failed: provide password',
         response: error,
@@ -243,6 +263,7 @@ app.post('/signup', async (req, res) => {
   }
 })
 
+// user log in
 app.post('/login', async (req, res) => {
   const { email, password } = req.body
 

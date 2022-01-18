@@ -1,5 +1,5 @@
 import React from 'react'
-import { Button, ButtonGroup } from '@chakra-ui/react'
+import { Box, Heading, Text, Button, ButtonGroup } from '@chakra-ui/react'
 import { Link } from 'react-router-dom'
 import { Link as ReachLink } from '@reach/router'
 
@@ -8,21 +8,21 @@ import { MdLogin } from 'react-icons/md'
 
 const HomePage = () => {
   return (
-    <section
-      className='homepage'
-      style={{
-        display: 'flex',
-        justifyContent: 'space-around',
-        alignItems: 'center',
-        height: '100vh',
-      }}
+    <Box
+      as='section'
+      d='flex'
+      justifyContent='space-evenly'
+      alignItems='center'
+      h='100vh'
     >
-      <div>
-        <h1 style={{ fontSize: '2rem', color: 'teal' }}>
-          Calendar Maker/OS - OpenSurprise, OpenMe?
-        </h1>
-        <p>Custom your own surprise calendar to someone...</p>
-      </div>
+      <Box>
+        <Heading as='h1' fontSize='3xl' fontWeight='semi' color='teal'>
+          Calendar Maker/OM - OpenMe?
+        </Heading>
+        <Text mt='1' fontSize='md'>
+          Custom your own surprise calendar to someone...
+        </Text>
+      </Box>
       {/* <ButtonGroup variant='outline' spacing='4'>
         <Button colorScheme='messenger' size='md' rightIcon={<CgProfile />}>
           Sign Up
@@ -67,7 +67,7 @@ const HomePage = () => {
       {/* <Link as={ReachLink} to='/users/:id'>
         /users/:id
       </Link> */}
-    </section>
+    </Box>
   )
 }
 
