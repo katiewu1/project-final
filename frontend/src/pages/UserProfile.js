@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-// import { useSelector } from 'react-redux'
+import { useDispatch, batch } from 'react-redux'
 import {
   Heading,
   Text,
@@ -8,16 +8,31 @@ import {
   Box,
   Button,
   Avatar,
+  // Modal,
+  // ModalOverlay,
+  // ModalContent,
+  // ModalHeader,
+  // ModalFooter,
+  // ModalBody,
+  // ModalCloseButton,
+  useDisclosure,
 } from '@chakra-ui/react'
 import { EditIcon, SmallAddIcon, DeleteIcon } from '@chakra-ui/icons'
 
 // import { API_URL } from '../utils/urls'
 import { API_URL_USER } from '../utils/urls'
+import user from '../reducers/user'
+import EditProfile from '../components/EditProfile'
 
 const UserProfile = () => {
   const [userProfile, setUserProfile] = useState(null)
 
+  // Modal
+  const { isOpen, onOpen, onClose } = useDisclosure()
+
   // const accessToken = useSelector((store) => store.user.accessToken)
+
+  const dispatch = useDispatch()
 
   useEffect(() => {
     // const options = {
@@ -33,20 +48,38 @@ const UserProfile = () => {
       .then((res) => res.json())
       .then((data) => {
         if (data.success) {
-          console.log('data.response: ', data.response)
+          // console.log('data.response: ', data.response)
           setUserProfile(data.response)
+          batch(() => {
+            dispatch(user.actions.setUserId(data.response.userId))
+            dispatch(user.actions.setFirstname(data.response.firstname))
+            dispatch(user.actions.setLastname(data.response.lastname))
+            dispatch(user.actions.setEmail(data.response.email))
+            dispatch(user.actions.setAccessToken(data.response.accessToken))
+            dispatch(user.actions.setError(null))
+          })
         }
       })
-  }, [])
+  }, [dispatch])
   // }, [accessToken])
 
-  console.log('userProfile: ', userProfile)
+  // if (editProfile) {
+  //   fetch(API_URL_USER('users', '61e5df19d37e482c297f9e06'))
+  //     .then((res) => res.json())
+  //     .then((data) => {
+  //       if (data.success) {
+
+  //       }
+  //     })
+  // }
+
+  // console.log('userProfile: ', userProfile)
   if (userProfile) {
-    console.log('firstname: ', userProfile.firstname)
-    console.log('lastname: ', userProfile.lastname)
-    for (const [key, value] of Object.entries(userProfile)) {
-      console.log(`${key}: ${value}`)
-    }
+    // console.log('firstname: ', userProfile.firstname)
+    // console.log('lastname: ', userProfile.lastname)
+    // for (const [key, value] of Object.entries(userProfile)) {
+    //   console.log(`${key}: ${value}`)
+    // }
   }
 
   return (
@@ -71,10 +104,15 @@ const UserProfile = () => {
                 <Text fontSize='md'>Email: {userProfile.email}</Text>
                 <Text fontSize='sm'>Change name, email and password?</Text>
               </Stack>
-              <Button size='sm' w={60}>
+              {/* EditProfile component -> with Modal */}
+              <Button size='sm' w={60} onClick={onOpen}>
                 Edit profile <span>&nbsp;</span>
                 <EditIcon w={4} h={4} />
               </Button>
+
+              <EditProfile isOpen={isOpen} onOpen={onOpen} onClose={onClose} />
+              {/* isOpen={isOpen} onOpen={onOpen} onClose={onClose} */}
+
               <Text>id: {userProfile._id}</Text>
             </Flex>
           </Flex>
