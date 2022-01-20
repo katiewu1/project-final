@@ -41,8 +41,6 @@ const UserProfile = () => {
   // }, [accessToken])
 
   console.log('userProfile: ', userProfile)
-  // console.log('firstname: ', userProfile.firstname)
-  // console.log('lastname: ', userProfile.lastname)
   if (userProfile) {
     console.log('firstname: ', userProfile.firstname)
     console.log('lastname: ', userProfile.lastname)
@@ -52,13 +50,13 @@ const UserProfile = () => {
   }
 
   return (
-    <section>
+    <Flex direction='column' justify='center' align='center' h='100vh'>
       <>
         <Heading as='h2' fontSize='5xl' m='2' isTruncated>
           My Profile
         </Heading>
         {userProfile && (
-          <Flex align='center' justify='space-evenly'>
+          <Flex align='center' justify='space-evenly' w='70%'>
             <Avatar
               // bg='teal.500'
               size='xl'
@@ -84,7 +82,7 @@ const UserProfile = () => {
         <Box mt='10'>
           <Text>
             Accordion? Show collection and put Edit and Delete after each
-            collection?
+            collection? Modal/alert for edit and delete?
           </Text>
           <Button>
             Create <SmallAddIcon w={4} h={4} />
@@ -101,7 +99,7 @@ const UserProfile = () => {
           </Button>
         </Box>
       </>
-    </section>
+    </Flex>
   )
 }
 

@@ -1,11 +1,11 @@
 import React from 'react'
-import { Box, Heading } from '@chakra-ui/react'
+import { Flex, Heading } from '@chakra-ui/react'
 
 import Form from '../components/Form'
 
 const LogIn = () => {
   return (
-    <Box as='section'>
+    <Flex direction='column' justify='center' align='center' h='100vh'>
       <Heading
         as='h2'
         textAlign='center'
@@ -19,7 +19,7 @@ const LogIn = () => {
         Log In
       </h2> */}
       <Form mode={'login'} />
-    </Box>
+    </Flex>
   )
 }
 

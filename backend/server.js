@@ -164,6 +164,48 @@ app.post('/users', async (req, res) => {
   }
 })
 
+// edit user profile
+app.patch('/users', async (req, res) => {
+  // req.query - ?user=id?
+  const userId = req.query.id
+
+  try {
+    // salt -> randomizer
+    const salt = bcrypt.genSaltSync()
+    // if user change password -> hashing the password
+    if (req.body.password) {
+      req.body.password = bcrypt.hashSync(req.body.password, salt)
+    }
+
+    const updatedUserProfile = await User.findOneAndUpdate(
+      { _id: userId },
+      req.body,
+      { new: true, useFindAndModify: false }
+    )
+    if (updatedUserProfile) {
+      res.status(200).json({ response: updatedUserProfile, success: true })
+    } else {
+      res.status(404).json({
+        message: 'User not found',
+        response: 'User not found',
+        success: false,
+      })
+    }
+  } catch (err) {
+    res.status(400).json({
+      message: 'Could not edit user, invalid request',
+      response: err,
+      success: false,
+    })
+  }
+})
+
+// delete user account
+app.delete('/users', async (req, res) => {
+  // req.query - ?user=id?
+  const userId = req.query.id
+})
+
 app.get('/users/:collectionId', async (req, res) => {
   // app.get('/users/:userId/:messageId', async (req, res) => {
   // view the collection

@@ -4,6 +4,7 @@ import { Provider } from 'react-redux'
 import { configureStore, combineReducers } from '@reduxjs/toolkit'
 import { ChakraProvider } from '@chakra-ui/react'
 
+import Logo from './components/Logo'
 import HomePage from './pages/HomePage'
 import SignUp from './pages/SignUp'
 import LogIn from './pages/LogIn'
@@ -23,6 +24,7 @@ export const App = () => {
     <Provider store={store}>
       <ChakraProvider>
         <BrowserRouter>
+          <Logo />
           <Routes>
             <Route path='/' element={<HomePage />} />
             <Route path='/signup' element={<SignUp />} />
