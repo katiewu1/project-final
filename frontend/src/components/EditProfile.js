@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import {
   Modal,
@@ -10,6 +10,7 @@ import {
   ModalCloseButton,
   //   useDisclosure,
   Button,
+  FormLabel,
   Input,
   Stack,
   InputGroup,
@@ -27,32 +28,21 @@ import { API_URL_USER } from '../utils/urls'
 
 const EditProfile = ({ isOpen, onOpen, onClose }) => {
   const userProfile = useSelector((store) => store.user)
-  const [firstname, setFirstname] = useState(`${userProfile.firstname}`)
-  const [lastname, setLastname] = useState(`${userProfile.lastname}`)
-  const [email, setEmail] = useState(`${userProfile.email}`)
-  const [password, setPassword] = useState(`${userProfile.password}`)
+  //   const userError = useSelector((store) => store.user.error)
 
-  //   console.log(userProfile)
-  //   console.log('password.length: ', password.length) // always 9?
+  const [firstname, setFirstname] = useState()
+  const [lastname, setLastname] = useState()
+  const [email, setEmail] = useState()
+  const [password, setPassword] = useState()
+
+  // when we have data in the userProfile -> set firstname, lastname and email
+  useEffect(() => {
+    setFirstname(userProfile.firstname)
+    setLastname(userProfile.lastname)
+    setEmail(userProfile.email)
+  }, [userProfile])
 
   //   const { isOpen, onClose } = useDisclosure()
-
-  //   useEffect(() => {
-  // if (!isSaving) return
-
-  //     const options = {
-  //       method: 'PATCH',
-  //       headers: {
-  //         // Authorization: accessToken,
-  //         'Content-Type': 'application/json',
-  //       },
-  //       body: JSON.stringify({ firstname, lastname, email, password }),
-  //     }
-
-  //     fetch(API_URL_USER('users', '61e5df19d37e482c297f9e06'), options)
-  //       .then((res) => res.json())
-  //       .then((data) => console.log(data))
-  //   }, [])
 
   const handleSaveProfile = () => {
     const options = {
@@ -67,7 +57,11 @@ const EditProfile = ({ isOpen, onOpen, onClose }) => {
     fetch(API_URL_USER('users', '61e5df19d37e482c297f9e06'), options)
       .then((res) => res.json())
       .then((data) => console.log(data))
-  }
+  } // show a message when the request is succeeded? And show error messages?
+
+  //   console.log('userProfile: ', userProfile)
+  //   console.log('firstname: ', firstname)
+  //   console.log('user error: ', userError)
 
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
@@ -77,51 +71,101 @@ const EditProfile = ({ isOpen, onOpen, onClose }) => {
         <ModalCloseButton />
         <ModalBody>
           {/* <Lorem count={2} /> */}
-          Modal
+
           <Stack spacing={3}>
             <InputGroup>
-              <InputLeftElement
-                pointerEvents='none'
-                children={<Icon as={FaUserEdit} color='gray.300' />}
-              />
-              <Input
-                variant='outline'
-                value={firstname}
-                onChange={(e) => setFirstname(e.target.value)}
-              />
+              <FormLabel
+                htmlFor='firstname'
+                display='flex'
+                alignItems='center'
+                w='100px'
+              >
+                Firstname
+              </FormLabel>
+              <InputGroup>
+                <InputLeftElement
+                  pointerEvents='none'
+                  children={<Icon as={FaUserEdit} color='gray.300' />}
+                />
+                <Input
+                  variant='outline'
+                  id='firstname'
+                  value={firstname}
+                  onChange={(e) => setFirstname(e.target.value)}
+                />
+              </InputGroup>
             </InputGroup>
+
             <InputGroup>
-              <InputLeftElement
-                pointerEvents='none'
-                children={<Icon as={MdOutlineEdit} color='gray.300' />}
-              />
-              <Input
-                variant='filled'
-                value={lastname}
-                onChange={(e) => setLastname(e.target.value)}
-              />
+              <FormLabel
+                htmlFor='lastname'
+                display='flex'
+                alignItems='center'
+                w='100px'
+              >
+                Lastname
+              </FormLabel>
+              <InputGroup>
+                <InputLeftElement
+                  pointerEvents='none'
+                  children={<Icon as={MdOutlineEdit} color='gray.300' />}
+                />
+                <Input
+                  variant='filled'
+                  id='lastname'
+                  value={lastname}
+                  onChange={(e) => setLastname(e.target.value)}
+                />
+              </InputGroup>
             </InputGroup>
+
             <InputGroup>
-              <InputLeftElement
-                pointerEvents='none'
-                children={<AtSignIcon color='gray.300' />}
-              />
-              <Input
-                variant='outline'
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-              />
+              <FormLabel
+                htmlFor='email'
+                display='flex'
+                alignItems='center'
+                w='100px'
+              >
+                Email
+              </FormLabel>
+              <InputGroup>
+                <InputLeftElement
+                  pointerEvents='none'
+                  children={<AtSignIcon color='gray.300' />}
+                />
+                <Input
+                  variant='outline'
+                  id='email'
+                  type='email'
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                />
+              </InputGroup>
             </InputGroup>
+
             <InputGroup>
-              <InputLeftElement
-                pointerEvents='none'
-                children={<Icon as={RiLockPasswordFill} color='gray.300' />}
-              />
-              <InputGroup
-                variant='filled'
-                value={'*'.repeat(password.length)}
-                onChange={(e) => setPassword(e.target.value)}
-              />
+              <FormLabel
+                htmlFor='password'
+                display='flex'
+                alignItems='center'
+                w='100px'
+              >
+                Password
+              </FormLabel>
+              <InputGroup>
+                <InputLeftElement
+                  pointerEvents='none'
+                  children={<Icon as={RiLockPasswordFill} color='gray.300' />}
+                />
+                <Input
+                  variant='filled'
+                  id='password'
+                  type='password'
+                  placeholder={'*'.repeat(10)}
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                />
+              </InputGroup>
             </InputGroup>
           </Stack>
         </ModalBody>
@@ -129,7 +173,14 @@ const EditProfile = ({ isOpen, onOpen, onClose }) => {
           <Button colorScheme='blue' mr={3} onClick={onClose}>
             Close
           </Button>
-          <Button variant='ghost' onClick={handleSaveProfile}>
+          {/* Save the User profile and close the Modal -> make a confirm saving box? show/indicate the saving process? */}
+          <Button
+            variant='ghost'
+            onClick={() => {
+              handleSaveProfile()
+              onClose()
+            }}
+          >
             Save and exit
           </Button>
         </ModalFooter>

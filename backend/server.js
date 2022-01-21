@@ -173,9 +173,13 @@ app.patch('/users', async (req, res) => {
     // salt -> randomizer
     const salt = bcrypt.genSaltSync()
     // if user change password -> hashing the password
+    // if the req.body.password is empty (no change at all by user) -> delete the req.body
     if (req.body.password) {
       req.body.password = bcrypt.hashSync(req.body.password, salt)
+    } else {
+      delete req.body.password
     }
+    // console.log(req.body)
 
     const updatedUserProfile = await User.findOneAndUpdate(
       { _id: userId },

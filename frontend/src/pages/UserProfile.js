@@ -58,6 +58,15 @@ const UserProfile = () => {
             dispatch(user.actions.setAccessToken(data.response.accessToken))
             dispatch(user.actions.setError(null))
           })
+        } else {
+          batch(() => {
+            dispatch(user.actions.setUserId(null))
+            dispatch(user.actions.setFirstname(null))
+            dispatch(user.actions.setLastname(null))
+            dispatch(user.actions.setEmail(null))
+            dispatch(user.actions.setAccessToken(null))
+            dispatch(user.actions.setError(data.response.error))
+          })
         }
       })
   }, [dispatch])
