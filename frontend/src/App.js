@@ -6,6 +6,7 @@ import { ChakraProvider } from '@chakra-ui/react'
 
 import theme from './styles/theme'
 import Logo from './components/Logo'
+import Footer from './components/Footer'
 import HomePage from './pages/HomePage'
 import SignUp from './pages/SignUp'
 import LogIn from './pages/LogIn'
@@ -33,6 +34,7 @@ export const App = () => {
             <Route path='/users' element={<UserProfile />} />
             <Route path='/users/:id' element={<MessageDetails />} />
           </Routes>
+          <Footer />
         </BrowserRouter>
       </ChakraProvider>
     </Provider>

@@ -136,16 +136,6 @@ const Form = ({ mode }) => {
               alignItems: 'center',
             }}
           >
-            <FormLabel htmlFor='username'>Username</FormLabel>
-            <Input
-              id='username'
-              w='16rem'
-              mb='2'
-              pr='4.5rem'
-              variant='outline'
-              placeholder='Username'
-            />
-            Username or email?
             <FormLabel htmlFor='email'>Email</FormLabel>
             <Input
               id='email'
@@ -205,7 +195,7 @@ const Form = ({ mode }) => {
                 id='firstname'
                 w='16rem'
                 mb='2'
-                variant='filled'
+                variant='outline'
                 placeholder='First name'
                 value={firstname}
                 onChange={(e) => setFirstname(e.target.value)}
@@ -215,7 +205,7 @@ const Form = ({ mode }) => {
                 id='lastname'
                 w='16rem'
                 pr='4.5rem'
-                variant='outline'
+                variant='filled'
                 placeholder='Last name'
                 value={lastname}
                 onChange={(e) => setLastname(e.target.value)}
@@ -225,7 +215,7 @@ const Form = ({ mode }) => {
                 id='email'
                 type='email'
                 w='16rem'
-                variant='filled'
+                variant='outline'
                 placeholder='email@example.com'
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
@@ -237,15 +227,6 @@ const Form = ({ mode }) => {
           ) : (
             <FormErrorMessage>Email is required.</FormErrorMessage>
           )} */}
-              <FormLabel htmlFor='username'>Username remove?</FormLabel>
-              <Input
-                id='username'
-                w='16rem'
-                mb='2'
-                pr='4.5rem'
-                variant='outline'
-                placeholder='Username'
-              />
               {/* password input */}
               <FormLabel htmlFor='password'>Password</FormLabel>
               <InputGroup size='md' width='16rem'>
