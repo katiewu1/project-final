@@ -71,7 +71,7 @@ const EditProfile = ({ isOpen, onOpen, onClose }) => {
         <ModalCloseButton />
         <ModalBody>
           {/* <Lorem count={2} /> */}
-
+          *Add Delete user*
           <Stack spacing={3}>
             <InputGroup>
               <FormLabel
