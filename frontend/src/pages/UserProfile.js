@@ -34,6 +34,7 @@ import { EditIcon, SmallAddIcon, DeleteIcon } from '@chakra-ui/icons'
 
 // import { API_URL } from '../utils/urls'
 import { API_URL_USER } from '../utils/urls'
+import { API_URL_COLLECTION } from '../utils/urls'
 import user from '../reducers/user'
 import EditProfile from '../components/EditProfile'
 import AddCollection from '../components/AddCollection'
@@ -78,6 +79,7 @@ const UserProfile = () => {
             dispatch(user.actions.setFirstname(data.response.firstname))
             dispatch(user.actions.setLastname(data.response.lastname))
             dispatch(user.actions.setEmail(data.response.email))
+            dispatch(user.actions.setCollections(data.response.collections))
             dispatch(user.actions.setAccessToken(data.response.accessToken))
             dispatch(user.actions.setError(null))
           })
@@ -87,6 +89,7 @@ const UserProfile = () => {
             dispatch(user.actions.setFirstname(null))
             dispatch(user.actions.setLastname(null))
             dispatch(user.actions.setEmail(null))
+            dispatch(user.actions.setCollections(null))
             dispatch(user.actions.setAccessToken(null))
             dispatch(user.actions.setError(data.response.error))
           })
@@ -95,16 +98,6 @@ const UserProfile = () => {
   }, [dispatch])
   // }, [accessToken])
 
-  // if (editProfile) {
-  //   fetch(API_URL_USER('user', '61e5df19d37e482c297f9e06'))
-  //     .then((res) => res.json())
-  //     .then((data) => {
-  //       if (data.success) {
-
-  //       }
-  //     })
-  // }
-
   // console.log('userProfile: ', userProfile)
   if (userProfile) {
     // console.log('firstname: ', userProfile.firstname)
@@ -112,6 +105,21 @@ const UserProfile = () => {
     // for (const [key, value] of Object.entries(userProfile)) {
     //   console.log(`${key}: ${value}`)
     // }
+  }
+
+  const handleDeleteCollection = (id) => {
+    const options = {
+      method: 'DELETE',
+      // headers: {
+      //   Authorization: accessToken,
+      // },
+    }
+
+    return fetch(API_URL_COLLECTION('user', id), options)
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data)
+      })
   }
 
   return (
@@ -217,7 +225,13 @@ const UserProfile = () => {
                             <EditCollection isOpen={isOpen} onOpen={onOpen} onClose={onClose} /> */}
                           </Td>
                           <Td>
-                            <Button border='1px' borderColor='white'>
+                            <Button
+                              border='1px'
+                              borderColor='white'
+                              onClick={() =>
+                                handleDeleteCollection(collection._id)
+                              }
+                            >
                               <DeleteIcon w={4} h={4} />
                             </Button>
                           </Td>

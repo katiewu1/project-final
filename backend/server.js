@@ -244,7 +244,9 @@ app.get('/user/collections', async (req, res) => {
   // app.get('/user/:userId/:messageId', async (req, res) => {
   // const { collectionId } = req.params
 
+  // get one collection
   // http://localhost:8080/user/collections?collection=61ee9d8d838687e8adc2338b
+  // get all collection(s)
   // http://localhost:8080/user/collections?id=61ee9a9ee0b1cce7c198cb56
 
   const collectionId = req.query.collection
@@ -282,17 +284,64 @@ app.get('/user/collections', async (req, res) => {
   }
 })
 
-app.patch('/user/:collectionId', async (req, res) => {
+app.patch('/user/collections', async (req, res) => {
   // edit the collection
+  const collectionId = req.query.collection
+
+  try {
+    const updatedCollection = await Collection.findOneAndUpdate(
+      { _id: collectionId },
+      req.body,
+      { new: true, useFindAndModify: false }
+    )
+    if (updatedCollection) {
+      res.status(200).json({ response: updatedCollection, success: true })
+    } else {
+      res.status(404).json({
+        message: 'Collection not found',
+        response: 'Collection not found',
+        success: false,
+      })
+    }
+  } catch (err) {
+    res.status(400).json({
+      message: 'Could not edit collection, invalid request',
+      response: err,
+      success: false,
+    })
+  }
 })
 
 // app.patch('/user/:userId/:messageId', async (req, res) => {
 //   // edit the collection
 // })
 
+// delete a collection
 // app.delete('/user/:userId/:collectionId', async (req, res) => {
-app.delete('/user/:collectionId', async (req, res) => {
+app.delete('/user/collections', async (req, res) => {
   // delete the collection
+  // http://localhost:8080/user/collections?collection=61ee9d8d838687e8adc2338b
+  const collectionId = req.query.collection
+  try {
+    const deletedCollection = await Collection.findOneAndDelete({
+      _id: collectionId,
+    })
+    if (deletedCollection) {
+      res.status(200).json({ response: deletedCollection, success: true })
+    } else {
+      res.status(404).json({
+        message: 'Collection not found',
+        response: 'Collection not found',
+        success: false,
+      })
+    }
+  } catch (err) {
+    res.status(400).json({
+      message: 'Could not delete the collection, invalid request',
+      response: err,
+      success: false,
+    })
+  }
 })
 
 // create a user account

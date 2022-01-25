@@ -7,6 +7,7 @@ const user = createSlice({
     firstname: null,
     lastname: null,
     email: null,
+    collections: null,
     accessToken: null,
     error: null,
   },
@@ -22,6 +23,9 @@ const user = createSlice({
     },
     setEmail: (store, action) => {
       store.email = action.payload
+    },
+    setCollections: (store, action) => {
+      store.collections = action.payload
     },
     setAccessToken: (store, action) => {
       store.accessToken = action.payload
