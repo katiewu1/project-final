@@ -16,6 +16,19 @@ import {
   // ModalBody,
   // ModalCloseButton,
   useDisclosure,
+  Accordion,
+  AccordionItem,
+  AccordionButton,
+  AccordionPanel,
+  AccordionIcon,
+  Table,
+  Thead,
+  Tbody,
+  Tfoot,
+  Tr,
+  Th,
+  Td,
+  TableCaption,
 } from '@chakra-ui/react'
 import { EditIcon, SmallAddIcon, DeleteIcon } from '@chakra-ui/icons'
 
@@ -23,6 +36,7 @@ import { EditIcon, SmallAddIcon, DeleteIcon } from '@chakra-ui/icons'
 import { API_URL_USER } from '../utils/urls'
 import user from '../reducers/user'
 import EditProfile from '../components/EditProfile'
+import AddCollection from '../components/AddCollection'
 
 const UserProfile = () => {
   const [userProfile, setUserProfile] = useState(null)
@@ -103,7 +117,6 @@ const UserProfile = () => {
               // bg='teal.500'
               size='xl'
               name={`${userProfile.firstname} ${userProfile.lastname}`} //fetch first- and lastname
-              src='https://bit.ly/broken-link'
             />
             <Flex direction='column'>
               <Stack spacing={1}>
@@ -111,7 +124,6 @@ const UserProfile = () => {
                   Name: {userProfile.firstname} {userProfile.lastname}
                 </Text>
                 <Text fontSize='md'>Email: {userProfile.email}</Text>
-                <Text fontSize='sm'>Change name, email and password?</Text>
               </Stack>
               {/* EditProfile component -> with Modal */}
               <Button size='sm' w={60} onClick={onOpen}>
@@ -126,24 +138,95 @@ const UserProfile = () => {
             </Flex>
           </Flex>
         )}
-        <Box mt='10'>
-          <Text>
-            Accordion? Show collection and put Edit and Delete after each
-            collection? Modal/alert for edit and delete?
-          </Text>
-          <Button>
-            Create <SmallAddIcon w={4} h={4} />
+        <Box mt='10' w='80%'>
+          {/* <Button>
+            Add <SmallAddIcon w={4} h={4} />
+          </Button> */}
+
+          {/* AddCollection component -> with Modal */}
+          <Button onClick={onOpen}>
+            Add <SmallAddIcon w={4} h={4} />
           </Button>
-          {/* map over each message from the DB */}
-          <Button>Collection</Button>
-          <Button>
-            Edit <span>&nbsp;</span>
-            <EditIcon w={4} h={4} />
-          </Button>
-          <Button>
-            Delete <span>&nbsp;</span>
-            <DeleteIcon w={4} h={4} />
-          </Button>
+          {userProfile && (
+            <AddCollection
+              isOpen={isOpen}
+              onOpen={onOpen}
+              onClose={onClose}
+              userId={userProfile._id}
+            />
+          )}
+
+          <Text>Modal/alert for edit and delete?</Text>
+          {/* defaultIndex={[0]} allowMultiple */}
+          <Accordion allowToggle>
+            <AccordionItem>
+              <h2>
+                <AccordionButton
+                  _expanded={{
+                    bgGradient: 'linear(to-bl, pink.400,yellow.400)',
+                  }}
+                >
+                  <Box
+                    flex='1'
+                    textAlign='left'
+                    fontWeight='bold'
+                    fontSize='lg'
+                  >
+                    Collections
+                  </Box>
+                  <AccordionIcon />
+                </AccordionButton>
+              </h2>
+              <AccordionPanel>
+                {/* when userProfile is not null and we have collection(s) -> display it, otherwise show text No collection(s) yet */}
+                {userProfile && userProfile.collections.length > 0 ? (
+                  <Table variant='striped' colorScheme='gray'>
+                    <TableCaption>Your saved collection(s)</TableCaption>
+                    <Thead>
+                      <Tr>
+                        <Th>Title</Th>
+                        <Th>Edit</Th>
+                        <Th>Delete</Th>
+                      </Tr>
+                    </Thead>
+                    <Tbody>
+                      {userProfile.collections.map((collection) => (
+                        <Tr key={collection._id}>
+                          <Td>
+                            <Text>{collection.title}</Text>
+                          </Td>
+                          <Td>
+                            <Button border='1px' borderColor='white'>
+                              <EditIcon w={4} h={4} />
+                            </Button>
+                            {/* EditCollection -> with Modal */}
+                            {/* <Button border='1px' borderColor='white' onClick={onOpen}>
+                                  <EditIcon w={4} h={4} />
+                                </Button>
+                            <EditCollection isOpen={isOpen} onOpen={onOpen} onClose={onClose} /> */}
+                          </Td>
+                          <Td>
+                            <Button border='1px' borderColor='white'>
+                              <DeleteIcon w={4} h={4} />
+                            </Button>
+                          </Td>
+                        </Tr>
+                      ))}
+                    </Tbody>
+                    <Tfoot>
+                      <Tr>
+                        <Th>Title</Th>
+                        <Th>Edit</Th>
+                        <Th>Delete</Th>
+                      </Tr>
+                    </Tfoot>
+                  </Table>
+                ) : (
+                  <Text>No collection(s) yet</Text>
+                )}
+              </AccordionPanel>
+            </AccordionItem>
+          </Accordion>
         </Box>
       </>
     </Flex>

@@ -41,15 +41,22 @@ const UserSchema = new mongoose.Schema({
     type: String,
     default: () => crypto.randomBytes(128).toString('hex'),
   },
-  // collection: {
-  //   type: mongoose.Schema.Types.ObjectId,
-  //   ref: 'Collection',
-  // },
+  // Array collections
+  collections: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Collection',
+    },
+  ],
 })
 
 const User = mongoose.model('User', UserSchema)
 
 const CollectionSchema = new mongoose.Schema({
+  title: {
+    type: String,
+    required: true,
+  },
   date: {
     // set a date/number for the calendar door
     type: Number,
@@ -63,6 +70,7 @@ const CollectionSchema = new mongoose.Schema({
     type: String,
     // required: true
   },
+  user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
 })
 
 const Collection = mongoose.model('Collection', CollectionSchema)
@@ -127,37 +135,15 @@ app.get('/users', async (req, res) => {
   const userId = req.query.id
   try {
     if (userId) {
-      const user = await User.findById(userId)
+      const user = await User.findById(userId).populate('collections')
       res.status(200).json({ response: user, success: true })
     } else {
-      const allUsers = await User.find()
+      const allUsers = await User.find().populate('collections')
       res.status(200).json({ response: allUsers, success: true })
     }
   } catch (err) {
     res.status(400).json({
       message: 'No users found',
-      response: err,
-      success: false,
-    })
-  }
-})
-
-app.post('/users', async (req, res) => {
-  // app.post('/users/:userId', async (req, res) => {
-  // req.query - ?compose=new
-  // req.query - ?user=id?
-  // create a collection
-  const { date, image, message } = req.body
-  try {
-    const newCollection = await new Collection({
-      date,
-      image,
-      message,
-    }).save()
-    res.status(201).json({ response: newCollection, success: true })
-  } catch (err) {
-    res.status(400).json({
-      message: 'Could not create collection',
       response: err,
       success: false,
     })
@@ -210,27 +196,86 @@ app.delete('/users', async (req, res) => {
   const userId = req.query.id
 })
 
-app.get('/users/:collectionId', async (req, res) => {
-  // app.get('/users/:userId/:messageId', async (req, res) => {
-  // view the collection
-  const { collectionId } = req.params
+// create a collection
+app.post('/users', async (req, res) => {
+  // app.post('/users/:userId', async (req, res) => {
+  // req.query - ?compose=new
+  // req.query - ?user=id?
+  const { title, date, image, message } = req.body
+  const userId = req.query.id
   try {
-    const showCollection = await Collection.findById(collectionId)
+    // const newCollection = await new Collection.findById(userId)
+
+    // create a new collection
+    const newCollection = await new Collection({
+      title,
+      date,
+      image,
+      message,
+      user: userId,
+    }).save()
+
+    // find the user and update the user with the new collection
+    const queriedUser = await User.findById(userId)
+    if (queriedUser) {
+      const updatedUser = await User.findByIdAndUpdate(
+        userId,
+        {
+          $push: {
+            collections: newCollection,
+          },
+        },
+        { new: true }
+      )
+    }
+
+    res.status(201).json({ response: newCollection, success: true })
+  } catch (err) {
+    res.status(400).json({
+      message: 'Could not create collection',
+      response: err,
+      success: false,
+    })
+  }
+})
+
+// view the collection
+app.get('/users/collections', async (req, res) => {
+  // app.get('/users/:userId/:messageId', async (req, res) => {
+  // const { collectionId } = req.params
+
+  // http://localhost:8080/users/collections?collection=61ee9d8d838687e8adc2338b
+  // http://localhost:8080/users/collections?id=61ee9a9ee0b1cce7c198cb56
+
+  const collectionId = req.query.collection
+  const userId = req.query.id
+
+  try {
+    // const showCollection = await Collection.findById(collectionId)
     // .populate('collection') //property name in the UserSchema
-    if (showCollection) {
-      res.status(200).json({
-        response: showCollection,
-        success: true,
-      })
+    if (collectionId) {
+      const showCollection = await Collection.findById(collectionId)
+      if (showCollection) {
+        res.status(200).json({
+          response: showCollection,
+          success: true,
+        })
+      } else {
+        res.status(404).json({
+          response: `Collection by id '${collectionId}' not found`,
+          success: false,
+        })
+      }
     } else {
-      res.status(404).json({
-        response: `Collection by id '${collectionId} not found'`,
+      const showCollection = await User.findById(userId).populate('collections')
+      res.status(200).json({
+        response: showCollection.collections,
         success: false,
       })
     }
   } catch (err) {
     res.status(400).json({
-      message: `Invalid collection id '${collectionId}'`,
+      message: 'Invalid request - collection(s) not found',
       response: err,
       success: false,
     })
@@ -277,6 +322,7 @@ app.post('/signup', async (req, res) => {
         lastname: newUser.lastname,
         email: newUser.email,
         accessToken: newUser.accessToken,
+        collections: newUser.collections,
       },
       success: true,
     })
