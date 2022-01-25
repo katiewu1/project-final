@@ -54,7 +54,7 @@ const EditProfile = ({ isOpen, onOpen, onClose }) => {
       body: JSON.stringify({ firstname, lastname, email, password }),
     }
 
-    fetch(API_URL_USER('users', '61e5df19d37e482c297f9e06'), options)
+    fetch(API_URL_USER('user', '61e5df19d37e482c297f9e06'), options)
       .then((res) => res.json())
       .then((data) => console.log(data))
   } // show a message when the request is succeeded? And show error messages?

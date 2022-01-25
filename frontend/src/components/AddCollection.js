@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from 'react'
-import { useSelector } from 'react-redux'
+import React, { useState } from 'react'
 import {
   Modal,
   ModalOverlay,
@@ -25,8 +24,8 @@ import { CalendarIcon } from '@chakra-ui/icons'
 import { API_URL_USER } from '../utils/urls'
 
 const AddCollection = ({ isOpen, onOpen, onClose, userId }) => {
-  const userProfile = useSelector((store) => store.user)
-  //   const userError = useSelector((store) => store.user.error)
+  // const userProfile = useSelector((store) => store.user)
+  // const userError = useSelector((store) => store.user.error)
 
   //   console.log(userId)
 
@@ -45,7 +44,7 @@ const AddCollection = ({ isOpen, onOpen, onClose, userId }) => {
       body: JSON.stringify({ title, date, image, message }),
     }
 
-    fetch(API_URL_USER('users', userId), options)
+    fetch(API_URL_USER('user', userId), options)
       .then((res) => res.json())
       .then((data) => console.log(data))
   } // show a message when the request is succeeded? And show error messages?

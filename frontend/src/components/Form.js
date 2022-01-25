@@ -68,7 +68,7 @@ const Form = ({ mode }) => {
             dispatch(user.actions.setError(null))
           })
           // move this to an useEffect when I implement accessToken
-          navigate('/users')
+          navigate('/user')
         } else {
           batch(() => {
             //  wipe out the prev. saved information, and save only the errors
@@ -107,7 +107,7 @@ const Form = ({ mode }) => {
             dispatch(user.actions.setError(null))
           })
           // move this to an useEffect when I implement accessToken
-          navigate('/users')
+          navigate('/user')
         } else {
           batch(() => {
             //  wipe out the prev. saved information, and save only the errors

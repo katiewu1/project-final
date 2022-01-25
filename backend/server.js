@@ -124,14 +124,14 @@ app.get('/', (req, res) => {
   res.send(listEndpoints(app))
 })
 
-// app.get('/users', authenticateUser)
-// app.get('/users/:userId or query?', async (req, res) => {
+// app.get('/user', authenticateUser)
+// app.get('/user/:userId or query?', async (req, res) => {
 //   // user profile
 // })
 
 // find all users store in the DB
-app.get('/users', async (req, res) => {
-  // http://localhost:8080/users?id=61e5df19d37e482c297f9e06
+app.get('/user', async (req, res) => {
+  // http://localhost:8080/user?id=61e5df19d37e482c297f9e06
   const userId = req.query.id
   try {
     if (userId) {
@@ -143,7 +143,7 @@ app.get('/users', async (req, res) => {
     }
   } catch (err) {
     res.status(400).json({
-      message: 'No users found',
+      message: 'No user(s) found',
       response: err,
       success: false,
     })
@@ -151,7 +151,7 @@ app.get('/users', async (req, res) => {
 })
 
 // edit user profile
-app.patch('/users', async (req, res) => {
+app.patch('/user', async (req, res) => {
   // req.query - ?user=id?
   const userId = req.query.id
 
@@ -191,14 +191,14 @@ app.patch('/users', async (req, res) => {
 })
 
 // delete user account
-app.delete('/users', async (req, res) => {
+app.delete('/user', async (req, res) => {
   // req.query - ?user=id?
   const userId = req.query.id
 })
 
 // create a collection
-app.post('/users', async (req, res) => {
-  // app.post('/users/:userId', async (req, res) => {
+app.post('/user', async (req, res) => {
+  // app.post('/user/:userId', async (req, res) => {
   // req.query - ?compose=new
   // req.query - ?user=id?
   const { title, date, image, message } = req.body
@@ -240,12 +240,12 @@ app.post('/users', async (req, res) => {
 })
 
 // view the collection
-app.get('/users/collections', async (req, res) => {
-  // app.get('/users/:userId/:messageId', async (req, res) => {
+app.get('/user/collections', async (req, res) => {
+  // app.get('/user/:userId/:messageId', async (req, res) => {
   // const { collectionId } = req.params
 
-  // http://localhost:8080/users/collections?collection=61ee9d8d838687e8adc2338b
-  // http://localhost:8080/users/collections?id=61ee9a9ee0b1cce7c198cb56
+  // http://localhost:8080/user/collections?collection=61ee9d8d838687e8adc2338b
+  // http://localhost:8080/user/collections?id=61ee9a9ee0b1cce7c198cb56
 
   const collectionId = req.query.collection
   const userId = req.query.id
@@ -282,16 +282,16 @@ app.get('/users/collections', async (req, res) => {
   }
 })
 
-app.patch('/users/:collectionId', async (req, res) => {
+app.patch('/user/:collectionId', async (req, res) => {
   // edit the collection
 })
 
-// app.patch('/users/:userId/:messageId', async (req, res) => {
+// app.patch('/user/:userId/:messageId', async (req, res) => {
 //   // edit the collection
 // })
 
-// app.delete('/users/:userId/:collectionId', async (req, res) => {
-app.delete('/users/:collectionId', async (req, res) => {
+// app.delete('/user/:userId/:collectionId', async (req, res) => {
+app.delete('/user/:collectionId', async (req, res) => {
   // delete the collection
 })
 

@@ -57,8 +57,8 @@ const UserProfile = () => {
     // }
 
     // fetch(API_URL('poems'), options)
-    // fetch(API_URL('users'))
-    fetch(API_URL_USER('users', '61e5df19d37e482c297f9e06'))
+    // fetch(API_URL('user'))
+    fetch(API_URL_USER('user', '61e5df19d37e482c297f9e06'))
       .then((res) => res.json())
       .then((data) => {
         if (data.success) {
@@ -87,7 +87,7 @@ const UserProfile = () => {
   // }, [accessToken])
 
   // if (editProfile) {
-  //   fetch(API_URL_USER('users', '61e5df19d37e482c297f9e06'))
+  //   fetch(API_URL_USER('user', '61e5df19d37e482c297f9e06'))
   //     .then((res) => res.json())
   //     .then((data) => {
   //       if (data.success) {

@@ -53,7 +53,7 @@ const HomePage = () => {
             Log In
           </Button>
         </Link>
-        <Link as={ReachLink} to='/users'>
+        <Link as={ReachLink} to='/user'>
           <Button
             colorScheme='orange'
             variant='outline'
@@ -64,8 +64,8 @@ const HomePage = () => {
           </Button>
         </Link>
       </ButtonGroup>
-      {/* <Link as={ReachLink} to='/users/:id'>
-        /users/:id
+      {/* <Link as={ReachLink} to='/user/:id'>
+        /user/:id
       </Link> */}
     </Box>
   )
