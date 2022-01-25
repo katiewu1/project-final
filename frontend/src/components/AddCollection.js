@@ -23,7 +23,7 @@ import { CalendarIcon } from '@chakra-ui/icons'
 
 import { API_URL_USER } from '../utils/urls'
 
-const AddCollection = ({ isOpen, onOpen, onClose, userId }) => {
+const AddCollection = ({ isOpen, onClose, userId }) => {
   // const userProfile = useSelector((store) => store.user)
   // const userError = useSelector((store) => store.user.error)
 

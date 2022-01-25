@@ -42,7 +42,16 @@ const UserProfile = () => {
   const [userProfile, setUserProfile] = useState(null)
 
   // Modal
-  const { isOpen, onOpen, onClose } = useDisclosure()
+  const {
+    isOpen: isOpenEditProfile,
+    onOpen: onOpenEditProfile,
+    onClose: onCloseEditProfile,
+  } = useDisclosure()
+  const {
+    isOpen: isOpenAddCollection,
+    onOpen: onOpenAddCollection,
+    onClose: onCloseAddCollection,
+  } = useDisclosure()
 
   // const accessToken = useSelector((store) => store.user.accessToken)
 
@@ -126,12 +135,15 @@ const UserProfile = () => {
                 <Text fontSize='md'>Email: {userProfile.email}</Text>
               </Stack>
               {/* EditProfile component -> with Modal */}
-              <Button size='sm' w={60} onClick={onOpen}>
+              <Button size='sm' w={60} onClick={onOpenEditProfile}>
                 Edit profile <span>&nbsp;</span>
                 <EditIcon w={4} h={4} />
               </Button>
 
-              <EditProfile isOpen={isOpen} onOpen={onOpen} onClose={onClose} />
+              <EditProfile
+                isOpen={isOpenEditProfile}
+                onClose={onCloseEditProfile}
+              />
               {/* isOpen={isOpen} onOpen={onOpen} onClose={onClose} */}
 
               <Text>id: {userProfile._id}</Text>
@@ -144,14 +156,13 @@ const UserProfile = () => {
           </Button> */}
 
           {/* AddCollection component -> with Modal */}
-          <Button onClick={onOpen}>
+          <Button onClick={onOpenAddCollection}>
             Add <SmallAddIcon w={4} h={4} />
           </Button>
           {userProfile && (
             <AddCollection
-              isOpen={isOpen}
-              onOpen={onOpen}
-              onClose={onClose}
+              isOpen={isOpenAddCollection}
+              onClose={onCloseAddCollection}
               userId={userProfile._id}
             />
           )}

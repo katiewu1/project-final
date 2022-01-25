@@ -8,7 +8,6 @@ import {
   ModalFooter,
   ModalBody,
   ModalCloseButton,
-  //   useDisclosure,
   Button,
   FormLabel,
   Input,
@@ -24,9 +23,7 @@ import { RiLockPasswordFill } from 'react-icons/ri'
 
 import { API_URL_USER } from '../utils/urls'
 
-// import user from '../reducers/user'
-
-const EditProfile = ({ isOpen, onOpen, onClose }) => {
+const EditProfile = ({ isOpen, onClose }) => {
   const userProfile = useSelector((store) => store.user)
   //   const userError = useSelector((store) => store.user.error)
 
@@ -41,8 +38,6 @@ const EditProfile = ({ isOpen, onOpen, onClose }) => {
     setLastname(userProfile.lastname)
     setEmail(userProfile.email)
   }, [userProfile])
-
-  //   const { isOpen, onClose } = useDisclosure()
 
   const handleSaveProfile = () => {
     const options = {
