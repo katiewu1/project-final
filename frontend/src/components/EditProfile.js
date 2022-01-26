@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch, batch } from 'react-redux'
 import {
   Modal,
   ModalOverlay,
@@ -22,6 +22,7 @@ import { AtSignIcon } from '@chakra-ui/icons'
 import { RiLockPasswordFill } from 'react-icons/ri'
 
 import { API_URL_USER } from '../utils/urls'
+import user from '../reducers/user'
 
 const EditProfile = ({ isOpen, onClose }) => {
   const userProfile = useSelector((store) => store.user)
@@ -31,6 +32,8 @@ const EditProfile = ({ isOpen, onClose }) => {
   const [lastname, setLastname] = useState()
   const [email, setEmail] = useState()
   const [password, setPassword] = useState()
+
+  const dispatch = useDispatch()
 
   // when we have data in the userProfile -> set firstname, lastname and email
   useEffect(() => {
@@ -51,7 +54,16 @@ const EditProfile = ({ isOpen, onClose }) => {
 
     fetch(API_URL_USER('user', '61e5df19d37e482c297f9e06'), options)
       .then((res) => res.json())
-      .then((data) => console.log(data))
+      .then((data) => {
+        console.log(data)
+        batch(() => {
+          dispatch(user.actions.setFirstname(data.response.firstname))
+          dispatch(user.actions.setLastname(data.response.lastname))
+          dispatch(user.actions.setEmail(data.response.email))
+          dispatch(user.actions.setError(null))
+        })
+        // console.log(userProfile)
+      })
   } // show a message when the request is succeeded? And show error messages?
 
   //   console.log('userProfile: ', userProfile)

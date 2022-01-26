@@ -27,6 +27,14 @@ const user = createSlice({
     setCollections: (store, action) => {
       store.collections = action.payload
     },
+    addCollection: (store, action) => {
+      store.collections = [...store.collections, action.payload]
+    },
+    deleteCollection: (store, action) => {
+      store.collections = store.collections.filter(
+        (item) => item._id !== action.payload
+      )
+    },
     setAccessToken: (store, action) => {
       store.accessToken = action.payload
     },

@@ -326,6 +326,23 @@ app.delete('/user/collections', async (req, res) => {
     const deletedCollection = await Collection.findOneAndDelete({
       _id: collectionId,
     })
+
+    // console.log(deletedCollection.user)
+
+    // const user = await User.findOne({ _id: deletedCollection.user })
+    // console.log('user', user)
+    // console.log('before', user.collections)
+    // user.collections.splice(user.collections.indexOf(collectionId), 1)
+    // console.log('after', user.collections)
+    // user.save()
+
+    // find the user and delete the collection from the collections array
+    await User.findByIdAndUpdate(deletedCollection.user, {
+      $pull: {
+        collections: collectionId,
+      },
+    })
+
     if (deletedCollection) {
       res.status(200).json({ response: deletedCollection, success: true })
     } else {

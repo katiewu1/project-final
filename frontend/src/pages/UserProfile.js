@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react'
-import { useDispatch, batch } from 'react-redux'
+import React, { useEffect } from 'react'
+import { useSelector, useDispatch, batch } from 'react-redux'
 import {
   Heading,
   Text,
@@ -38,9 +38,13 @@ import { API_URL_COLLECTION } from '../utils/urls'
 import user from '../reducers/user'
 import EditProfile from '../components/EditProfile'
 import AddCollection from '../components/AddCollection'
+import EditCollection from '../components/EditCollection'
 
 const UserProfile = () => {
-  const [userProfile, setUserProfile] = useState(null)
+  // const [userProfile, setUserProfile] = useState(null)
+  // const [openEditMode, setOpenEditMode] = useState(false)
+
+  const userProfile = useSelector((store) => store.user)
 
   // Modal
   const {
@@ -52,6 +56,11 @@ const UserProfile = () => {
     isOpen: isOpenAddCollection,
     onOpen: onOpenAddCollection,
     onClose: onCloseAddCollection,
+  } = useDisclosure()
+  const {
+    isOpen: isOpenEditCollection,
+    onOpen: onOpenEditCollection,
+    onClose: onCloseEditCollection,
   } = useDisclosure()
 
   // const accessToken = useSelector((store) => store.user.accessToken)
@@ -73,9 +82,9 @@ const UserProfile = () => {
       .then((data) => {
         if (data.success) {
           // console.log('data.response: ', data.response)
-          setUserProfile(data.response)
+          // setUserProfile(data.response)
           batch(() => {
-            dispatch(user.actions.setUserId(data.response.userId))
+            dispatch(user.actions.setUserId(data.response._id))
             dispatch(user.actions.setFirstname(data.response.firstname))
             dispatch(user.actions.setLastname(data.response.lastname))
             dispatch(user.actions.setEmail(data.response.email))
@@ -119,7 +128,18 @@ const UserProfile = () => {
       .then((res) => res.json())
       .then((data) => {
         console.log(data)
+        dispatch(user.actions.deleteCollection(id))
       })
+  }
+
+  const handleEditCollection = (collectionId) => {
+    return (
+      <EditCollection
+        isOpen={isOpenEditCollection}
+        onClose={onCloseEditCollection}
+        collectionId={collectionId}
+      />
+    )
   }
 
   return (
@@ -154,7 +174,7 @@ const UserProfile = () => {
               />
               {/* isOpen={isOpen} onOpen={onOpen} onClose={onClose} */}
 
-              <Text>id: {userProfile._id}</Text>
+              <Text>id: {userProfile.userId}</Text>
             </Flex>
           </Flex>
         )}
@@ -171,7 +191,7 @@ const UserProfile = () => {
             <AddCollection
               isOpen={isOpenAddCollection}
               onClose={onCloseAddCollection}
-              userId={userProfile._id}
+              userId={userProfile.userId}
             />
           )}
 
@@ -198,7 +218,9 @@ const UserProfile = () => {
               </h2>
               <AccordionPanel>
                 {/* when userProfile is not null and we have collection(s) -> display it, otherwise show text No collection(s) yet */}
-                {userProfile && userProfile.collections.length > 0 ? (
+                {userProfile &&
+                userProfile.collections &&
+                userProfile.collections.length > 0 ? (
                   <Table variant='striped' colorScheme='gray'>
                     <TableCaption>Your saved collection(s)</TableCaption>
                     <Thead>
@@ -215,14 +237,36 @@ const UserProfile = () => {
                             <Text>{collection.title}</Text>
                           </Td>
                           <Td>
-                            <Button border='1px' borderColor='white'>
+                            <Button
+                              border='1px'
+                              borderColor='white'
+                              onClick={() => {
+                                // onOpenEditCollection
+                                onOpenEditCollection()
+                                handleEditCollection(collection._id)
+                              }}
+                              // onClick={() => {
+                              //   onOpenAddCollection()
+                              //   setOpenEditMode(true)
+                              // }}
+                            >
                               <EditIcon w={4} h={4} />
                             </Button>
-                            {/* EditCollection -> with Modal */}
-                            {/* <Button border='1px' borderColor='white' onClick={onOpen}>
-                                  <EditIcon w={4} h={4} />
-                                </Button>
-                            <EditCollection isOpen={isOpen} onOpen={onOpen} onClose={onClose} /> */}
+                            {/* <EditCollection
+                              isOpen={isOpenEditCollection}
+                              onClose={onCloseEditCollection}
+                              collectionId={collection._id}
+                            /> */}
+                            {/* AddCollection component ("EditCollection") -> with Modal */}
+
+                            {/* {userProfile && openEditMode === true && (
+                              <AddCollection
+                                isOpen={isOpenAddCollection}
+                                onClose={onCloseAddCollection}
+                                userId={collection._id}
+                                openEditMode={openEditMode}
+                              />
+                            )} */}
                           </Td>
                           <Td>
                             <Button
