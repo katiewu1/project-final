@@ -183,12 +183,12 @@ const AddCollection = ({ isOpen, onClose, userId, openEditMode }) => {
           </Stack>
         </ModalBody>
         <ModalFooter>
-          <Button colorScheme='blue' mr={3} onClick={onClose}>
+          <Button variant='ghost' mr={3} onClick={onClose}>
             Close
           </Button>
           {/* Save the Collection and close the Modal -> make a confirm saving box? show/indicate the saving process? */}
           <Button
-            variant='ghost'
+            colorScheme='blue'
             onClick={() => {
               addCollection()
               onClose()

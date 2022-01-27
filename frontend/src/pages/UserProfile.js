@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useSelector, useDispatch, batch } from 'react-redux'
 import {
   Heading,
@@ -45,6 +45,8 @@ const UserProfile = () => {
   // const [openEditMode, setOpenEditMode] = useState(false)
 
   const userProfile = useSelector((store) => store.user)
+
+  const [editingCollection, setEditingCollection] = useState(null)
 
   // Modal
   const {
@@ -132,15 +134,12 @@ const UserProfile = () => {
       })
   }
 
-  const handleEditCollection = (collectionId) => {
-    return (
-      <EditCollection
-        isOpen={isOpenEditCollection}
-        onClose={onCloseEditCollection}
-        collectionId={collectionId}
-      />
-    )
+  const handleEditCollection = (collection) => {
+    setEditingCollection(collection)
+    onOpenEditCollection()
   }
+
+  console.log('isOpen', isOpenEditCollection)
 
   return (
     <Flex direction='column' justify='center' align='center' h='100vh'>
@@ -240,33 +239,10 @@ const UserProfile = () => {
                             <Button
                               border='1px'
                               borderColor='white'
-                              onClick={() => {
-                                // onOpenEditCollection
-                                onOpenEditCollection()
-                                handleEditCollection(collection._id)
-                              }}
-                              // onClick={() => {
-                              //   onOpenAddCollection()
-                              //   setOpenEditMode(true)
-                              // }}
+                              onClick={() => handleEditCollection(collection)}
                             >
                               <EditIcon w={4} h={4} />
                             </Button>
-                            {/* <EditCollection
-                              isOpen={isOpenEditCollection}
-                              onClose={onCloseEditCollection}
-                              collectionId={collection._id}
-                            /> */}
-                            {/* AddCollection component ("EditCollection") -> with Modal */}
-
-                            {/* {userProfile && openEditMode === true && (
-                              <AddCollection
-                                isOpen={isOpenAddCollection}
-                                onClose={onCloseAddCollection}
-                                userId={collection._id}
-                                openEditMode={openEditMode}
-                              />
-                            )} */}
                           </Td>
                           <Td>
                             <Button
@@ -297,6 +273,16 @@ const UserProfile = () => {
             </AccordionItem>
           </Accordion>
         </Box>
+        {/* Modal */}
+        {/* use key to reset the states in the EditCollection component when opening another collection */}
+        {editingCollection && (
+          <EditCollection
+            key={editingCollection._id}
+            isOpen={isOpenEditCollection}
+            onClose={onCloseEditCollection}
+            collection={editingCollection}
+          />
+        )}
       </>
     </Flex>
   )

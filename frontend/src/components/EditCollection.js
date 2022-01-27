@@ -24,20 +24,20 @@ import { CalendarIcon } from '@chakra-ui/icons'
 
 import { API_URL_COLLECTION } from '../utils/urls'
 
-const EditCollection = (isOpen, onClose, collectionId) => {
+const EditCollection = ({ isOpen, onClose, collection }) => {
   //   const editedCollection = useSelector((store) =>
   //     store.user.collections.filter((item) => item._id === collectionId)
   //   )
   //   console.log(editedCollection)
 
-  const [title, setTitle] = useState('')
-  const [date, setDate] = useState('')
-  const [image, setImage] = useState('')
-  const [message, setMessage] = useState('')
+  const [title, setTitle] = useState(collection.title)
+  const [date, setDate] = useState(collection.date)
+  const [image, setImage] = useState(collection.image)
+  const [message, setMessage] = useState(collection.message)
 
   //   useEffect(() => {
   //     // const options = {
-  //     //   method: 'GET',
+  //     //   method: 'PATCH',
   //     //   headers: {
   //     //     Authorization: accessToken,
   //     //   },

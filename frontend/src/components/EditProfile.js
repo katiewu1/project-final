@@ -15,6 +15,7 @@ import {
   InputGroup,
   InputLeftElement,
   Icon,
+  useToast,
 } from '@chakra-ui/react'
 import { FaUserEdit } from 'react-icons/fa'
 import { MdOutlineEdit } from 'react-icons/md'
@@ -34,6 +35,7 @@ const EditProfile = ({ isOpen, onClose }) => {
   const [password, setPassword] = useState()
 
   const dispatch = useDispatch()
+  const toast = useToast()
 
   // when we have data in the userProfile -> set firstname, lastname and email
   useEffect(() => {
@@ -177,15 +179,22 @@ const EditProfile = ({ isOpen, onClose }) => {
           </Stack>
         </ModalBody>
         <ModalFooter>
-          <Button colorScheme='blue' mr={3} onClick={onClose}>
+          <Button variant='ghost' mr={3} onClick={onClose}>
             Close
           </Button>
           {/* Save the User profile and close the Modal -> make a confirm saving box? show/indicate the saving process? */}
           <Button
-            variant='ghost'
+            colorScheme='blue'
             onClick={() => {
               handleSaveProfile()
               onClose()
+              toast({
+                title: 'Profile updated.',
+                description: "We've saved your profile for you.",
+                status: 'success',
+                duration: 5000,
+                isClosable: true,
+              })
             }}
           >
             Save and exit

@@ -59,7 +59,7 @@ const CollectionSchema = new mongoose.Schema({
   },
   date: {
     // set a date/number for the calendar door
-    type: Number,
+    type: String,
     required: true,
   },
   image: {
@@ -70,6 +70,7 @@ const CollectionSchema = new mongoose.Schema({
     type: String,
     // required: true
   },
+  // TODO: createdAt: {  }
   user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
 })
 
