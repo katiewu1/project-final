@@ -11,7 +11,7 @@ import HomePage from './pages/HomePage'
 import SignUp from './pages/SignUp'
 import LogIn from './pages/LogIn'
 import UserProfile from './pages/UserProfile'
-import MessageDetails from './pages/MessageDetails'
+import ViewCollection from './pages/ViewCollection'
 
 import user from './reducers/user'
 
@@ -32,7 +32,7 @@ export const App = () => {
             <Route path='/signup' element={<SignUp />} />
             <Route path='/login' element={<LogIn />} />
             <Route path='/user' element={<UserProfile />} />
-            <Route path='/user/:id' element={<MessageDetails />} />
+            <Route path='/open/:id' element={<ViewCollection />} />
           </Routes>
           <Footer />
         </BrowserRouter>

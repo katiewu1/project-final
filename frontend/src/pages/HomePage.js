@@ -17,10 +17,11 @@ const HomePage = () => {
     >
       <Box>
         <Heading as='h1' fontSize='3xl' fontWeight='semi' color='teal'>
-          Calendar Maker/OM - OpenMe?
+          OpenMe
         </Heading>
         <Text mt='1' fontSize='md'>
-          Custom your own surprise calendar to someone...
+          Customize your own surprise OpenMe to someone... Write a Poem, send a
+          Meme, pick a date to send an OpenMe!
         </Text>
       </Box>
       {/* <ButtonGroup variant='outline' spacing='4'>

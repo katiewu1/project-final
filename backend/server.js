@@ -241,52 +241,37 @@ app.post('/user', async (req, res) => {
 })
 
 // view the collection
-app.get('/user/collections', async (req, res) => {
-  // app.get('/user/:userId/:messageId', async (req, res) => {
-  // const { collectionId } = req.params
-
+// TODO: can only be open on a specific date
+app.get('/open/:collectionId', async (req, res) => {
   // get one collection
-  // http://localhost:8080/user/collections?collection=61ee9d8d838687e8adc2338b
-  // get all collection(s)
-  // http://localhost:8080/user/collections?id=61ee9a9ee0b1cce7c198cb56
+  // http://localhost:8080/open?collection=61ee9d8d838687e8adc2338b
 
-  const collectionId = req.query.collection
-  const userId = req.query.id
+  // const collectionId = req.query.collection
+
+  // http://localhost:8080/open/61f30febce4b1858a94bf9a0
+  const { collectionId } = req.params
 
   try {
-    // const showCollection = await Collection.findById(collectionId)
-    // .populate('collection') //property name in the UserSchema
     if (collectionId) {
       const showCollection = await Collection.findById(collectionId)
-      if (showCollection) {
-        res.status(200).json({
-          response: showCollection,
-          success: true,
-        })
-      } else {
-        res.status(404).json({
-          response: `Collection by id '${collectionId}' not found`,
-          success: false,
-        })
-      }
+      res.status(200).json({ response: showCollection, success: true })
     } else {
-      const showCollection = await User.findById(userId).populate('collections')
-      res.status(200).json({
-        response: showCollection.collections,
+      res.status(404).json({
+        response: `Collection by id '${collectionId}' not found`,
         success: false,
       })
     }
   } catch (err) {
     res.status(400).json({
-      message: 'Invalid request - collection(s) not found',
+      message: 'Invalid link - collection not found',
       response: err,
       success: false,
     })
   }
 })
 
+// edit the collection
 app.patch('/user/collections', async (req, res) => {
-  // edit the collection
   const collectionId = req.query.collection
 
   try {
