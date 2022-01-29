@@ -123,7 +123,17 @@ const Form = ({ mode }) => {
   }
 
   return (
-    <Box as='section' boxShadow='dark-lg' p='42px' borderRadius='8px'>
+    <Box
+      as='section'
+      boxShadow='dark-lg'
+      p='42px'
+      borderRadius='8px'
+      bgGradient={[
+        'linear(to-tr, teal.300, yellow.400)',
+        'linear(to-t, blue.200, teal.500)',
+        'linear(to-b, orange.100, purple.300)',
+      ]}
+    >
       {mode === 'login' ? (
         <>
           {/* <form onSubmit={onLogin}> */}
@@ -134,6 +144,7 @@ const Form = ({ mode }) => {
             flexDirection='column'
             justifyContent='center'
             alignItems='center'
+            color='black'
           >
             <FormLabel htmlFor='email'>Email</FormLabel>
             <Input
@@ -153,7 +164,8 @@ const Form = ({ mode }) => {
                 id='password'
                 pr='4.5rem'
                 type={show ? 'text' : 'password'}
-                variant='filled'
+                // variant='filled'
+                variant='outline'
                 placeholder='Enter password'
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
@@ -175,7 +187,7 @@ const Form = ({ mode }) => {
             </Button>
           </FormControl>
           {/* </form> */}
-          <Text textAlign='center' mt='4'>
+          <Text textAlign='center' mt='4' color='black'>
             Need an account?{' '}
             <Link href='/signup' fontWeight='bold' color='teal'>
               SIGN UP
@@ -192,6 +204,7 @@ const Form = ({ mode }) => {
               flexDirection='column'
               justifyContent='center'
               alignItems='center'
+              color='black'
             >
               <FormLabel htmlFor='firstname'>First name</FormLabel>
               <Input
@@ -208,7 +221,8 @@ const Form = ({ mode }) => {
                 id='lastname'
                 w='16rem'
                 pr='4.5rem'
-                variant='filled'
+                // variant='filled'
+                variant='outline'
                 placeholder='Last name'
                 value={lastname}
                 onChange={(e) => setLastname(e.target.value)}
@@ -237,7 +251,8 @@ const Form = ({ mode }) => {
                   id='password'
                   pr='4.5rem'
                   type={show ? 'text' : 'password'}
-                  variant='filled'
+                  // variant='filled'
+                  variant='outline'
                   placeholder='Enter password'
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
@@ -258,7 +273,7 @@ const Form = ({ mode }) => {
               </Button>
             </FormControl>
           </form>
-          <Text textAlign='center' mt='4'>
+          <Text textAlign='center' mt='4' color='black'>
             Already a user?{' '}
             <Link href='/login' fontWeight='bold' color='teal'>
               LOGIN

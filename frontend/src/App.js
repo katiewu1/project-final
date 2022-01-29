@@ -1,7 +1,7 @@
 import React from 'react'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import { Provider } from 'react-redux'
-import { configureStore, combineReducers } from '@reduxjs/toolkit'
+import { combineReducers, createStore } from '@reduxjs/toolkit'
 import { ChakraProvider } from '@chakra-ui/react'
 
 import theme from './styles/theme'
@@ -19,7 +19,37 @@ const reducer = combineReducers({
   user: user.reducer,
 })
 
-const store = configureStore({ reducer })
+// const store = configureStore({ reducer })
+
+// get the localStorage in JSON string format
+const persistedStateJSON = localStorage.getItem('userReduxState')
+let persistedState = {}
+
+// if we have data in persistedStateJSON -> convert to an object
+if (persistedStateJSON) {
+  persistedState = JSON.parse(persistedStateJSON)
+}
+
+// create a store with initial state
+const store = createStore(
+  reducer,
+  { user: persistedState },
+  /* enable the redux devtools */
+  /* eslint-disable-next-line no-underscore-dangle */
+  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+)
+
+// store the state (only accessToken and userId) in localStorage as JSON string on Redux state change
+store.subscribe(() => {
+  console.log(store.getState())
+  localStorage.setItem(
+    'userReduxState',
+    JSON.stringify({
+      accessToken: store.getState().user.accessToken,
+      userId: store.getState().user.userId,
+    })
+  )
+})
 
 export const App = () => {
   return (

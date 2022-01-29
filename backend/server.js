@@ -120,7 +120,8 @@ app.get('/', (req, res) => {
   res.send(listEndpoints(app))
 })
 
-// app.get('/user', authenticateUser)
+// authenticate user
+app.get('/user', authenticateUser)
 // find all users store in the DB
 app.get('/user', async (req, res) => {
   // http://localhost:8080/user?id=61e5df19d37e482c297f9e06

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { useSelector, useDispatch, batch } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
 import {
   Heading,
   Text,
@@ -7,6 +8,7 @@ import {
   Flex,
   Box,
   Button,
+  ButtonGroup,
   Avatar,
   useDisclosure,
   Accordion,
@@ -25,6 +27,7 @@ import {
   useToast,
 } from '@chakra-ui/react'
 import { EditIcon, SmallAddIcon, DeleteIcon } from '@chakra-ui/icons'
+import { MdLogin } from 'react-icons/md'
 
 import { API_URL_USER } from '../utils/urls'
 import { API_URL_COLLECTION } from '../utils/urls'
@@ -55,24 +58,36 @@ const UserProfile = () => {
     onClose: onCloseEditCollection,
   } = useDisclosure()
 
+  const navigate = useNavigate()
   const dispatch = useDispatch()
   const toast = useToast()
 
   useEffect(() => {
-    // const options = {
-    //   method: 'GET',
-    //   headers: {
-    //     Authorization: accessToken,
-    //   },
+    // accessToken === null
+    if (!userProfile.accessToken) {
+      navigate('/')
+    }
+    // else if (userProfile.accessToken) {
+    //   navigate('/user')
     // }
+  }, [userProfile.accessToken, navigate])
 
-    fetch(API_URL_USER('user', '61e5df19d37e482c297f9e06'))
+  useEffect(() => {
+    const options = {
+      method: 'GET',
+      headers: {
+        Authorization: userProfile.accessToken,
+      },
+    }
+
+    fetch(API_URL_USER('user', userProfile.userId), options)
       .then((res) => res.json())
       .then((data) => {
         if (data.success) {
           // console.log('data.response: ', data.response)
           // setUserProfile(data.response)
           batch(() => {
+            // dispatch(user.actions.setUserprofile(data.response))
             dispatch(user.actions.setUserId(data.response._id))
             dispatch(user.actions.setFirstname(data.response.firstname))
             dispatch(user.actions.setLastname(data.response.lastname))
@@ -93,8 +108,7 @@ const UserProfile = () => {
           })
         }
       })
-  }, [dispatch])
-  // }, [accessToken])
+  }, [dispatch, userProfile.accessToken, userProfile.userId])
 
   if (userProfile) {
     // for (const [key, value] of Object.entries(userProfile)) {
@@ -142,24 +156,33 @@ const UserProfile = () => {
                 </Text>
                 <Text fontSize='md'>Email: {userProfile.email}</Text>
               </Stack>
-              {/* EditProfile component -> with Modal */}
-              <Button size='sm' w={60} onClick={onOpenEditProfile}>
-                Edit profile <span>&nbsp;</span>
-                <EditIcon w={4} h={4} />
-              </Button>
+              <ButtonGroup>
+                {/* EditProfile component -> with Modal */}
+                <Button size='sm' color='teal' onClick={onOpenEditProfile}>
+                  Edit profile <span>&nbsp;</span>
+                  <EditIcon w={4} h={4} />
+                </Button>
 
-              <EditProfile
-                isOpen={isOpenEditProfile}
-                onClose={onCloseEditProfile}
-              />
-
-              <Text>id: {userProfile.userId}</Text>
+                <EditProfile
+                  isOpen={isOpenEditProfile}
+                  onClose={onCloseEditProfile}
+                />
+                <Button
+                  size='sm'
+                  color='teal'
+                  rightIcon={<MdLogin />}
+                  // border='1px'
+                  onClick={() => dispatch(user.actions.signout())}
+                >
+                  Sign out
+                </Button>
+              </ButtonGroup>
             </Flex>
           </Flex>
         )}
         <Box mt='10' w='80%'>
           {/* AddCollection component -> with Modal */}
-          <Button onClick={onOpenAddCollection}>
+          <Button mb='2' onClick={onOpenAddCollection}>
             Add <SmallAddIcon w={4} h={4} />
           </Button>
           {userProfile && (
@@ -170,7 +193,6 @@ const UserProfile = () => {
             />
           )}
 
-          <Text>Modal/alert for edit and delete?</Text>
           {/* defaultIndex={[0]} allowMultiple */}
           <Accordion allowToggle>
             <AccordionItem>

@@ -60,7 +60,9 @@ const ViewCollection = () => {
           <Heading as='h2'>{collection.title}</Heading>
           <Text>{collection.date}</Text>
           <Image src={collection.image} maxWidth='300px' alt='image' />
-          <Text fontStyle='italic'>{collection.message}</Text>
+          <Text fontStyle='italic' whiteSpace='pre-wrap'>
+            {collection.message}
+          </Text>
         </Flex>
       )}
     </Box>
