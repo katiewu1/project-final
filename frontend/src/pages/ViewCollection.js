@@ -7,6 +7,7 @@ import { API_URL_OPEN } from '../utils/urls'
 const ViewCollection = () => {
   const { id } = useParams()
   const [collection, setCollection] = useState(null)
+  const [isVisible, setIsVisible] = useState(true)
 
   // console.log('id: ', id)
 
@@ -27,8 +28,33 @@ const ViewCollection = () => {
   return (
     // TODO: user can pick different bgGradient colors, font style?
     <Box as='section'>
+      <Box visibility={isVisible ? 'visible' : 'hidden'}>
+        <Image
+          src='/assets/env1.jpg'
+          w='100vw'
+          h='100vh'
+          objectFit='cover'
+          position='absolute'
+          alt='envelope'
+        />
+        {/* TODO: Click on the logo and "open" the envelope */}
+        <Box
+          className='shake-slow shake-constant shake-constant--hover'
+          // display='flex'
+          // justifyContent='center'
+          // alignItems='center'
+          position='absolute'
+          left='50%'
+          top='50%'
+        >
+          <Box as='button' onClick={() => setIsVisible(false)}>
+            <Image src='/assets/logo.svg' alt='OpenMe logo' />
+          </Box>
+        </Box>
+      </Box>
       {collection && (
         <Flex
+          visibility={!isVisible ? 'visible' : 'hidden'}
           direction='column'
           justify='center'
           align='center'

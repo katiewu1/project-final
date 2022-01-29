@@ -6,7 +6,15 @@ const ToggleTheme = () => {
   const { colorMode, toggleColorMode } = useColorMode()
 
   return (
-    <Box boxShadow='lg' d='flex' justifyContent='end' alignItems='center' p='1'>
+    <Box
+      d='flex'
+      justifyContent='end'
+      alignItems='center'
+      p='1'
+      pos='absolute'
+      top='0'
+      right='0'
+    >
       <Stack isInline>
         <IconButton
           icon={colorMode === 'light' ? <SunIcon /> : <MoonIcon />}

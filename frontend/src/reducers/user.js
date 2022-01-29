@@ -35,6 +35,20 @@ const user = createSlice({
         (item) => item._id !== action.payload
       )
     },
+    editCollection: (store, action) => {
+      store.collections = store.collections.map((item) => {
+        if (item._id === action.payload._id) {
+          return {
+            ...item,
+            title: action.payload.title,
+            date: action.payload.date,
+            image: action.payload.image,
+            message: action.payload.message,
+          }
+        }
+        return item
+      })
+    },
     setAccessToken: (store, action) => {
       store.accessToken = action.payload
     },

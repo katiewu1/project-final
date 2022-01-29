@@ -29,6 +29,7 @@ import {
   Th,
   Td,
   TableCaption,
+  useToast,
 } from '@chakra-ui/react'
 import { EditIcon, SmallAddIcon, DeleteIcon } from '@chakra-ui/icons'
 
@@ -68,6 +69,7 @@ const UserProfile = () => {
   // const accessToken = useSelector((store) => store.user.accessToken)
 
   const dispatch = useDispatch()
+  const toast = useToast()
 
   useEffect(() => {
     // const options = {
@@ -77,8 +79,6 @@ const UserProfile = () => {
     //   },
     // }
 
-    // fetch(API_URL('poems'), options)
-    // fetch(API_URL('user'))
     fetch(API_URL_USER('user', '61e5df19d37e482c297f9e06'))
       .then((res) => res.json())
       .then((data) => {
@@ -138,8 +138,6 @@ const UserProfile = () => {
     setEditingCollection(collection)
     onOpenEditCollection()
   }
-
-  console.log('isOpen', isOpenEditCollection)
 
   return (
     <Flex direction='column' justify='center' align='center' h='100vh'>
@@ -248,9 +246,17 @@ const UserProfile = () => {
                             <Button
                               border='1px'
                               borderColor='white'
-                              onClick={() =>
+                              onClick={() => {
                                 handleDeleteCollection(collection._id)
-                              }
+                                toast({
+                                  title: 'Collection deleted.',
+                                  description:
+                                    "We've deleted your collection for you.",
+                                  status: 'success',
+                                  duration: 5000,
+                                  isClosable: true,
+                                })
+                              }}
                             >
                               <DeleteIcon w={4} h={4} />
                             </Button>

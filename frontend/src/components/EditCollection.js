@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react'
-import { useSelector } from 'react-redux'
+import React, { useState } from 'react'
+import { useDispatch } from 'react-redux'
 import {
   Modal,
   ModalOverlay,
@@ -17,12 +17,14 @@ import {
   Icon,
   Textarea,
   Flex,
+  useToast,
 } from '@chakra-ui/react'
 import { ImImages } from 'react-icons/im'
 import { MdTitle } from 'react-icons/md'
 import { CalendarIcon } from '@chakra-ui/icons'
 
 import { API_URL_COLLECTION } from '../utils/urls'
+import user from '../reducers/user'
 
 const EditCollection = ({ isOpen, onClose, collection }) => {
   //   const editedCollection = useSelector((store) =>
@@ -35,22 +37,26 @@ const EditCollection = ({ isOpen, onClose, collection }) => {
   const [image, setImage] = useState(collection.image)
   const [message, setMessage] = useState(collection.message)
 
-  //   useEffect(() => {
-  //     // const options = {
-  //     //   method: 'PATCH',
-  //     //   headers: {
-  //     //     Authorization: accessToken,
-  //     //   },
-  //     // }
-  //     fetch(API_URL_COLLECTION('user', collectionId))
-  //       .then((res) => res.json())
-  //       .then((data) => {
-  //         setTitle(data.response.title)
-  //         setDate(data.response.date)
-  //         setImage(data.response.image)
-  //         setMessage(data.response.message)
-  //       })
-  //   }, [collectionId])
+  const dispatch = useDispatch()
+  const toast = useToast()
+
+  const handleSaveCollection = () => {
+    const options = {
+      method: 'PATCH',
+      headers: {
+        // Authorization: accessToken,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ title, date, image, message }),
+    }
+    fetch(API_URL_COLLECTION('user', collection._id), options)
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data)
+        dispatch(user.actions.editCollection(data.response))
+        // reducer: dispatch
+      })
+  }
 
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
@@ -150,11 +156,24 @@ const EditCollection = ({ isOpen, onClose, collection }) => {
           </Stack>
         </ModalBody>
         <ModalFooter>
-          <Button colorScheme='blue' mr={3} onClick={onClose}>
+          <Button variant='ghost' mr={3} onClick={onClose}>
             Close
           </Button>
           {/* Save the collection and close the Modal -> make a confirm saving box? show/indicate the saving process? */}
-          <Button variant='ghost' onClick={onClose}>
+          <Button
+            colorScheme='blue'
+            onClick={() => {
+              handleSaveCollection()
+              onClose()
+              toast({
+                title: 'Collection updated.',
+                description: "We've saved your collection for you.",
+                status: 'success',
+                duration: 5000,
+                isClosable: true,
+              })
+            }}
+          >
             Save and exit
           </Button>
         </ModalFooter>

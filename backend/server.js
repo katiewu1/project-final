@@ -280,6 +280,14 @@ app.patch('/user/collections', async (req, res) => {
       req.body,
       { new: true, useFindAndModify: false }
     )
+
+    // find the user and update the collection from the collections array
+    // await User.findByIdAndUpdate(updatedCollection.user, {
+    //   $pull: {
+    //     collections: collectionId,
+    //   },
+    // })
+
     if (updatedCollection) {
       res.status(200).json({ response: updatedCollection, success: true })
     } else {
@@ -309,9 +317,12 @@ app.delete('/user/collections', async (req, res) => {
   // http://localhost:8080/user/collections?collection=61ee9d8d838687e8adc2338b
   const collectionId = req.query.collection
   try {
-    const deletedCollection = await Collection.findOneAndDelete({
-      _id: collectionId,
-    })
+    const deletedCollection = await Collection.findOneAndDelete(
+      {
+        _id: collectionId,
+      },
+      { useFindAndModify: false }
+    )
 
     // console.log(deletedCollection.user)
 

@@ -17,6 +17,7 @@ import {
   Icon,
   Textarea,
   Flex,
+  useToast,
 } from '@chakra-ui/react'
 import { ImImages } from 'react-icons/im'
 import { MdTitle } from 'react-icons/md'
@@ -37,6 +38,8 @@ const AddCollection = ({ isOpen, onClose, userId, openEditMode }) => {
   const [date, setDate] = useState('')
   const [image, setImage] = useState('')
   const [message, setMessage] = useState('')
+
+  const toast = useToast()
 
   useEffect(() => {
     // const options = {
@@ -192,6 +195,13 @@ const AddCollection = ({ isOpen, onClose, userId, openEditMode }) => {
             onClick={() => {
               addCollection()
               onClose()
+              toast({
+                title: 'Collection added.',
+                description: "We've saved your collection for you.",
+                status: 'success',
+                duration: 5000,
+                isClosable: true,
+              })
             }}
           >
             Save and exit

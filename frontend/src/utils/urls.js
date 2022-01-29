@@ -6,3 +6,5 @@ export const API_URL_USER = (slug, id) => `${BASE_URL}/${slug}?id=${id}`
 
 export const API_URL_COLLECTION = (slug, id) =>
   `${BASE_URL}/${slug}/collections?collection=${id}`
+
+export const API_URL_OPEN = (id) => `${BASE_URL}/open/${id}`
