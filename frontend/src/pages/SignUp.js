@@ -15,9 +15,6 @@ const SignUp = () => {
       >
         Sign Up
       </Heading>
-      {/* <h2 style={{ textAlign: 'center', fontSize: '2rem', margin: '1rem' }}>
-        Sign Up
-      </h2> */}
       <Form />
     </Flex>
   )

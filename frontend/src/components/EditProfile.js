@@ -64,12 +64,9 @@ const EditProfile = ({ isOpen, onClose }) => {
           dispatch(user.actions.setEmail(data.response.email))
           dispatch(user.actions.setError(null))
         })
-        // console.log(userProfile)
       })
   } // show a message when the request is succeeded? And show error messages?
 
-  //   console.log('userProfile: ', userProfile)
-  //   console.log('firstname: ', firstname)
   //   console.log('user error: ', userError)
 
   return (
@@ -79,8 +76,7 @@ const EditProfile = ({ isOpen, onClose }) => {
         <ModalHeader>Edit Profile</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
-          {/* <Lorem count={2} /> */}
-          *Add Delete user*
+          {/* TODO: add Delete user */}
           <Stack spacing={3}>
             <InputGroup>
               <FormLabel
@@ -182,7 +178,7 @@ const EditProfile = ({ isOpen, onClose }) => {
           <Button variant='ghost' mr={3} onClick={onClose}>
             Close
           </Button>
-          {/* Save the User profile and close the Modal -> make a confirm saving box? show/indicate the saving process? */}
+          {/* Save the User profile, close the Modal, display toast */}
           <Button
             colorScheme='blue'
             onClick={() => {

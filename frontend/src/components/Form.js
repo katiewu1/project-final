@@ -11,7 +11,8 @@ import {
   InputGroup,
   InputRightElement,
   Button,
-  // Flex,
+  Text,
+  Link,
 } from '@chakra-ui/react'
 
 import { API_URL } from '../utils/urls'
@@ -122,19 +123,17 @@ const Form = ({ mode }) => {
   }
 
   return (
-    <Box as='section'>
+    <Box as='section' boxShadow='dark-lg' p='42px' borderRadius='8px'>
       {mode === 'login' ? (
         <>
           {/* <form onSubmit={onLogin}> */}
           <FormControl
             // isInvalid={!isError}
             isRequired
-            style={{
-              display: 'flex',
-              flexDirection: 'column',
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}
+            d='flex'
+            flexDirection='column'
+            justifyContent='center'
+            alignItems='center'
           >
             <FormLabel htmlFor='email'>Email</FormLabel>
             <Input
@@ -176,6 +175,12 @@ const Form = ({ mode }) => {
             </Button>
           </FormControl>
           {/* </form> */}
+          <Text textAlign='center' mt='4'>
+            Need an account?{' '}
+            <Link href='/signup' fontWeight='bold' color='teal'>
+              SIGN UP
+            </Link>
+          </Text>
         </>
       ) : (
         <>
@@ -183,12 +188,10 @@ const Form = ({ mode }) => {
             <FormControl
               // isInvalid={!isError}
               isRequired
-              style={{
-                display: 'flex',
-                flexDirection: 'column',
-                justifyContent: 'center',
-                alignItems: 'center',
-              }}
+              d='flex'
+              flexDirection='column'
+              justifyContent='center'
+              alignItems='center'
             >
               <FormLabel htmlFor='firstname'>First name</FormLabel>
               <Input
@@ -245,21 +248,6 @@ const Form = ({ mode }) => {
                   </Button>
                 </InputRightElement>
               </InputGroup>
-              <FormLabel htmlFor='verifyPassword'>Verify password</FormLabel>
-              <InputGroup size='md' width='16rem'>
-                <Input
-                  id='verifyPassword'
-                  pr='4.5rem'
-                  type={show ? 'text' : 'password'}
-                  variant='filled'
-                  placeholder='Verify password'
-                />
-                <InputRightElement width='4.5rem'>
-                  <Button h='1.75rem' size='sm' onClick={handleClick}>
-                    {show ? 'Hide' : 'Show'}
-                  </Button>
-                </InputRightElement>
-              </InputGroup>
               <Button
                 mt={4}
                 colorScheme='teal'
@@ -270,6 +258,12 @@ const Form = ({ mode }) => {
               </Button>
             </FormControl>
           </form>
+          <Text textAlign='center' mt='4'>
+            Already a user?{' '}
+            <Link href='/login' fontWeight='bold' color='teal'>
+              LOGIN
+            </Link>
+          </Text>
         </>
       )}
     </Box>

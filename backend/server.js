@@ -28,11 +28,6 @@ const UserSchema = new mongoose.Schema({
     required: true,
     unique: true,
   },
-  // username: {
-  //   type: String,
-  //   required: true,
-  //   unique: true
-  // },
   password: {
     type: String,
     required: true,
@@ -58,12 +53,12 @@ const CollectionSchema = new mongoose.Schema({
     required: true,
   },
   date: {
-    // set a date/number for the calendar door
+    // set a date when the receiver will get access to the "OpenMe"
     type: String,
     required: true,
   },
   image: {
-    type: String, // Image?
+    type: String, // Link or upload image?
     // required: true,
   },
   message: {
@@ -126,10 +121,6 @@ app.get('/', (req, res) => {
 })
 
 // app.get('/user', authenticateUser)
-// app.get('/user/:userId or query?', async (req, res) => {
-//   // user profile
-// })
-
 // find all users store in the DB
 app.get('/user', async (req, res) => {
   // http://localhost:8080/user?id=61e5df19d37e482c297f9e06
@@ -166,7 +157,6 @@ app.patch('/user', async (req, res) => {
     } else {
       delete req.body.password
     }
-    // console.log(req.body)
 
     const updatedUserProfile = await User.findOneAndUpdate(
       { _id: userId },
@@ -191,7 +181,7 @@ app.patch('/user', async (req, res) => {
   }
 })
 
-// delete user account
+// TODO: delete user account
 app.delete('/user', async (req, res) => {
   // req.query - ?user=id?
   const userId = req.query.id
@@ -205,8 +195,6 @@ app.post('/user', async (req, res) => {
   const { title, date, image, message } = req.body
   const userId = req.query.id
   try {
-    // const newCollection = await new Collection.findById(userId)
-
     // create a new collection
     const newCollection = await new Collection({
       title,
@@ -240,36 +228,6 @@ app.post('/user', async (req, res) => {
   }
 })
 
-// view the collection
-// TODO: can only be open on a specific date
-app.get('/open/:collectionId', async (req, res) => {
-  // get one collection
-  // http://localhost:8080/open?collection=61ee9d8d838687e8adc2338b
-
-  // const collectionId = req.query.collection
-
-  // http://localhost:8080/open/61f30febce4b1858a94bf9a0
-  const { collectionId } = req.params
-
-  try {
-    if (collectionId) {
-      const showCollection = await Collection.findById(collectionId)
-      res.status(200).json({ response: showCollection, success: true })
-    } else {
-      res.status(404).json({
-        response: `Collection by id '${collectionId}' not found`,
-        success: false,
-      })
-    }
-  } catch (err) {
-    res.status(400).json({
-      message: 'Invalid link - collection not found',
-      response: err,
-      success: false,
-    })
-  }
-})
-
 // edit the collection
 app.patch('/user/collections', async (req, res) => {
   const collectionId = req.query.collection
@@ -280,13 +238,6 @@ app.patch('/user/collections', async (req, res) => {
       req.body,
       { new: true, useFindAndModify: false }
     )
-
-    // find the user and update the collection from the collections array
-    // await User.findByIdAndUpdate(updatedCollection.user, {
-    //   $pull: {
-    //     collections: collectionId,
-    //   },
-    // })
 
     if (updatedCollection) {
       res.status(200).json({ response: updatedCollection, success: true })
@@ -352,6 +303,35 @@ app.delete('/user/collections', async (req, res) => {
   } catch (err) {
     res.status(400).json({
       message: 'Could not delete the collection, invalid request',
+      response: err,
+      success: false,
+    })
+  }
+})
+
+// view the collection
+// TODO: can only be open on a specific date
+app.get('/open/:collectionId', async (req, res) => {
+  // get one collection
+  // http://localhost:8080/open/61f30febce4b1858a94bf9a0
+
+  // const collectionId = req.query.collection
+
+  const { collectionId } = req.params
+
+  try {
+    if (collectionId) {
+      const showCollection = await Collection.findById(collectionId)
+      res.status(200).json({ response: showCollection, success: true })
+    } else {
+      res.status(404).json({
+        response: `Collection by id '${collectionId}' not found`,
+        success: false,
+      })
+    }
+  } catch (err) {
+    res.status(400).json({
+      message: 'Invalid link - collection not found',
       response: err,
       success: false,
     })

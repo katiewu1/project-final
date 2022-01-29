@@ -8,13 +8,6 @@ import {
   Box,
   Button,
   Avatar,
-  // Modal,
-  // ModalOverlay,
-  // ModalContent,
-  // ModalHeader,
-  // ModalFooter,
-  // ModalBody,
-  // ModalCloseButton,
   useDisclosure,
   Accordion,
   AccordionItem,
@@ -33,7 +26,6 @@ import {
 } from '@chakra-ui/react'
 import { EditIcon, SmallAddIcon, DeleteIcon } from '@chakra-ui/icons'
 
-// import { API_URL } from '../utils/urls'
 import { API_URL_USER } from '../utils/urls'
 import { API_URL_COLLECTION } from '../utils/urls'
 import user from '../reducers/user'
@@ -42,9 +34,6 @@ import AddCollection from '../components/AddCollection'
 import EditCollection from '../components/EditCollection'
 
 const UserProfile = () => {
-  // const [userProfile, setUserProfile] = useState(null)
-  // const [openEditMode, setOpenEditMode] = useState(false)
-
   const userProfile = useSelector((store) => store.user)
 
   const [editingCollection, setEditingCollection] = useState(null)
@@ -65,8 +54,6 @@ const UserProfile = () => {
     onOpen: onOpenEditCollection,
     onClose: onCloseEditCollection,
   } = useDisclosure()
-
-  // const accessToken = useSelector((store) => store.user.accessToken)
 
   const dispatch = useDispatch()
   const toast = useToast()
@@ -109,10 +96,7 @@ const UserProfile = () => {
   }, [dispatch])
   // }, [accessToken])
 
-  // console.log('userProfile: ', userProfile)
   if (userProfile) {
-    // console.log('firstname: ', userProfile.firstname)
-    // console.log('lastname: ', userProfile.lastname)
     // for (const [key, value] of Object.entries(userProfile)) {
     //   console.log(`${key}: ${value}`)
     // }
@@ -148,7 +132,6 @@ const UserProfile = () => {
         {userProfile && (
           <Flex align='center' justify='space-evenly' w='70%'>
             <Avatar
-              // bg='teal.500'
               size='xl'
               name={`${userProfile.firstname} ${userProfile.lastname}`} //fetch first- and lastname
             />
@@ -169,17 +152,12 @@ const UserProfile = () => {
                 isOpen={isOpenEditProfile}
                 onClose={onCloseEditProfile}
               />
-              {/* isOpen={isOpen} onOpen={onOpen} onClose={onClose} */}
 
               <Text>id: {userProfile.userId}</Text>
             </Flex>
           </Flex>
         )}
         <Box mt='10' w='80%'>
-          {/* <Button>
-            Add <SmallAddIcon w={4} h={4} />
-          </Button> */}
-
           {/* AddCollection component -> with Modal */}
           <Button onClick={onOpenAddCollection}>
             Add <SmallAddIcon w={4} h={4} />

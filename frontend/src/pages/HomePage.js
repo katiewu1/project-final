@@ -34,14 +34,6 @@ const HomePage = () => {
             Write a Poem, send a Meme, pick a date to send an OpenMe!
           </Text>
         </Box>
-        {/* <ButtonGroup variant='outline' spacing='4'>
-        <Button colorScheme='messenger' size='md' rightIcon={<CgProfile />}>
-          Sign Up
-        </Button>
-        <Button colorScheme='teal' size='md' rightIcon={<MdLogin />}>
-          Log In
-        </Button>
-      </ButtonGroup> */}
 
         <ButtonGroup variant='outline' spacing='4'>
           <Link as={ReachLink} to='/signup'>

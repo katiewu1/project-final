@@ -27,38 +27,13 @@ import { API_URL_USER } from '../utils/urls'
 import user from '../reducers/user'
 
 const AddCollection = ({ isOpen, onClose, userId, openEditMode }) => {
-  // const userProfile = useSelector((store) => store.user)
-  // const userError = useSelector((store) => store.user.error)
-  // const userCollections = useSelector((store) => store.user.collections)
-
-  console.log('userId: ', userId)
-  // console.log('openEditMode: ', openEditMode)
-
   const [title, setTitle] = useState('')
   const [date, setDate] = useState('')
   const [image, setImage] = useState('')
   const [message, setMessage] = useState('')
 
-  const toast = useToast()
-
-  useEffect(() => {
-    // const options = {
-    //   method: 'GET',
-    //   headers: {
-    //     Authorization: accessToken,
-    //   },
-    // }
-    // fetch(API_URL_COLLECTION('user', userId))
-    //   .then((res) => res.json())
-    //   .then((data) => {
-    //     setTitle(data.response.title)
-    //     setDate(data.response.date)
-    //     setImage(data.response.image)
-    //     setMessage(data.response.message)
-    //   })
-  }, [openEditMode])
-
   const dispatch = useDispatch()
+  const toast = useToast()
 
   const addCollection = () => {
     const options = {
@@ -81,7 +56,7 @@ const AddCollection = ({ isOpen, onClose, userId, openEditMode }) => {
         setImage('')
         setMessage('')
       })
-  } // show a message when the request is succeeded? And show error messages?
+  } // TODO: show a message when the request is succeeded? And show error messages?
 
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
@@ -171,10 +146,6 @@ const AddCollection = ({ isOpen, onClose, userId, openEditMode }) => {
               >
                 Message
               </FormLabel>
-              {/* <InputLeftElement
-                  pointerEvents='none'
-                  children={<ChatIcon color='gray.300' />}
-                /> */}
               <Textarea
                 variant='filled'
                 id='message'
@@ -189,7 +160,7 @@ const AddCollection = ({ isOpen, onClose, userId, openEditMode }) => {
           <Button variant='ghost' mr={3} onClick={onClose}>
             Close
           </Button>
-          {/* Save the Collection and close the Modal -> make a confirm saving box? show/indicate the saving process? */}
+          {/* Save the Collection, close the Modal, display toast */}
           <Button
             colorScheme='blue'
             onClick={() => {

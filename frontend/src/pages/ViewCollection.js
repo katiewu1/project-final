@@ -9,14 +9,11 @@ const ViewCollection = () => {
   const [collection, setCollection] = useState(null)
   const [isVisible, setIsVisible] = useState(true)
 
-  // console.log('id: ', id)
-
   useEffect(() => {
     fetch(API_URL_OPEN(id))
       .then((res) => res.json())
       .then((data) => {
         if (data.success) {
-          // console.log(data.response)
           setCollection(data.response)
         } else {
           console.log('data.success = false')
@@ -40,9 +37,6 @@ const ViewCollection = () => {
         {/* TODO: Click on the logo and "open" the envelope */}
         <Box
           className='shake-slow shake-constant shake-constant--hover'
-          // display='flex'
-          // justifyContent='center'
-          // alignItems='center'
           position='absolute'
           left='50%'
           top='50%'

@@ -15,9 +15,6 @@ const LogIn = () => {
       >
         Log In
       </Heading>
-      {/* <h2 style={{ textAlign: 'center', fontSize: '2rem', margin: '1rem' }}>
-        Log In
-      </h2> */}
       <Form mode={'login'} />
     </Flex>
   )

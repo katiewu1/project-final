@@ -27,11 +27,6 @@ import { API_URL_COLLECTION } from '../utils/urls'
 import user from '../reducers/user'
 
 const EditCollection = ({ isOpen, onClose, collection }) => {
-  //   const editedCollection = useSelector((store) =>
-  //     store.user.collections.filter((item) => item._id === collectionId)
-  //   )
-  //   console.log(editedCollection)
-
   const [title, setTitle] = useState(collection.title)
   const [date, setDate] = useState(collection.date)
   const [image, setImage] = useState(collection.image)
@@ -54,9 +49,8 @@ const EditCollection = ({ isOpen, onClose, collection }) => {
       .then((data) => {
         console.log(data)
         dispatch(user.actions.editCollection(data.response))
-        // reducer: dispatch
       })
-  }
+  } // TODO: error handling
 
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
@@ -159,7 +153,7 @@ const EditCollection = ({ isOpen, onClose, collection }) => {
           <Button variant='ghost' mr={3} onClick={onClose}>
             Close
           </Button>
-          {/* Save the collection and close the Modal -> make a confirm saving box? show/indicate the saving process? */}
+          {/* Save the collection, close the Modal, display toast */}
           <Button
             colorScheme='blue'
             onClick={() => {
