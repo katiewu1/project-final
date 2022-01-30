@@ -16,19 +16,23 @@ import {
   InputLeftElement,
   Icon,
   Textarea,
+  Text,
   Flex,
   useToast,
 } from '@chakra-ui/react'
 import { ImImages } from 'react-icons/im'
 import { MdTitle } from 'react-icons/md'
 import { CalendarIcon } from '@chakra-ui/icons'
+import { SingleDatepicker } from 'chakra-dayzed-datepicker'
+import moment from 'moment'
+import { parseISO } from 'date-fns'
 
 import { API_URL_COLLECTION } from '../utils/urls'
 import user from '../reducers/user'
 
 const EditCollection = ({ isOpen, onClose, collection }) => {
   const [title, setTitle] = useState(collection.title)
-  const [date, setDate] = useState(collection.date)
+  const [date, setDate] = useState(parseISO(collection.date))
   const [image, setImage] = useState(collection.image)
   const [message, setMessage] = useState(collection.message)
 
@@ -42,7 +46,13 @@ const EditCollection = ({ isOpen, onClose, collection }) => {
         // Authorization: accessToken,
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ title, date, image, message }),
+      body: JSON.stringify({
+        title,
+        // change the date utc format to always be at 12:00 on that day
+        date: moment(date).utcOffset(0, true).add(12, 'hours').format(),
+        image,
+        message,
+      }),
     }
     fetch(API_URL_COLLECTION('user', collection._id), options)
       .then((res) => res.json())
@@ -52,6 +62,8 @@ const EditCollection = ({ isOpen, onClose, collection }) => {
       })
   } // TODO: error handling
 
+  console.log('date', moment(date).utcOffset(0, true).add(12, 'hours').format())
+
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
       <ModalOverlay />
@@ -59,7 +71,7 @@ const EditCollection = ({ isOpen, onClose, collection }) => {
         <ModalHeader>Edit Collection</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
-          Edit your eMessage
+          <Text mb='4'>Edit your OpenMe</Text>
           <Stack spacing={3}>
             <InputGroup>
               <FormLabel
@@ -98,11 +110,22 @@ const EditCollection = ({ isOpen, onClose, collection }) => {
                   pointerEvents='none'
                   children={<CalendarIcon color='gray.300' />}
                 />
-                <Input
+                {/* <Input
                   variant='filled'
                   id='date'
                   value={date}
                   onChange={(e) => setDate(e.target.value)}
+                /> */}
+                <SingleDatepicker
+                  name='date-input'
+                  id='date'
+                  date={date}
+                  propsConfigs={{
+                    inputProps: {
+                      pl: 10,
+                    },
+                  }}
+                  onDateChange={setDate}
                 />
               </InputGroup>
             </InputGroup>

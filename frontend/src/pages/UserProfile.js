@@ -35,6 +35,7 @@ import user from '../reducers/user'
 import EditProfile from '../components/EditProfile'
 import AddCollection from '../components/AddCollection'
 import EditCollection from '../components/EditCollection'
+import CopyLinkBtn from '../components/CopyLinkBtn'
 
 const UserProfile = () => {
   const userProfile = useSelector((store) => store.user)
@@ -156,7 +157,7 @@ const UserProfile = () => {
                 </Text>
                 <Text fontSize='md'>Email: {userProfile.email}</Text>
               </Stack>
-              <ButtonGroup>
+              <ButtonGroup mt='2'>
                 {/* EditProfile component -> with Modal */}
                 <Button size='sm' color='teal' onClick={onOpenEditProfile}>
                   Edit profile <span>&nbsp;</span>
@@ -182,7 +183,12 @@ const UserProfile = () => {
         )}
         <Box mt='10' w='80%'>
           {/* AddCollection component -> with Modal */}
-          <Button mb='2' onClick={onOpenAddCollection}>
+          <Button
+            mb='2'
+            border='1px'
+            borderColor='white'
+            onClick={onOpenAddCollection}
+          >
             Add <SmallAddIcon w={4} h={4} />
           </Button>
           {userProfile && (
@@ -194,11 +200,14 @@ const UserProfile = () => {
           )}
 
           {/* defaultIndex={[0]} allowMultiple */}
-          <Accordion allowToggle>
+          <Accordion allowToggle defaultIndex={[1]}>
             <AccordionItem>
               <h2>
                 <AccordionButton
                   _expanded={{
+                    bgGradient: 'linear(to-bl, pink.400,yellow.400)',
+                  }}
+                  _hover={{
                     bgGradient: 'linear(to-bl, pink.400,yellow.400)',
                   }}
                 >
@@ -223,8 +232,9 @@ const UserProfile = () => {
                     <Thead>
                       <Tr>
                         <Th>Title</Th>
-                        <Th>Edit</Th>
-                        <Th>Delete</Th>
+                        <Th textAlign='center'>Edit</Th>
+                        <Th textAlign='center'>Link</Th>
+                        <Th textAlign='center'>Delete</Th>
                       </Tr>
                     </Thead>
                     <Tbody>
@@ -233,17 +243,22 @@ const UserProfile = () => {
                           <Td>
                             <Text>{collection.title}</Text>
                           </Td>
-                          <Td>
+                          <Td textAlign='center'>
                             <Button
+                              size='sm'
                               border='1px'
                               borderColor='white'
                               onClick={() => handleEditCollection(collection)}
                             >
-                              <EditIcon w={4} h={4} />
+                              <EditIcon />
                             </Button>
                           </Td>
-                          <Td>
+                          <Td textAlign='center'>
+                            <CopyLinkBtn collectionId={collection._id} />
+                          </Td>
+                          <Td textAlign='center'>
                             <Button
+                              size='sm'
                               border='1px'
                               borderColor='white'
                               onClick={() => {
@@ -258,7 +273,7 @@ const UserProfile = () => {
                                 })
                               }}
                             >
-                              <DeleteIcon w={4} h={4} />
+                              <DeleteIcon />
                             </Button>
                           </Td>
                         </Tr>
@@ -267,8 +282,9 @@ const UserProfile = () => {
                     <Tfoot>
                       <Tr>
                         <Th>Title</Th>
-                        <Th>Edit</Th>
-                        <Th>Delete</Th>
+                        <Th textAlign='center'>Edit</Th>
+                        <Th textAlign='center'>Link</Th>
+                        <Th textAlign='center'>Delete</Th>
                       </Tr>
                     </Tfoot>
                   </Table>

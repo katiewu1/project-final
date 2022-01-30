@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 import { Flex, Box, Heading, Text, Image } from '@chakra-ui/react'
+import moment from 'moment'
 
 import { API_URL_OPEN } from '../utils/urls'
 
@@ -8,6 +9,9 @@ const ViewCollection = () => {
   const { id } = useParams()
   const [collection, setCollection] = useState(null)
   const [isVisible, setIsVisible] = useState(true)
+
+  // To get the user's locale with javascript
+  // const locale = window.navigator.userLanguage || window.navigator.language
 
   useEffect(() => {
     fetch(API_URL_OPEN(id))
@@ -38,7 +42,7 @@ const ViewCollection = () => {
         <Box
           className='shake-slow shake-constant shake-constant--hover'
           position='absolute'
-          left='50%'
+          left='35%'
           top='50%'
         >
           <Box as='button' onClick={() => setIsVisible(false)}>
@@ -58,7 +62,7 @@ const ViewCollection = () => {
         >
           {/* <Box bgGradient={['linear(to-tr, teal.300, yellow.400)','linear(to-t, blue.200, teal.500)','linear(to-b, orange.100, purple.300)',]}> */}
           <Heading as='h2'>{collection.title}</Heading>
-          <Text>{collection.date}</Text>
+          <Text>{moment.utc(collection.date).format('LL')}</Text>
           <Image src={collection.image} maxWidth='300px' alt='image' />
           <Text fontStyle='italic' whiteSpace='pre-wrap'>
             {collection.message}

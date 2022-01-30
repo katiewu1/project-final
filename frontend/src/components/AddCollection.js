@@ -16,19 +16,22 @@ import {
   InputLeftElement,
   Icon,
   Textarea,
+  Text,
   Flex,
   useToast,
 } from '@chakra-ui/react'
 import { ImImages } from 'react-icons/im'
 import { MdTitle } from 'react-icons/md'
 import { CalendarIcon } from '@chakra-ui/icons'
+import { SingleDatepicker } from 'chakra-dayzed-datepicker'
+import moment from 'moment'
 
 import { API_URL_USER } from '../utils/urls'
 import user from '../reducers/user'
 
 const AddCollection = ({ isOpen, onClose, userId, openEditMode }) => {
   const [title, setTitle] = useState('')
-  const [date, setDate] = useState('')
+  const [date, setDate] = useState(new Date())
   const [image, setImage] = useState('')
   const [message, setMessage] = useState('')
 
@@ -42,7 +45,13 @@ const AddCollection = ({ isOpen, onClose, userId, openEditMode }) => {
         // Authorization: accessToken,
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ title, date, image, message }),
+      body: JSON.stringify({
+        title,
+        // change the date utc format to always be at 12:00 on that day
+        date: moment(date).utcOffset(0, true).add(12, 'hours').format(),
+        image,
+        message,
+      }),
     }
 
     fetch(API_URL_USER('user', userId), options)
@@ -52,7 +61,7 @@ const AddCollection = ({ isOpen, onClose, userId, openEditMode }) => {
         dispatch(user.actions.addCollection(data.response))
         // empty the input fields
         setTitle('')
-        setDate('')
+        setDate(new Date())
         setImage('')
         setMessage('')
       })
@@ -65,7 +74,7 @@ const AddCollection = ({ isOpen, onClose, userId, openEditMode }) => {
         <ModalHeader>Add Collection</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
-          Customize your own surprise eMessage
+          <Text mb='4'>Customize your own surprise OpenMe</Text>
           <Stack spacing={3}>
             <InputGroup>
               <FormLabel
@@ -105,11 +114,23 @@ const AddCollection = ({ isOpen, onClose, userId, openEditMode }) => {
                   pointerEvents='none'
                   children={<CalendarIcon color='gray.300' />}
                 />
-                <Input
+                {/* <Input
                   variant='filled'
                   id='date'
                   value={date}
                   onChange={(e) => setDate(e.target.value)}
+                /> */}
+
+                <SingleDatepicker
+                  name='date-input'
+                  id='date'
+                  date={date}
+                  propsConfigs={{
+                    inputProps: {
+                      pl: 10,
+                    },
+                  }}
+                  onDateChange={setDate}
                 />
               </InputGroup>
             </InputGroup>
@@ -131,6 +152,7 @@ const AddCollection = ({ isOpen, onClose, userId, openEditMode }) => {
                 <Input
                   variant='outline'
                   id='image'
+                  placeholder='copy image address'
                   value={image}
                   onChange={(e) => setImage(e.target.value)}
                 />
