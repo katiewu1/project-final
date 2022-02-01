@@ -10,6 +10,7 @@ mongoose.connect(mongoUrl, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
   useCreateIndex: true,
+  useFindAndModify: false,
 })
 mongoose.Promise = Promise
 
@@ -162,7 +163,7 @@ app.patch('/user', async (req, res) => {
     const updatedUserProfile = await User.findOneAndUpdate(
       { _id: userId },
       req.body,
-      { new: true, useFindAndModify: false }
+      { new: true }
     )
     if (updatedUserProfile) {
       res.status(200).json({ response: updatedUserProfile, success: true })
@@ -237,7 +238,7 @@ app.patch('/user/collections', async (req, res) => {
     const updatedCollection = await Collection.findOneAndUpdate(
       { _id: collectionId },
       req.body,
-      { new: true, useFindAndModify: false }
+      { new: true }
     )
 
     if (updatedCollection) {
@@ -269,12 +270,9 @@ app.delete('/user/collections', async (req, res) => {
   // http://localhost:8080/user/collections?collection=61ee9d8d838687e8adc2338b
   const collectionId = req.query.collection
   try {
-    const deletedCollection = await Collection.findOneAndDelete(
-      {
-        _id: collectionId,
-      },
-      { useFindAndModify: false }
-    )
+    const deletedCollection = await Collection.findOneAndDelete({
+      _id: collectionId,
+    })
 
     // console.log(deletedCollection.user)
 
@@ -311,7 +309,7 @@ app.delete('/user/collections', async (req, res) => {
 })
 
 // view the collection
-// TODO: can only be open on a specific date
+// TODO: can only be open on a specific date, the owner of the collection can always view the collection
 app.get('/open/:collectionId', async (req, res) => {
   // get one collection
   // http://localhost:8080/open/61f30febce4b1858a94bf9a0
