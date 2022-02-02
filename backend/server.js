@@ -63,6 +63,11 @@ const CollectionSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  sendTo: {
+    // receiver's email address
+    type: String,
+    required: true,
+  },
   image: {
     type: String, // Link or upload image?
     // required: true,
@@ -71,7 +76,10 @@ const CollectionSchema = new mongoose.Schema({
     type: String,
     // required: true
   },
-  // TODO: createdAt: {  }
+  createdAt: {
+    type: Date,
+    default: () => Date.now(),
+  },
   user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
 })
 
@@ -199,13 +207,14 @@ app.post('/user', async (req, res) => {
   // app.post('/user/:userId', async (req, res) => {
   // req.query - ?compose=new
   // req.query - ?user=id?
-  const { title, date, image, message } = req.body
+  const { title, date, sendTo, image, message } = req.body
   const userId = req.query.id
   try {
     // create a new collection
     const newCollection = await new Collection({
       title,
       date,
+      sendTo,
       image,
       message,
       user: userId,

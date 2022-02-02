@@ -85,8 +85,8 @@ const Form = ({ mode }) => {
       .catch((err) => console.log('error: ', err))
   }
 
-  const handleLogin = () => {
-    // e.preventDefault()
+  const handleLogin = (e) => {
+    e.preventDefault()
 
     const options = {
       method: 'POST',
@@ -136,57 +136,56 @@ const Form = ({ mode }) => {
     >
       {mode === 'login' ? (
         <>
-          {/* <form onSubmit={onLogin}> */}
-          <FormControl
-            // isInvalid={!isError}
-            isRequired
-            d='flex'
-            flexDirection='column'
-            justifyContent='center'
-            alignItems='center'
-            color='black'
-          >
-            <FormLabel htmlFor='email'>Email</FormLabel>
-            <Input
-              id='email'
-              type='email'
-              w='16rem'
-              mb='2'
-              variant='outline'
-              placeholder='email@example.com'
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
-            {/* password input */}
-            <FormLabel htmlFor='password'>Password</FormLabel>
-            <InputGroup size='md' width='16rem'>
-              <Input
-                id='password'
-                pr='4.5rem'
-                type={show ? 'text' : 'password'}
-                // variant='filled'
-                variant='outline'
-                placeholder='Enter password'
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-              />
-              <InputRightElement width='4.5rem'>
-                <Button h='1.75rem' size='sm' onClick={handleClick}>
-                  {show ? 'Hide' : 'Show'}
-                </Button>
-              </InputRightElement>
-            </InputGroup>
-            <Button
-              mt={4}
-              colorScheme='teal'
-              // isLoading={props.isSubmitting}
-              type='button'
-              onClick={handleLogin}
+          <form onSubmit={handleLogin}>
+            <FormControl
+              // isInvalid={!isError}
+              isRequired
+              d='flex'
+              flexDirection='column'
+              justifyContent='center'
+              alignItems='center'
+              color='black'
             >
-              Log in
-            </Button>
-          </FormControl>
-          {/* </form> */}
+              <FormLabel htmlFor='email'>Email</FormLabel>
+              <Input
+                id='email'
+                type='email'
+                w='16rem'
+                mb='2'
+                variant='outline'
+                placeholder='email@example.com'
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
+              {/* password input */}
+              <FormLabel htmlFor='password'>Password</FormLabel>
+              <InputGroup size='md' width='16rem'>
+                <Input
+                  id='password'
+                  pr='4.5rem'
+                  type={show ? 'text' : 'password'}
+                  // variant='filled'
+                  variant='outline'
+                  placeholder='Enter password'
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                />
+                <InputRightElement width='4.5rem'>
+                  <Button h='1.75rem' size='sm' onClick={handleClick}>
+                    {show ? 'Hide' : 'Show'}
+                  </Button>
+                </InputRightElement>
+              </InputGroup>
+              <Button
+                mt={4}
+                colorScheme='teal'
+                // isLoading={props.isSubmitting}
+                type='submit'
+              >
+                Log in
+              </Button>
+            </FormControl>
+          </form>
           <Text textAlign='center' mt='4' color='black'>
             Need an account?{' '}
             <Link href='/signup' fontWeight='bold' color='teal'>
