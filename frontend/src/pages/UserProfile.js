@@ -139,13 +139,21 @@ const UserProfile = () => {
   }
 
   return (
-    <Flex direction='column' justify='center' align='center' h='100vh'>
+    <Flex direction='column' pt='20vh' align='center' minHeight='100vh'>
       <>
         <Heading as='h2' fontSize='5xl' m='2' isTruncated>
           My Profile
         </Heading>
         {userProfile && (
-          <Flex align='center' justify='space-evenly' w='70%'>
+          <Flex
+            align='center'
+            justify='space-evenly'
+            color='black'
+            w='80%'
+            p='48px 0px'
+            borderRadius='6px'
+            bgGradient='linear(to-r, gray.300, yellow.400, pink.200)'
+          >
             <Avatar
               size='xl'
               name={`${userProfile.firstname} ${userProfile.lastname}`} //fetch first- and lastname

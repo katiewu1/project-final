@@ -4,6 +4,11 @@ import mongoose from 'mongoose'
 import crypto from 'crypto'
 import bcrypt from 'bcrypt-nodejs'
 import listEndpoints from 'express-list-endpoints'
+import nodemailer from 'nodemailer'
+import cron from 'node-cron'
+import dotenv from 'dotenv'
+
+dotenv.config()
 
 const mongoUrl = process.env.MONGO_URL || 'mongodb://localhost/calendarMaker'
 mongoose.connect(mongoUrl, {
@@ -310,6 +315,8 @@ app.delete('/user/collections', async (req, res) => {
 
 // view the collection
 // TODO: can only be open on a specific date, the owner of the collection can always view the collection
+// If owner is logged in and the accessToken (from local storage) matched with the Collection.user id -> can view the collection
+// Or if the today's date matched the Collection.date or after -> everyone can view the collection if they've the link
 app.get('/open/:collectionId', async (req, res) => {
   // get one collection
   // http://localhost:8080/open/61f30febce4b1858a94bf9a0
@@ -441,6 +448,79 @@ app.post('/login', async (req, res) => {
       success: false,
     })
   }
+})
+
+// * * * * * *
+// | | | | | |
+// | | | | | day of week
+// | | | | month
+// | | | day of month
+// | | hour
+// | minute
+// second ( optional )
+app.post('/sendemail', (req, res) => {
+  const { email, link } = req.body
+  // console.log('email, link: ', email, link)
+
+  // Create a Nodemailer transporter using either SMTP(this is default) or some other transport mechanism
+  let transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+      user: `${process.env.EMAIL}`,
+      pass: `${process.env.EMAIL_PASSWORD}`, // use env variable
+    },
+    // reject because we are running from localhost
+    // tls: {
+    //   rejectUnauthorized: false,
+    // },
+  })
+  //Note: In the above example, we have mentioned the service as gmail. It is just an example. You can specify the name of the e-mail services you want to use.
+
+  const output = `<h2>What an OpenMe:ly day!</h2>
+  <div style="background-image: linear-gradient(to bottom left, pink, yellow); padding: 10px;">
+    <p>You got a surprise OpenMe message from someone.</p>
+    <p>Here's the link to view the message:</p>
+    <p>${link}</p>
+    <p>Kind regards,</p>
+    <p>OpenMe Team</p>
+    <img src="https://i.ibb.co/Wc6Drhx/openme-icon.png" alt="OpenMe logo"/>
+ </div>
+ `
+
+  // Setup a message option: This is to tell Nodemailer who is sending what message to whom
+  let mailOptions = {
+    from: `"OpenMe" <${process.env.EMAIL}>`,
+    to: `${email}`,
+    subject: 'Message from OpenMe',
+    //     text: `What an OpenMe:ly day!
+
+    // You got a surprise OpenMe message from someone.
+
+    // Here's the link to view the message:
+    // ${link}
+
+    // Kind regards,
+    // OpenMe Team
+    // `,
+    html: output, //html body
+  }
+  // Note: The to property above can have multiple email ids separated by commas(,).
+
+  transporter.sendMail(mailOptions, (error, info) => {
+    if (error) {
+      console.log(error)
+      res.status(400).json({ response: 'error', success: false })
+    } else {
+      console.log('Email sent: ' + info.response)
+      res.status(200).json({ response: 'Email sent', success: true })
+    }
+  })
+
+  // // schedule 12:00 0'clock,
+  // const mailing = cron.schedule('59 17-20 * * *', () => {
+  //   // Send e-mail
+  //   mailing.stop()
+  // })
 })
 
 // Start the server
