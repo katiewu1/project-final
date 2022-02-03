@@ -18,7 +18,7 @@ import {
 import { API_URL } from '../utils/urls'
 import user from '../reducers/user'
 
-const Form = ({ mode }) => {
+const FormSignupLogin = ({ mode }) => {
   // // email error message
   // const [input, setInput] = useState('')
   // const handleInputChange = (e) => setInput(e.target.value)
@@ -284,4 +284,4 @@ const Form = ({ mode }) => {
   )
 }
 
-export default Form
+export default FormSignupLogin
