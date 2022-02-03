@@ -14,7 +14,7 @@ import {
 import { CgProfile } from 'react-icons/cg'
 import { MdLogin } from 'react-icons/md'
 
-const HomePage = () => {
+const Home = () => {
   const accessToken = useSelector((store) => store.user.accessToken)
 
   const navigate = useNavigate()
@@ -99,4 +99,4 @@ const HomePage = () => {
   )
 }
 
-export default HomePage
+export default Home

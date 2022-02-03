@@ -5,7 +5,7 @@ import moment from 'moment'
 
 import { API_URL_OPEN } from '../utils/urls'
 
-const ViewCollection = () => {
+const Collection = () => {
   const { id } = useParams()
   const [collection, setCollection] = useState(null)
   const [isVisible, setIsVisible] = useState(true)
@@ -73,4 +73,4 @@ const ViewCollection = () => {
   )
 }
 
-export default ViewCollection
+export default Collection
