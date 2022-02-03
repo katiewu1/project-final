@@ -167,9 +167,14 @@ const UserProfile = () => {
               </Stack>
               <ButtonGroup mt='2'>
                 {/* EditProfile component -> with Modal */}
-                <Button size='sm' color='teal' onClick={onOpenEditProfile}>
-                  Edit profile <span>&nbsp;</span>
-                  <EditIcon w={4} h={4} />
+                <Button
+                  variant='link'
+                  size='sm'
+                  color='teal'
+                  rightIcon={<EditIcon />}
+                  onClick={onOpenEditProfile}
+                >
+                  Edit profile
                 </Button>
 
                 <EditProfile
@@ -177,6 +182,7 @@ const UserProfile = () => {
                   onClose={onCloseEditProfile}
                 />
                 <Button
+                  variant='link'
                   size='sm'
                   color='teal'
                   rightIcon={<MdLogin />}

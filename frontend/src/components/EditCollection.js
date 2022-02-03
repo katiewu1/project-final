@@ -9,25 +9,14 @@ import {
   ModalBody,
   ModalCloseButton,
   Button,
-  FormLabel,
-  FormControl,
-  Input,
-  Stack,
-  InputGroup,
-  InputLeftElement,
-  Icon,
-  Textarea,
   Text,
-  Flex,
+  Box,
   useToast,
 } from '@chakra-ui/react'
-import { ImImages } from 'react-icons/im'
-import { MdTitle } from 'react-icons/md'
-import { CalendarIcon, AtSignIcon } from '@chakra-ui/icons'
-import { SingleDatepicker } from 'chakra-dayzed-datepicker'
 import moment from 'moment'
 import { parseISO } from 'date-fns'
 
+import FormCollection from './FormCollection'
 import { API_URL_COLLECTION } from '../utils/urls'
 import user from '../reducers/user'
 
@@ -89,137 +78,21 @@ const EditCollection = ({ isOpen, onClose, collection }) => {
           <ModalHeader>Edit Collection</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            <Text mb='4'>Edit your OpenMe</Text>
-
-            <Stack spacing={3}>
-              <FormControl isRequired>
-                <InputGroup>
-                  <FormLabel
-                    htmlFor='Title'
-                    display='flex'
-                    alignItems='center'
-                    w='100px'
-                  >
-                    Title
-                  </FormLabel>
-                  <InputGroup>
-                    <InputLeftElement
-                      pointerEvents='none'
-                      children={<Icon as={MdTitle} color='gray.300' />}
-                    />
-                    <Input
-                      variant='outline'
-                      id='title'
-                      value={title}
-                      onChange={(e) => setTitle(e.target.value)}
-                    />
-                  </InputGroup>
-                </InputGroup>
-              </FormControl>
-
-              <FormControl isRequired>
-                <InputGroup>
-                  <FormLabel
-                    htmlFor='date'
-                    display='flex'
-                    alignItems='center'
-                    w='100px'
-                  >
-                    Date
-                  </FormLabel>
-                  <InputGroup>
-                    <InputLeftElement
-                      pointerEvents='none'
-                      children={<CalendarIcon color='gray.300' />}
-                    />
-                    {/* <Input
-                  variant='filled'
-                  id='date'
-                  value={date}
-                  onChange={(e) => setDate(e.target.value)}
-                /> */}
-                    <SingleDatepicker
-                      name='date-input'
-                      id='date'
-                      date={date}
-                      propsConfigs={{
-                        inputProps: {
-                          pl: 10,
-                        },
-                      }}
-                      onDateChange={setDate}
-                    />
-                  </InputGroup>
-                </InputGroup>
-              </FormControl>
-
-              <FormControl isRequired>
-                <InputGroup>
-                  <FormLabel
-                    htmlFor='email'
-                    display='flex'
-                    alignItems='center'
-                    w='100px'
-                  >
-                    Send to
-                  </FormLabel>
-                  <InputGroup>
-                    <InputLeftElement
-                      pointerEvents='none'
-                      children={<AtSignIcon color='gray.300' />}
-                    />
-                    <Input
-                      variant='outline'
-                      id='email'
-                      placeholder='email address'
-                      value={sendTo}
-                      onChange={(e) => setSendTo(e.target.value)}
-                    />
-                  </InputGroup>
-                </InputGroup>
-              </FormControl>
-
-              <InputGroup>
-                <FormLabel
-                  htmlFor='image'
-                  display='flex'
-                  alignItems='center'
-                  w='100px'
-                >
-                  Image
-                </FormLabel>
-                <InputGroup>
-                  <InputLeftElement
-                    pointerEvents='none'
-                    children={<Icon as={ImImages} color='gray.300' />}
-                  />
-                  <Input
-                    variant='outline'
-                    id='image'
-                    value={image}
-                    onChange={(e) => setImage(e.target.value)}
-                  />
-                </InputGroup>
-              </InputGroup>
-
-              <Flex>
-                <FormLabel
-                  htmlFor='message'
-                  display='flex'
-                  alignItems='center'
-                  w='100px'
-                >
-                  Message
-                </FormLabel>
-
-                <Textarea
-                  variant='filled'
-                  id='message'
-                  value={message}
-                  onChange={(e) => setMessage(e.target.value)}
-                />
-              </Flex>
-            </Stack>
+            <Box>
+              <Text mb='4'>Edit your OpenMe</Text>
+              <FormCollection
+                title={title}
+                date={date}
+                sendTo={sendTo}
+                image={image}
+                message={message}
+                setTitle={setTitle}
+                setDate={setDate}
+                setSendTo={setSendTo}
+                setImage={setImage}
+                setMessage={setMessage}
+              />
+            </Box>
           </ModalBody>
           <ModalFooter>
             <Button variant='ghost' mr={3} onClick={onClose}>

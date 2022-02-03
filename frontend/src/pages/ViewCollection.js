@@ -27,7 +27,7 @@ const ViewCollection = () => {
   }, [id])
 
   return (
-    // TODO: user can pick different bgGradient colors, font style?
+    // TODO: user can pick different bgGradient colors, font style? Have this as a reusable component!
     <Box as='section'>
       <Box visibility={isVisible ? 'visible' : 'hidden'}>
         <Image
