@@ -16,15 +16,28 @@ import {
 import moment from 'moment'
 
 import FormCollection from './FormCollection'
+import Preview from './Preview'
 import { API_URL_USER } from '../utils/urls'
 import user from '../reducers/user'
 
 const AddCollection = ({ isOpen, onClose, userId, openEditMode }) => {
   const [title, setTitle] = useState('')
-  const [date, setDate] = useState(new Date())
+  const [date, setDate] = useState(new Date(new Date().setHours(0, 0, 0, 0))) // reset the time to 00:00
   const [sendTo, setSendTo] = useState('')
   const [image, setImage] = useState('')
   const [message, setMessage] = useState('')
+
+  const collection = {
+    title,
+    // change the date utc format to always be at 12:00 on that day
+    date: moment(date).utcOffset(0, true).add(12, 'hours').format(),
+    sendTo,
+    image,
+    message,
+  }
+
+  // console.log('date: ', date)
+  // console.log('collection', collection)
 
   const dispatch = useDispatch()
   const toast = useToast()
@@ -38,14 +51,15 @@ const AddCollection = ({ isOpen, onClose, userId, openEditMode }) => {
         // Authorization: accessToken,
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({
-        title,
-        // change the date utc format to always be at 12:00 on that day
-        date: moment(date).utcOffset(0, true).add(12, 'hours').format(),
-        sendTo,
-        image,
-        message,
-      }),
+      body: JSON.stringify(
+        collection
+        // title,
+        // // change the date utc format to always be at 12:00 on that day
+        // date: moment(date).utcOffset(0, true).add(12, 'hours').format(),
+        // sendTo,
+        // image,
+        // message,
+      ),
     }
 
     fetch(API_URL_USER('user', userId), options)
@@ -55,7 +69,8 @@ const AddCollection = ({ isOpen, onClose, userId, openEditMode }) => {
         dispatch(user.actions.addCollection(data.response))
         // empty the input fields
         setTitle('')
-        setDate(new Date())
+        setDate(new Date(new Date().setHours(0, 0, 0, 0)))
+        setSendTo('')
         setImage('')
         setMessage('')
       })
@@ -82,7 +97,7 @@ const AddCollection = ({ isOpen, onClose, userId, openEditMode }) => {
           <ModalCloseButton />
           <ModalBody>
             <Box>
-              <Text mb='4'>Customize your own surprise OpenMe</Text>
+              <Text mb='4'>Create your own surprise OpenMe</Text>
               <FormCollection
                 title={title}
                 date={date}
@@ -96,11 +111,8 @@ const AddCollection = ({ isOpen, onClose, userId, openEditMode }) => {
                 setMessage={setMessage}
               />
             </Box>
-
-            <Box>
-              <Text mb='4'>Preview</Text>
-              {/* TODO: reuseable component, the same as in ViewCollection page */}
-            </Box>
+            {/* PREVIEW */}
+            <Preview collection={collection} />
           </ModalBody>
           <ModalFooter>
             <Button variant='ghost' mr={3} onClick={onClose}>

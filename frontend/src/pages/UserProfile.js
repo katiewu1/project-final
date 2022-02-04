@@ -25,6 +25,7 @@ import {
   Td,
   TableCaption,
   useToast,
+  Image,
 } from '@chakra-ui/react'
 import { EditIcon, SmallAddIcon, DeleteIcon } from '@chakra-ui/icons'
 import { MdLogin } from 'react-icons/md'
@@ -203,6 +204,13 @@ const UserProfile = () => {
             borderColor='white'
             onClick={onOpenAddCollection}
           >
+            <Image
+              w='18px'
+              h='18px'
+              mr='4px'
+              src='./assets/openme_icon.png'
+              alt='OpenMe logo'
+            />
             Add <SmallAddIcon w={4} h={4} />
           </Button>
           {userProfile && (

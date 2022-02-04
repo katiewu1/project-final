@@ -17,15 +17,30 @@ import moment from 'moment'
 import { parseISO } from 'date-fns'
 
 import FormCollection from './FormCollection'
+import Preview from './Preview'
 import { API_URL_COLLECTION } from '../utils/urls'
 import user from '../reducers/user'
 
 const EditCollection = ({ isOpen, onClose, collection }) => {
   const [title, setTitle] = useState(collection.title)
-  const [date, setDate] = useState(parseISO(collection.date))
+  const [date, setDate] = useState(
+    new Date(parseISO(collection.date).setHours(0, 0, 0, 0))
+  ) // reset the time to 00:00
   const [sendTo, setSendTo] = useState(collection.sendTo)
   const [image, setImage] = useState(collection.image)
   const [message, setMessage] = useState(collection.message)
+
+  const editedCollection = {
+    title,
+    // change the date utc format to always be at 12:00 on that day
+    date: moment(date).utcOffset(0, true).add(12, 'hours').format(),
+    sendTo,
+    image,
+    message,
+  }
+
+  // console.log('date: ', date)
+  // console.log('editedCollection: ', editedCollection)
 
   const dispatch = useDispatch()
   const toast = useToast()
@@ -39,14 +54,16 @@ const EditCollection = ({ isOpen, onClose, collection }) => {
         // Authorization: accessToken,
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({
-        title,
-        // change the date utc format to always be at 12:00 on that day
-        date: moment(date).utcOffset(0, true).add(12, 'hours').format(),
-        sendTo,
-        image,
-        message,
-      }),
+      // editedCollection is a Object already - don't need the {}!
+      body: JSON.stringify(
+        editedCollection
+        // title,
+        // // change the date utc format to always be at 12:00 on that day
+        // date: moment(date).utcOffset(0, true).add(12, 'hours').format(),
+        // sendTo,
+        // image,
+        // message,
+      ),
     }
     fetch(API_URL_COLLECTION('user', collection._id), options)
       .then((res) => res.json())
@@ -55,8 +72,6 @@ const EditCollection = ({ isOpen, onClose, collection }) => {
         dispatch(user.actions.editCollection(data.response))
       })
   } // TODO: error handling
-
-  console.log('date', moment(date).utcOffset(0, true).add(12, 'hours').format())
 
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
@@ -93,6 +108,8 @@ const EditCollection = ({ isOpen, onClose, collection }) => {
                 setMessage={setMessage}
               />
             </Box>
+            {/* PREVIEW */}
+            <Preview collection={editedCollection} />
           </ModalBody>
           <ModalFooter>
             <Button variant='ghost' mr={3} onClick={onClose}>

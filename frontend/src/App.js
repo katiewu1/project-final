@@ -41,7 +41,7 @@ const store = createStore(
 
 // store the state (only accessToken and userId) in localStorage as JSON string on Redux state change
 store.subscribe(() => {
-  console.log(store.getState())
+  // console.log(store.getState())
   localStorage.setItem(
     'userReduxState',
     JSON.stringify({
