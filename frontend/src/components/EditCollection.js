@@ -89,7 +89,7 @@ const EditCollection = ({ isOpen, onClose, collection }) => {
         }}
       >
         <ModalOverlay />
-        <ModalContent>
+        <ModalContent maxW='800px'>
           <ModalHeader>Edit Collection</ModalHeader>
           <ModalCloseButton />
           <ModalBody>

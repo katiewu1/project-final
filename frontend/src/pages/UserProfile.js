@@ -29,6 +29,7 @@ import {
 } from '@chakra-ui/react'
 import { EditIcon, SmallAddIcon, DeleteIcon } from '@chakra-ui/icons'
 import { MdLogin } from 'react-icons/md'
+import moment from 'moment'
 
 import { API_URL_USER } from '../utils/urls'
 import { API_URL_COLLECTION } from '../utils/urls'
@@ -264,6 +265,10 @@ const UserProfile = () => {
                         <Tr key={collection._id}>
                           <Td>
                             <Text>{collection.title}</Text>
+                            <Text fontSize='xs' fontStyle='italic' color='gray'>
+                              Created at:{' '}
+                              {moment.utc(collection.createdAt).format('ll')}
+                            </Text>
                           </Td>
                           <Td textAlign='center'>
                             <Button
