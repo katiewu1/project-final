@@ -20,7 +20,7 @@ import Preview from './Preview'
 import { API_URL_USER } from '../utils/urls'
 import user from '../reducers/user'
 
-const AddCollection = ({ isOpen, onClose, userId, openEditMode }) => {
+const AddCollection = ({ isOpen, onClose, userId }) => {
   const [title, setTitle] = useState('')
   const [date, setDate] = useState(new Date(new Date().setHours(0, 0, 0, 0))) // reset the time to 00:00
   const [sendTo, setSendTo] = useState('')

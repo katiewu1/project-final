@@ -7,6 +7,7 @@ import listEndpoints from 'express-list-endpoints'
 import nodemailer from 'nodemailer'
 import cron from 'node-cron'
 import dotenv from 'dotenv'
+import moment from 'moment'
 
 dotenv.config()
 
@@ -324,22 +325,77 @@ app.delete('/user/collections', async (req, res) => {
 
 // view the collection
 // TODO: can only be open on a specific date, the owner of the collection can always view the collection
-// If owner is logged in and the accessToken (from local storage) matched with the Collection.user id -> can view the collection
+// If owner is logged in and the accessToken matched with the Collection.accessToken -> can view the collection
 // Or if the today's date matched the Collection.date or after -> everyone can view the collection if they've the link
 app.get('/open/:collectionId', async (req, res) => {
-  // get one collection
-  // http://localhost:8080/open/61f30febce4b1858a94bf9a0
-
-  // const collectionId = req.query.collection
-
   const { collectionId } = req.params
 
   try {
     if (collectionId) {
       const showCollection = await Collection.findById(collectionId)
-      res.status(200).json({ response: showCollection, success: true })
+
+      const showCollectionAndUser = await Collection.findById(
+        collectionId
+      ).populate('user')
+
+      // if user is logged in it will send it's accessToken to this route
+      // compare the accessToken with the owner of the collection's accessToken
+      const user = await User.findOne({
+        accessToken: req.header('Authorization'),
+      })
+
+      // console.log('user: ', user)
+      // console.log(
+      //   'showCollection.date: ',
+      //   new Date(showCollection.date).getTime()
+      // )
+      // console.log('new date: ', new Date().getTime())
+      // console.log(
+      //   'showCollection.populate(): ',
+      //   showCollection.user.accessToken
+      // )
+      // console.log('user.accesToken: ', user.accessToken)
+
+      // if we have a user logged in and the accessToken match with the owner of the collection -> authorized
+      // or if the date match with today's date or have passed > authorized
+      // otherwise can't view the collection
+      if (user) {
+        if (user.accessToken === showCollectionAndUser.user.accessToken) {
+          res.status(200).json({ response: showCollection, success: true })
+        } else if (
+          user.accessToken !== showCollectionAndUser.user.accessToken
+        ) {
+          // convert the UTC time & date to ms
+          if (new Date(showCollection.date).getTime() <= new Date().getTime()) {
+            res.status(200).json({ response: showCollection, success: true })
+          } else {
+            res.status(403).json({
+              message:
+                'You are not authorized to view the page, or you are too early',
+              response:
+                'You are not authorized to view the page, or you are too early',
+              success: false,
+            })
+          }
+        }
+      } else if (
+        new Date(showCollection.date).getTime() <= new Date().getTime()
+      ) {
+        res.status(200).json({ response: showCollection, success: true })
+      } else {
+        res.status(404).json({
+          message: `You are trying to view the collection too early, wait until ${moment
+            .utc(showCollection.date)
+            .format('ll')}`,
+          response: `You are trying to view the collection too early, wait until ${moment
+            .utc(showCollection.date)
+            .format('ll')}`,
+          success: false,
+        })
+      }
     } else {
       res.status(404).json({
+        message: `Collection by id '${collectionId}' not found`,
         response: `Collection by id '${collectionId}' not found`,
         success: false,
       })
