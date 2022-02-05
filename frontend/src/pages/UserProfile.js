@@ -38,6 +38,7 @@ import EditProfile from '../components/EditProfile'
 import AddCollection from '../components/AddCollection'
 import EditCollection from '../components/EditCollection'
 import CopyLinkBtn from '../components/CopyLinkBtn'
+import SendEmailBtn from '../components/SendEmailBtn'
 
 const UserProfile = () => {
   const userProfile = useSelector((store) => store.user)
@@ -250,6 +251,7 @@ const UserProfile = () => {
                 {userProfile &&
                 userProfile.collections &&
                 userProfile.collections.length > 0 ? (
+                  // TODO: move out the Table to a component
                   <Table variant='striped' colorScheme='gray'>
                     <TableCaption>Your saved collection(s)</TableCaption>
                     <Thead>
@@ -257,6 +259,7 @@ const UserProfile = () => {
                         <Th>Title</Th>
                         <Th textAlign='center'>Edit</Th>
                         <Th textAlign='center'>Link</Th>
+                        <Th textAlign='center'>Email</Th>
                         <Th textAlign='center'>Delete</Th>
                       </Tr>
                     </Thead>
@@ -282,6 +285,13 @@ const UserProfile = () => {
                           </Td>
                           <Td textAlign='center'>
                             <CopyLinkBtn collectionId={collection._id} />
+                          </Td>
+                          <Td textAlign='center'>
+                            <SendEmailBtn
+                              collectionId={collection._id}
+                              sendTo={collection.sendTo}
+                              date={collection.date}
+                            />
                           </Td>
                           <Td textAlign='center'>
                             <Button
@@ -311,6 +321,7 @@ const UserProfile = () => {
                         <Th>Title</Th>
                         <Th textAlign='center'>Edit</Th>
                         <Th textAlign='center'>Link</Th>
+                        <Th textAlign='center'>Email</Th>
                         <Th textAlign='center'>Delete</Th>
                       </Tr>
                     </Tfoot>

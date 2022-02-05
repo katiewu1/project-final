@@ -11,7 +11,7 @@ import moment from 'moment'
 
 dotenv.config()
 
-const mongoUrl = process.env.MONGO_URL || 'mongodb://localhost/calendarMaker'
+const mongoUrl = process.env.MONGO_URL || 'mongodb://localhost/openMe'
 mongoose.connect(mongoUrl, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
@@ -76,6 +76,10 @@ const CollectionSchema = new mongoose.Schema({
   message: {
     type: String,
     // required: true
+  },
+  hasSentEmail: {
+    type: Boolean,
+    default: false,
   },
   createdAt: {
     type: Date,
@@ -524,7 +528,7 @@ app.post('/login', async (req, res) => {
 // | minute
 // second ( optional )
 app.post('/sendemail', (req, res) => {
-  const { email, link } = req.body
+  const { email, link, date } = req.body
   // console.log('email, link: ', email, link)
 
   // Create a Nodemailer transporter using either SMTP(this is default) or some other transport mechanism
@@ -544,7 +548,9 @@ app.post('/sendemail', (req, res) => {
   const output = `<h2>What an OpenMe:ly day!</h2>
   <div style="background-image: linear-gradient(to bottom left, pink, yellow); padding: 10px;">
     <p>You got a surprise OpenMe message from someone.</p>
-    <p>Here's the link to view the message:</p>
+    <p>Here's the link and you can view the message from this date ${moment
+      .utc(date)
+      .format('ll')} (12:00 UTC):</p>
     <p>${link}</p>
     <p>Kind regards,</p>
     <p>OpenMe Team</p>
