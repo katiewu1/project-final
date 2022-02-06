@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { useSelector, useDispatch, batch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import {
@@ -26,6 +26,12 @@ import {
   TableCaption,
   useToast,
   Image,
+  AlertDialog,
+  AlertDialogBody,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogContent,
+  AlertDialogOverlay,
 } from '@chakra-ui/react'
 import { EditIcon, SmallAddIcon, DeleteIcon } from '@chakra-ui/icons'
 import { MdLogin } from 'react-icons/md'
@@ -44,6 +50,7 @@ const UserProfile = () => {
   const userProfile = useSelector((store) => store.user)
 
   const [editingCollection, setEditingCollection] = useState(null)
+  const [deleteCollectionId, setDeleteCollectionId] = useState(null)
 
   // Modal
   const {
@@ -61,6 +68,11 @@ const UserProfile = () => {
     onOpen: onOpenEditCollection,
     onClose: onCloseEditCollection,
   } = useDisclosure()
+
+  // Alert Dialog
+  const [isOpen, setIsOpen] = useState(false)
+  const onClose = () => setIsOpen(false)
+  const cancelRef = useRef()
 
   const navigate = useNavigate()
   const dispatch = useDispatch()
@@ -298,16 +310,10 @@ const UserProfile = () => {
                               size='sm'
                               border='1px'
                               borderColor='white'
+                              // colorScheme='red'
                               onClick={() => {
-                                handleDeleteCollection(collection._id)
-                                toast({
-                                  title: 'Collection deleted.',
-                                  description:
-                                    "We've deleted your collection for you.",
-                                  status: 'success',
-                                  duration: 5000,
-                                  isClosable: true,
-                                })
+                                setIsOpen(true)
+                                setDeleteCollectionId(collection._id)
                               }}
                             >
                               <DeleteIcon />
@@ -343,6 +349,45 @@ const UserProfile = () => {
             collection={editingCollection}
           />
         )}
+        <AlertDialog
+          isOpen={isOpen}
+          leastDestructiveRef={cancelRef}
+          onClose={onClose}
+        >
+          <AlertDialogOverlay>
+            <AlertDialogContent>
+              <AlertDialogHeader fontSize='lg' fontWeight='bold'>
+                Delete Collection
+              </AlertDialogHeader>
+
+              <AlertDialogBody>
+                Are you sure? You can't undo this action afterwards.
+              </AlertDialogBody>
+              <AlertDialogFooter>
+                <Button ref={cancelRef} onClick={onClose}>
+                  Cancel
+                </Button>
+                <Button
+                  colorScheme='red'
+                  onClick={() => {
+                    onClose()
+                    handleDeleteCollection(deleteCollectionId)
+                    toast({
+                      title: 'Collection deleted.',
+                      description: "We've deleted your collection for you.",
+                      status: 'success',
+                      duration: 5000,
+                      isClosable: true,
+                    })
+                  }}
+                  ml={3}
+                >
+                  Delete
+                </Button>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialogOverlay>
+        </AlertDialog>
       </>
     </Flex>
   )
