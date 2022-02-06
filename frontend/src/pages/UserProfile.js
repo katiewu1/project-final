@@ -16,14 +16,6 @@ import {
   AccordionButton,
   AccordionPanel,
   AccordionIcon,
-  Table,
-  Thead,
-  Tbody,
-  Tfoot,
-  Tr,
-  Th,
-  Td,
-  TableCaption,
   useToast,
   Image,
   AlertDialog,
@@ -33,18 +25,16 @@ import {
   AlertDialogContent,
   AlertDialogOverlay,
 } from '@chakra-ui/react'
-import { EditIcon, SmallAddIcon, DeleteIcon } from '@chakra-ui/icons'
+import { EditIcon, SmallAddIcon } from '@chakra-ui/icons'
 import { MdLogin } from 'react-icons/md'
-import moment from 'moment'
 
 import { API_URL_USER } from '../utils/urls'
 import { API_URL_COLLECTION } from '../utils/urls'
 import user from '../reducers/user'
 import EditProfile from '../components/EditProfile'
 import AddCollection from '../components/AddCollection'
+import TableCollections from '../components/TableCollections'
 import EditCollection from '../components/EditCollection'
-import CopyLinkBtn from '../components/CopyLinkBtn'
-import SendEmailBtn from '../components/SendEmailBtn'
 
 const UserProfile = () => {
   const userProfile = useSelector((store) => store.user)
@@ -52,7 +42,7 @@ const UserProfile = () => {
   const [editingCollection, setEditingCollection] = useState(null)
   const [deleteCollectionId, setDeleteCollectionId] = useState(null)
 
-  // Modal
+  // Modal - EditProfile, AddCollection and EditCollection
   const {
     isOpen: isOpenEditProfile,
     onOpen: onOpenEditProfile,
@@ -69,7 +59,7 @@ const UserProfile = () => {
     onClose: onCloseEditCollection,
   } = useDisclosure()
 
-  // Alert Dialog
+  // Alert Dialog - Delete Collection
   const [isOpen, setIsOpen] = useState(false)
   const onClose = () => setIsOpen(false)
   const cancelRef = useRef()
@@ -78,16 +68,14 @@ const UserProfile = () => {
   const dispatch = useDispatch()
   const toast = useToast()
 
+  // accessToken === null -> go to Home page
   useEffect(() => {
-    // accessToken === null
     if (!userProfile.accessToken) {
       navigate('/')
     }
-    // else if (userProfile.accessToken) {
-    //   navigate('/user')
-    // }
   }, [userProfile.accessToken, navigate])
 
+  // When user is logged in -> retrieve the data and update the Redux state/store
   useEffect(() => {
     const options = {
       method: 'GET',
@@ -100,10 +88,7 @@ const UserProfile = () => {
       .then((res) => res.json())
       .then((data) => {
         if (data.success) {
-          // console.log('data.response: ', data.response)
-          // setUserProfile(data.response)
           batch(() => {
-            // dispatch(user.actions.setUserprofile(data.response))
             dispatch(user.actions.setUserId(data.response._id))
             dispatch(user.actions.setFirstname(data.response.firstname))
             dispatch(user.actions.setLastname(data.response.lastname))
@@ -126,12 +111,7 @@ const UserProfile = () => {
       })
   }, [dispatch, userProfile.accessToken, userProfile.userId])
 
-  if (userProfile) {
-    // for (const [key, value] of Object.entries(userProfile)) {
-    //   console.log(`${key}: ${value}`)
-    // }
-  }
-
+  // Function to delete a Collection
   const handleDeleteCollection = (id) => {
     const options = {
       method: 'DELETE',
@@ -148,6 +128,7 @@ const UserProfile = () => {
       })
   }
 
+  // Function to edit a Collection
   const handleEditCollection = (collection) => {
     setEditingCollection(collection)
     onOpenEditCollection()
@@ -171,7 +152,7 @@ const UserProfile = () => {
           >
             <Avatar
               size='xl'
-              name={`${userProfile.firstname} ${userProfile.lastname}`} //fetch first- and lastname
+              name={`${userProfile.firstname} ${userProfile.lastname}`}
             />
             <Flex direction='column'>
               <Stack spacing={1}>
@@ -263,75 +244,13 @@ const UserProfile = () => {
                 {userProfile &&
                 userProfile.collections &&
                 userProfile.collections.length > 0 ? (
-                  // TODO: move out the Table to a component
-                  <Table variant='striped' colorScheme='gray'>
-                    <TableCaption>Your saved collection(s)</TableCaption>
-                    <Thead>
-                      <Tr>
-                        <Th>Title</Th>
-                        <Th textAlign='center'>Edit</Th>
-                        <Th textAlign='center'>Link</Th>
-                        <Th textAlign='center'>Email</Th>
-                        <Th textAlign='center'>Delete</Th>
-                      </Tr>
-                    </Thead>
-                    <Tbody>
-                      {userProfile.collections.map((collection) => (
-                        <Tr key={collection._id}>
-                          <Td>
-                            <Text>{collection.title}</Text>
-                            <Text fontSize='xs' fontStyle='italic' color='gray'>
-                              Created at:{' '}
-                              {moment.utc(collection.createdAt).format('ll')}
-                            </Text>
-                          </Td>
-                          <Td textAlign='center'>
-                            <Button
-                              size='sm'
-                              border='1px'
-                              borderColor='white'
-                              onClick={() => handleEditCollection(collection)}
-                            >
-                              <EditIcon />
-                            </Button>
-                          </Td>
-                          <Td textAlign='center'>
-                            <CopyLinkBtn collectionId={collection._id} />
-                          </Td>
-                          <Td textAlign='center'>
-                            <SendEmailBtn
-                              collectionId={collection._id}
-                              sendTo={collection.sendTo}
-                              date={collection.date}
-                            />
-                          </Td>
-                          <Td textAlign='center'>
-                            <Button
-                              size='sm'
-                              border='1px'
-                              borderColor='white'
-                              // colorScheme='red'
-                              onClick={() => {
-                                setIsOpen(true)
-                                setDeleteCollectionId(collection._id)
-                              }}
-                            >
-                              <DeleteIcon />
-                            </Button>
-                          </Td>
-                        </Tr>
-                      ))}
-                    </Tbody>
-                    <Tfoot>
-                      <Tr>
-                        <Th>Title</Th>
-                        <Th textAlign='center'>Edit</Th>
-                        <Th textAlign='center'>Link</Th>
-                        <Th textAlign='center'>Email</Th>
-                        <Th textAlign='center'>Delete</Th>
-                      </Tr>
-                    </Tfoot>
-                  </Table>
+                  // TableCollections component -> Modal and Alert Dialog in UserProfile page
+                  <TableCollections
+                    userProfile={userProfile}
+                    handleEditCollection={handleEditCollection}
+                    setIsOpen={setIsOpen}
+                    setDeleteCollectionId={setDeleteCollectionId}
+                  />
                 ) : (
                   <Text>No collection(s) yet</Text>
                 )}
@@ -349,6 +268,7 @@ const UserProfile = () => {
             collection={editingCollection}
           />
         )}
+        {/* Alert Dialog */}
         <AlertDialog
           isOpen={isOpen}
           leastDestructiveRef={cancelRef}
