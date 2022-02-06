@@ -545,8 +545,8 @@ app.post('/sendemail', (req, res) => {
   })
   //Note: In the above example, we have mentioned the service as gmail. It is just an example. You can specify the name of the e-mail services you want to use.
 
-  const output = `<h2>What an OpenMe:ly day!</h2>
-  <div style="background-image: linear-gradient(to bottom left, pink, yellow); padding: 10px;">
+  const output = `<div style="background-image: linear-gradient(to bottom left, pink, yellow); padding: 10px;">
+    <h2>What an OpenMe:ly day!</h2>
     <p>You got a surprise OpenMe message from someone.</p>
     <p>Here's the link and you can view the message from this date ${moment
       .utc(date)

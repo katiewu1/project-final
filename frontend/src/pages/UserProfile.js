@@ -60,9 +60,9 @@ const UserProfile = () => {
   } = useDisclosure()
 
   // Alert Dialog - Delete Collection
-  const [isOpen, setIsOpen] = useState(false)
-  const onClose = () => setIsOpen(false)
-  const cancelRef = useRef()
+  const [isOpenDelete, setIsOpenDelete] = useState(false)
+  const onCloseDelete = () => setIsOpenDelete(false)
+  const cancelRefDelete = useRef()
 
   const navigate = useNavigate()
   const dispatch = useDispatch()
@@ -248,7 +248,7 @@ const UserProfile = () => {
                   <TableCollections
                     userProfile={userProfile}
                     handleEditCollection={handleEditCollection}
-                    setIsOpen={setIsOpen}
+                    setIsOpenDelete={setIsOpenDelete}
                     setDeleteCollectionId={setDeleteCollectionId}
                   />
                 ) : (
@@ -268,11 +268,12 @@ const UserProfile = () => {
             collection={editingCollection}
           />
         )}
-        {/* Alert Dialog */}
+
+        {/* Alert Dialog - Delete Collection */}
         <AlertDialog
-          isOpen={isOpen}
-          leastDestructiveRef={cancelRef}
-          onClose={onClose}
+          isOpen={isOpenDelete}
+          leastDestructiveRef={cancelRefDelete}
+          onClose={onCloseDelete}
         >
           <AlertDialogOverlay>
             <AlertDialogContent>
@@ -284,13 +285,13 @@ const UserProfile = () => {
                 Are you sure? You can't undo this action afterwards.
               </AlertDialogBody>
               <AlertDialogFooter>
-                <Button ref={cancelRef} onClick={onClose}>
+                <Button ref={cancelRefDelete} onClick={onCloseDelete}>
                   Cancel
                 </Button>
                 <Button
                   colorScheme='red'
                   onClick={() => {
-                    onClose()
+                    onCloseDelete()
                     handleDeleteCollection(deleteCollectionId)
                     toast({
                       title: 'Collection deleted.',
