@@ -13,26 +13,24 @@ import {
   Text,
   Box,
   useToast,
+  Image,
 } from '@chakra-ui/react'
-import { EditIcon } from '@chakra-ui/icons'
+import { SmallAddIcon } from '@chakra-ui/icons'
 import moment from 'moment'
-import { parseISO } from 'date-fns'
 
 import FormCollection from './FormCollection'
 import Preview from './Preview'
-import { API_URL_COLLECTION } from '../utils/urls'
+import { API_URL_USER } from '../utils/urls'
 import user from '../reducers/user'
 
-const EditCollectionBtn = ({ collection }) => {
-  const [title, setTitle] = useState(collection.title)
-  const [date, setDate] = useState(
-    new Date(parseISO(collection.date).setHours(0, 0, 0, 0))
-  ) // reset the time to 00:00
-  const [sendTo, setSendTo] = useState(collection.sendTo)
-  const [image, setImage] = useState(collection.image)
-  const [message, setMessage] = useState(collection.message)
+const AddCollectionBtn = ({ userId }) => {
+  const [title, setTitle] = useState('')
+  const [date, setDate] = useState(new Date(new Date().setHours(0, 0, 0, 0))) // reset the time to 00:00
+  const [sendTo, setSendTo] = useState('')
+  const [image, setImage] = useState('')
+  const [message, setMessage] = useState('')
 
-  const editedCollection = {
+  const collection = {
     title,
     // change the date utc format to always be at 12:00 on that day
     date: moment(date).utcOffset(0, true).add(12, 'hours').format(),
@@ -41,31 +39,37 @@ const EditCollectionBtn = ({ collection }) => {
     message,
   }
 
-  // Modal -  EditCollection
   const { isOpen, onOpen, onClose } = useDisclosure()
 
   const dispatch = useDispatch()
   const toast = useToast()
 
-  const handleSaveCollection = (e) => {
+  const addCollection = (e) => {
     e.preventDefault()
 
     const options = {
-      method: 'PATCH',
+      method: 'POST',
       headers: {
         // Authorization: accessToken,
         'Content-Type': 'application/json',
       },
-      // editedCollection is a Object already - don't need the {}!
-      body: JSON.stringify(editedCollection),
+      // collection is a Object already - don't need the {}!
+      body: JSON.stringify(collection),
     }
-    fetch(API_URL_COLLECTION('user', collection._id), options)
+
+    fetch(API_URL_USER('user', userId), options)
       .then((res) => res.json())
       .then((data) => {
         console.log(data)
-        dispatch(user.actions.editCollection(data.response))
+        dispatch(user.actions.addCollection(data.response))
+        // empty the input fields
+        setTitle('')
+        setDate(new Date(new Date().setHours(0, 0, 0, 0)))
+        setSendTo('')
+        setImage('')
+        setMessage('')
         toast({
-          title: 'Collection updated.',
+          title: 'Collection added.',
           description: "We've saved your collection for you.",
           status: 'success',
           duration: 5000,
@@ -82,34 +86,41 @@ const EditCollectionBtn = ({ collection }) => {
           isClosable: true,
         })
       })
-  } // TODO: error handling
+  } // TODO: show a message when the request is succeeded? And show error messages?
 
   return (
     <>
       <Button
-        size='sm'
+        mb='2'
         border='1px'
         borderColor='white'
-        onClick={() => onOpen()}
+        rightIcon={<SmallAddIcon />}
+        onClick={onOpen}
       >
-        <EditIcon />
+        <Image
+          w='18px'
+          h='18px'
+          mr='6px'
+          src='./assets/openme_icon.png'
+          alt='OpenMe logo'
+        />
+        Add
       </Button>
-
       {isOpen && (
         <Modal isOpen={isOpen} onClose={onClose}>
           <form
             onSubmit={(e) => {
               onClose()
-              handleSaveCollection(e)
+              addCollection(e)
             }}
           >
             <ModalOverlay />
             <ModalContent maxW='800px'>
-              <ModalHeader>Edit Collection</ModalHeader>
+              <ModalHeader>Add Collection</ModalHeader>
               <ModalCloseButton />
               <ModalBody>
                 <Box>
-                  <Text mb='4'>Edit your OpenMe</Text>
+                  <Text mb='4'>Create your own surprise OpenMe</Text>
                   <FormCollection
                     title={title}
                     date={date}
@@ -124,7 +135,7 @@ const EditCollectionBtn = ({ collection }) => {
                   />
                 </Box>
                 {/* PREVIEW */}
-                <Preview collection={editedCollection} />
+                <Preview collection={collection} />
               </ModalBody>
               <ModalFooter>
                 <Button variant='ghost' mr={3} onClick={onClose}>
@@ -143,4 +154,4 @@ const EditCollectionBtn = ({ collection }) => {
   )
 }
 
-export default EditCollectionBtn
+export default AddCollectionBtn

@@ -16,30 +16,24 @@ import {
   AccordionButton,
   AccordionPanel,
   AccordionIcon,
-  Image,
 } from '@chakra-ui/react'
-import { EditIcon, SmallAddIcon } from '@chakra-ui/icons'
+import { EditIcon } from '@chakra-ui/icons'
 import { MdLogin } from 'react-icons/md'
 
 import { API_URL_USER } from '../utils/urls'
 import user from '../reducers/user'
 import EditProfile from '../components/EditProfile'
-import AddCollection from '../components/AddCollection'
+import AddCollectionBtn from '../components/AddCollectionBtn'
 import TableCollections from '../components/TableCollections'
 
 const UserProfile = () => {
   const userProfile = useSelector((store) => store.user)
 
-  // Modal - EditProfile, AddCollection and EditCollection
+  // Modal - EditProfile
   const {
     isOpen: isOpenEditProfile,
     onOpen: onOpenEditProfile,
     onClose: onCloseEditProfile,
-  } = useDisclosure()
-  const {
-    isOpen: isOpenAddCollection,
-    onOpen: onOpenAddCollection,
-    onClose: onCloseAddCollection,
   } = useDisclosure()
 
   const navigate = useNavigate()
@@ -146,29 +140,7 @@ const UserProfile = () => {
           </Flex>
         )}
         <Box mt='10' w='80%'>
-          {/* AddCollection component -> with Modal */}
-          <Button
-            mb='2'
-            border='1px'
-            borderColor='white'
-            onClick={onOpenAddCollection}
-          >
-            <Image
-              w='18px'
-              h='18px'
-              mr='4px'
-              src='./assets/openme_icon.png'
-              alt='OpenMe logo'
-            />
-            Add <SmallAddIcon w={4} h={4} />
-          </Button>
-          {userProfile && (
-            <AddCollection
-              isOpen={isOpenAddCollection}
-              onClose={onCloseAddCollection}
-              userId={userProfile.userId}
-            />
-          )}
+          <AddCollectionBtn userId={userProfile.userId} />
 
           {/* defaultIndex={[0]} allowMultiple */}
           <Accordion allowToggle defaultIndex={[1]}>
