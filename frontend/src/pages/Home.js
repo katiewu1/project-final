@@ -48,7 +48,7 @@ const Home = () => {
               as='h1'
               fontSize='4xl'
               fontWeight='bolder'
-              color='purple.400'
+              color='purple.300'
             >
               OpenMe
             </Heading>
