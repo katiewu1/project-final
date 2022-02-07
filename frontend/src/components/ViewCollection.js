@@ -47,7 +47,7 @@ const ViewCollection = ({ collection, isLive, error }) => {
         maxW='100vw'
         // if it's live 100vh, preview -> 500px
         h={isLive ? '100vh' : '500px'}
-        bgGradient='linear(to-r, gray.300, yellow.400, pink.200)'
+        bgGradient={error ? '' : 'linear(to-r, gray.300, yellow.400, pink.200)'}
       >
         {/* <Box bgGradient={['linear(to-tr, teal.300, yellow.400)','linear(to-t, blue.200, teal.500)','linear(to-b, orange.100, purple.300)',]}> */}
         {collection && (
@@ -62,7 +62,9 @@ const ViewCollection = ({ collection, isLive, error }) => {
         )}
         {error && (
           <Flex>
-            <Text>{error}</Text>
+            <Text fontWeight='bold' textAlign='center'>
+              {error}
+            </Text>
           </Flex>
         )}
       </Flex>

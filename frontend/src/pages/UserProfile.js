@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useSelector, useDispatch, batch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import {
@@ -16,6 +16,9 @@ import {
   AccordionButton,
   AccordionPanel,
   AccordionIcon,
+  Skeleton,
+  SkeletonCircle,
+  SkeletonText,
 } from '@chakra-ui/react'
 import { EditIcon } from '@chakra-ui/icons'
 import { MdLogin } from 'react-icons/md'
@@ -28,6 +31,9 @@ import TableCollections from '../components/TableCollections'
 
 const UserProfile = () => {
   const userProfile = useSelector((store) => store.user)
+
+  // Skeleton
+  const [isLoading, setIsLoading] = useState(false)
 
   // Modal - EditProfile
   const {
@@ -48,6 +54,8 @@ const UserProfile = () => {
 
   // When user is logged in -> retrieve the data and update the Redux state/store
   useEffect(() => {
+    setIsLoading(true) // "activate" skeleton
+
     const options = {
       method: 'GET',
       headers: {
@@ -80,6 +88,8 @@ const UserProfile = () => {
           })
         }
       })
+      .catch((err) => console.log(err)) //TODO: error handling
+      .finally(() => setIsLoading(false))
   }, [dispatch, userProfile.accessToken, userProfile.userId])
 
   return (
@@ -98,86 +108,97 @@ const UserProfile = () => {
             borderRadius='6px'
             bgGradient='linear(to-r, gray.300, yellow.400, pink.200)'
           >
-            <Avatar
-              size='xl'
-              name={`${userProfile.firstname} ${userProfile.lastname}`}
-            />
+            <SkeletonCircle isLoaded={!isLoading} size='20'>
+              <Avatar
+                size='xl'
+                name={`${userProfile.firstname} ${userProfile.lastname}`}
+              />
+            </SkeletonCircle>
             <Flex direction='column'>
-              <Stack spacing={1}>
-                <Text fontSize='md'>
-                  Name: {userProfile.firstname} {userProfile.lastname}
-                </Text>
-                <Text fontSize='md'>Email: {userProfile.email}</Text>
-              </Stack>
-              <ButtonGroup mt='2'>
-                {/* EditProfile component -> with Modal */}
-                <Button
-                  variant='link'
-                  size='sm'
-                  color='teal'
-                  rightIcon={<EditIcon />}
-                  onClick={onOpenEditProfile}
-                >
-                  Edit profile
-                </Button>
+              <SkeletonText
+                isLoaded={!isLoading}
+                mt='2'
+                noOfLines={3}
+                spacing='4'
+              >
+                <Stack spacing={1}>
+                  <Text fontSize='md'>
+                    Name: {userProfile.firstname} {userProfile.lastname}
+                  </Text>
+                  <Text fontSize='md'>Email: {userProfile.email}</Text>
+                </Stack>
+                <ButtonGroup mt='2'>
+                  {/* EditProfile component -> with Modal */}
+                  <Button
+                    variant='link'
+                    size='sm'
+                    color='teal'
+                    rightIcon={<EditIcon />}
+                    onClick={onOpenEditProfile}
+                  >
+                    Edit profile
+                  </Button>
 
-                <EditProfile
-                  isOpen={isOpenEditProfile}
-                  onClose={onCloseEditProfile}
-                />
-                <Button
-                  variant='link'
-                  size='sm'
-                  color='teal'
-                  rightIcon={<MdLogin />}
-                  // border='1px'
-                  onClick={() => dispatch(user.actions.signout())}
-                >
-                  Sign out
-                </Button>
-              </ButtonGroup>
+                  <EditProfile
+                    isOpen={isOpenEditProfile}
+                    onClose={onCloseEditProfile}
+                  />
+                  <Button
+                    variant='link'
+                    size='sm'
+                    color='teal'
+                    rightIcon={<MdLogin />}
+                    // border='1px'
+                    onClick={() => dispatch(user.actions.signout())}
+                  >
+                    Sign out
+                  </Button>
+                </ButtonGroup>
+              </SkeletonText>
             </Flex>
           </Flex>
         )}
         <Box mt='10' w='80%'>
-          <AddCollectionBtn userId={userProfile.userId} />
+          <Skeleton isLoaded={!isLoading}>
+            <AddCollectionBtn userId={userProfile.userId} />
 
-          {/* defaultIndex={[0]} allowMultiple */}
-          <Accordion allowToggle defaultIndex={[1]}>
-            <AccordionItem>
-              <h2>
-                <AccordionButton
-                  _expanded={{
-                    bgGradient: 'linear(to-bl, pink.400,yellow.400)',
-                  }}
-                  _hover={{
-                    bgGradient: 'linear(to-bl, pink.400,yellow.400)',
-                  }}
-                >
-                  <Box
-                    flex='1'
-                    textAlign='left'
-                    fontWeight='bold'
-                    fontSize='lg'
+            {/* defaultIndex={[0]} allowMultiple */}
+            <Accordion allowToggle defaultIndex={[1]}>
+              <AccordionItem>
+                <h2>
+                  <AccordionButton
+                    _expanded={{
+                      bgGradient: 'linear(to-bl, pink.400,yellow.400)',
+                    }}
+                    _hover={{
+                      bgGradient: 'linear(to-bl, pink.400,yellow.400)',
+                    }}
                   >
-                    Collections
-                  </Box>
-                  <AccordionIcon />
-                </AccordionButton>
-              </h2>
-              <AccordionPanel>
-                {/* when userProfile is not null and we have collection(s) -> display it, otherwise show text No collection(s) yet */}
-                {userProfile &&
-                userProfile.collections &&
-                userProfile.collections.length > 0 ? (
-                  // TableCollections component
-                  <TableCollections userProfile={userProfile} />
-                ) : (
-                  <Text>No collection(s) yet</Text>
-                )}
-              </AccordionPanel>
-            </AccordionItem>
-          </Accordion>
+                    <Box
+                      flex='1'
+                      textAlign='left'
+                      fontWeight='bold'
+                      fontSize='lg'
+                    >
+                      Collections
+                    </Box>
+                    <AccordionIcon />
+                  </AccordionButton>
+                </h2>
+                <AccordionPanel>
+                  {/* when userProfile is not null and we have collection(s) -> display it, otherwise show text No collection(s) yet */}
+                  {userProfile &&
+                  userProfile.collections &&
+                  userProfile.collections.length > 0 ? (
+                    // TableCollections component
+                    <TableCollections userProfile={userProfile} />
+                  ) : (
+                    <Text>No collection(s) yet</Text>
+                  )}
+                </AccordionPanel>
+              </AccordionItem>
+            </Accordion>
+          </Skeleton>
         </Box>
       </>
     </Flex>
