@@ -10,6 +10,7 @@ import {
   AlertDialogContent,
   AlertDialogOverlay,
   useToast,
+  Tooltip,
 } from '@chakra-ui/react'
 import { CheckIcon, EmailIcon } from '@chakra-ui/icons'
 
@@ -99,17 +100,24 @@ const SendEmailBtn = ({ collectionId, sendTo, date }) => {
 
   return (
     <>
-      <Button
-        size='sm'
-        border='1px'
-        borderColor='white'
-        onClick={() => setIsOpenSendEmail(true)}
-        rightIcon={collectionHasSentEmail ? <CheckIcon /> : <EmailIcon />}
-        color={collectionHasSentEmail && 'green'}
-        disabled={collectionHasSentEmail}
+      <Tooltip
+        hasArrow
+        label='Send email to recipient'
+        aria-label='A tooltip'
+        bg='purple.300'
       >
-        {collectionHasSentEmail ? 'Sent' : 'Send'}
-      </Button>
+        <Button
+          size='sm'
+          border='1px'
+          borderColor='white'
+          onClick={() => setIsOpenSendEmail(true)}
+          rightIcon={collectionHasSentEmail ? <CheckIcon /> : <EmailIcon />}
+          color={collectionHasSentEmail && 'green'}
+          disabled={collectionHasSentEmail}
+        >
+          {collectionHasSentEmail ? 'Sent' : 'Send'}
+        </Button>
+      </Tooltip>
       {/* Alert Dialog - Send Email to recipient (render Alert Dialog only when the state isOpenSendEmail is true) */}
       {isOpenSendEmail && (
         <AlertDialog

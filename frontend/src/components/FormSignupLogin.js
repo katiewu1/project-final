@@ -181,7 +181,7 @@ const FormSignupLogin = ({ mode }) => {
               </InputGroup>
             </FormControl>
 
-            <Text fontSize='12px' fontStyle='italic' color='black'>
+            <Text fontSize='12px' fontStyle='italic' color='black' mt='1'>
               Fields marked <chakra.span color='red'>*</chakra.span> are
               required
             </Text>
@@ -285,7 +285,7 @@ const FormSignupLogin = ({ mode }) => {
               </InputGroup>
             </FormControl>
 
-            <Text fontSize='12px' fontStyle='italic' color='black'>
+            <Text fontSize='12px' fontStyle='italic' color='black' mt='1'>
               Fields marked <chakra.span color='red'>*</chakra.span> are
               required
             </Text>

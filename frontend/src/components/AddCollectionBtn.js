@@ -14,6 +14,7 @@ import {
   Box,
   useToast,
   Image,
+  Tooltip,
 } from '@chakra-ui/react'
 import { SmallAddIcon } from '@chakra-ui/icons'
 import moment from 'moment'
@@ -90,22 +91,29 @@ const AddCollectionBtn = ({ userId }) => {
 
   return (
     <>
-      <Button
-        mb='2'
-        border='1px'
-        borderColor='white'
-        rightIcon={<SmallAddIcon />}
-        onClick={onOpen}
+      <Tooltip
+        hasArrow
+        label='Create new OpenMe message'
+        aria-label='A tooltip'
+        bg='purple.300'
       >
-        <Image
-          w='18px'
-          h='18px'
-          mr='6px'
-          src='./assets/openme_icon.png'
-          alt='OpenMe logo'
-        />
-        Add
-      </Button>
+        <Button
+          mb='2'
+          border='1px'
+          borderColor='white'
+          rightIcon={<SmallAddIcon />}
+          onClick={onOpen}
+        >
+          <Image
+            w='18px'
+            h='18px'
+            mr='6px'
+            src='./assets/openme_icon.png'
+            alt='OpenMe logo'
+          />
+          Add
+        </Button>
+      </Tooltip>
       {isOpen && (
         <Modal isOpen={isOpen} onClose={onClose}>
           <form
