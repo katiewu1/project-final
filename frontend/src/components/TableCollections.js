@@ -24,36 +24,57 @@ const TableCollections = ({ userProfile }) => {
         <TableCaption>Your saved collection(s)</TableCaption>
         <Thead>
           <Tr>
-            <Th>Title</Th>
-            <Th textAlign='center'>Edit</Th>
-            <Th textAlign='center'>Link</Th>
-            <Th textAlign='center'>Email</Th>
-            <Th textAlign='center'>Delete</Th>
+            <Th p='1' textAlign='start'>
+              Title
+            </Th>
+            <Th p='1' textAlign='center'>
+              Edit
+            </Th>
+            <Th p='1' textAlign='center'>
+              Link
+            </Th>
+            <Th p='1' textAlign='center'>
+              Email
+            </Th>
+            <Th p='1' textAlign='center'>
+              Delete
+            </Th>
           </Tr>
         </Thead>
         <Tbody>
           {userProfile.collections.map((collection) => (
             <Tr key={collection._id}>
-              <Td>
-                <Text>{collection.title}</Text>
-                <Text fontSize='xs' fontStyle='italic' color='gray'>
+              <Td p={['1', '2', '2']}>
+                <Text
+                  fontSize={['12px', '16px', '16px']}
+                  // isTruncated
+                  noOfLines='1'
+                >
+                  {collection.title}
+                </Text>
+                <Text
+                  fontSize={['10px', '12px', '12px']}
+                  fontStyle='italic'
+                  color='gray'
+                  noOfLines='1'
+                >
                   Created at: {moment.utc(collection.createdAt).format('ll')}
                 </Text>
               </Td>
-              <Td textAlign='center'>
+              <Td p={['1', '2', '2']} textAlign='center'>
                 <EditCollectionBtn collection={collection} />
               </Td>
-              <Td textAlign='center'>
+              <Td p={['1', '2', '2']} textAlign='center'>
                 <CopyLinkBtn collectionId={collection._id} />
               </Td>
-              <Td textAlign='center'>
+              <Td p={['1', '2', '2']} textAlign='center'>
                 <SendEmailBtn
                   collectionId={collection._id}
                   sendTo={collection.sendTo}
                   date={collection.date}
                 />
               </Td>
-              <Td textAlign='center'>
+              <Td p={['1', '2', '2']} textAlign='center'>
                 <DeleteCollectionBtn collectionId={collection._id} />
               </Td>
             </Tr>
@@ -61,11 +82,21 @@ const TableCollections = ({ userProfile }) => {
         </Tbody>
         <Tfoot>
           <Tr>
-            <Th>Title</Th>
-            <Th textAlign='center'>Edit</Th>
-            <Th textAlign='center'>Link</Th>
-            <Th textAlign='center'>Email</Th>
-            <Th textAlign='center'>Delete</Th>
+            <Th p='1' textAlign='start'>
+              Title
+            </Th>
+            <Th p='1' textAlign='center'>
+              Edit
+            </Th>
+            <Th p='1' textAlign='center'>
+              Link
+            </Th>
+            <Th p='1' textAlign='center'>
+              Email
+            </Th>
+            <Th p='1' textAlign='center'>
+              Delete
+            </Th>
           </Tr>
         </Tfoot>
       </Table>

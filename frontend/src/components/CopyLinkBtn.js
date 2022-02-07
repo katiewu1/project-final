@@ -14,7 +14,13 @@ const CopyLinkBtn = ({ collectionId }) => {
       aria-label='A tooltip'
       bg='purple.300'
     >
-      <Button size='sm' border='1px' borderColor='white' onClick={onCopy}>
+      <Button
+        size='sm'
+        fontSize={['12px', '14px', '14px']}
+        border='1px'
+        borderColor='white'
+        onClick={onCopy}
+      >
         {hasCopied ? 'Copied' : 'Copy'}
       </Button>
     </Tooltip>

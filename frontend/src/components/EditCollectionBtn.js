@@ -107,7 +107,10 @@ const EditCollectionBtn = ({ collection }) => {
             <ModalContent maxW='800px'>
               <ModalHeader>Edit Collection</ModalHeader>
               <ModalCloseButton />
-              <ModalBody>
+              <ModalBody
+                display='flex'
+                flexDirection={['column', 'row', 'row']}
+              >
                 <Box>
                   <Text mb='4'>Edit your OpenMe</Text>
                   <FormCollection

@@ -161,7 +161,7 @@ const FormSignupLogin = ({ mode }) => {
             {/* password input */}
             <FormControl isRequired isInvalid={errorMessage} color='black'>
               <FormLabel htmlFor='password'>Password</FormLabel>
-              <InputGroup size='md' width='16rem'>
+              <InputGroup size='md'>
                 <Input
                   id='password'
                   // pr='4.5rem'
@@ -214,6 +214,7 @@ const FormSignupLogin = ({ mode }) => {
             style={{
               display: 'flex',
               flexDirection: 'column',
+              // maxWidth: '100vw',
             }}
             onSubmit={handleSubmit}
           >
@@ -266,10 +267,10 @@ const FormSignupLogin = ({ mode }) => {
             {/* password input */}
             <FormControl isRequired color='black'>
               <FormLabel htmlFor='password'>Password</FormLabel>
-              <InputGroup size='md' width='16rem'>
+              <InputGroup size='md'>
                 <Input
                   id='password'
-                  pr='4.5rem'
+                  // pr='4.5rem'
                   type={show ? 'text' : 'password'}
                   // variant='filled'
                   variant='outline'

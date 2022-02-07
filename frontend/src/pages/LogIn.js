@@ -9,9 +9,9 @@ const LogIn = () => {
       <Heading
         as='h2'
         textAlign='center'
-        fontSize='4xl'
+        fontSize={['2xl', '4xl', '4xl']}
         fontWeight='bold'
-        m='10'
+        m={['6', '10', '10']}
       >
         Log In
       </Heading>

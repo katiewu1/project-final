@@ -20,6 +20,7 @@ import {
   SkeletonCircle,
   SkeletonText,
 } from '@chakra-ui/react'
+import { useBreakpointValue } from '@chakra-ui/media-query'
 import { EditIcon } from '@chakra-ui/icons'
 import { MdLogin } from 'react-icons/md'
 
@@ -93,9 +94,14 @@ const UserProfile = () => {
   }, [dispatch, userProfile.accessToken, userProfile.userId])
 
   return (
-    <Flex direction='column' pt='20vh' align='center' minHeight='100vh'>
+    <Flex
+      direction='column'
+      pt={['14vh', '20vh', '20vh']}
+      align='center'
+      minHeight='100vh'
+    >
       <>
-        <Heading as='h2' fontSize='5xl' m='2' isTruncated>
+        <Heading as='h2' fontSize={['3xl', '5xl', '5xl']} m='2' isTruncated>
           My Profile
         </Heading>
         {userProfile && (
@@ -103,7 +109,7 @@ const UserProfile = () => {
             align='center'
             justify='space-evenly'
             color='black'
-            w='80%'
+            w={['95%', '80%', '80%']}
             p='48px 0px'
             borderRadius='6px'
             bgGradient='linear(to-r, gray.300, yellow.400, pink.200)'
@@ -122,10 +128,12 @@ const UserProfile = () => {
                 spacing='4'
               >
                 <Stack spacing={1}>
-                  <Text fontSize='md'>
+                  <Text fontSize={['sm', 'md', 'md']}>
                     Name: {userProfile.firstname} {userProfile.lastname}
                   </Text>
-                  <Text fontSize='md'>Email: {userProfile.email}</Text>
+                  <Text fontSize={['sm', 'md', 'md']}>
+                    Email: {userProfile.email}
+                  </Text>
                 </Stack>
                 <ButtonGroup mt='2'>
                   {/* EditProfile component -> with Modal */}
@@ -158,7 +166,7 @@ const UserProfile = () => {
             </Flex>
           </Flex>
         )}
-        <Box mt='10' w='80%'>
+        <Box mt={['2', '10', '10']} w={['95%', '80%', '80%']}>
           <Skeleton isLoaded={!isLoading}>
             <AddCollectionBtn userId={userProfile.userId} />
 

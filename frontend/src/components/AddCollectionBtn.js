@@ -126,7 +126,10 @@ const AddCollectionBtn = ({ userId }) => {
             <ModalContent maxW='800px'>
               <ModalHeader>Add Collection</ModalHeader>
               <ModalCloseButton />
-              <ModalBody>
+              <ModalBody
+                display='flex'
+                flexDirection={['column', 'row', 'row']}
+              >
                 <Box>
                   <Text mb='4'>Create your own surprise OpenMe</Text>
                   <FormCollection
