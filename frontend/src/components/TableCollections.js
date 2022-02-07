@@ -11,18 +11,14 @@ import {
   Text,
   Button,
 } from '@chakra-ui/react'
-import { EditIcon, DeleteIcon } from '@chakra-ui/icons'
+import { EditIcon } from '@chakra-ui/icons'
 import moment from 'moment'
 
 import CopyLinkBtn from './CopyLinkBtn'
 import SendEmailBtn from './SendEmailBtn'
+import DeleteCollectionBtn from './DeleteCollectionBtn'
 
-const TableCollections = ({
-  userProfile,
-  handleEditCollection,
-  setIsOpenDelete,
-  setDeleteCollectionId,
-}) => {
+const TableCollections = ({ userProfile, handleEditCollection }) => {
   return (
     <>
       <Table variant='striped' colorScheme='gray'>
@@ -66,18 +62,7 @@ const TableCollections = ({
                 />
               </Td>
               <Td textAlign='center'>
-                <Button
-                  size='sm'
-                  border='1px'
-                  borderColor='white'
-                  // colorScheme='red'
-                  onClick={() => {
-                    setIsOpenDelete(true)
-                    setDeleteCollectionId(collection._id)
-                  }}
-                >
-                  <DeleteIcon />
-                </Button>
+                <DeleteCollectionBtn collectionId={collection._id} />
               </Td>
             </Tr>
           ))}
