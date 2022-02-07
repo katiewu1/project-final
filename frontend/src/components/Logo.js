@@ -13,8 +13,9 @@ const Logo = () => {
         <Box pos='absolute' top='0' left='0' pl='4'>
           <Image
             src='/assets/logo.svg'
+            w={['84px', '84px', '134px']}
             alt='OpenMe logo'
-            filter={colorMode === 'light' ? 'invert(0)' : 'invert(100%)'}
+            filter={colorMode === 'light' ? 'invert(0)' : 'invert(80%)'}
           />
         </Box>
       </Link>

@@ -32,23 +32,25 @@ const Home = () => {
       d='flex'
       justifyContent='center'
       alignItems='center'
-      h='100vh'
+      h='96vh'
     >
       <LightMode>
         <Box
           d='flex'
-          justifyContent='space-evenly'
-          alignItems='center'
+          flexDirection={['column', 'column', 'row']}
+          justifyContent={['center', 'center', 'space-evenly']}
+          alignItems={['center', 'center', 'space-evenly']}
           h='60%'
           w='100%'
           bgGradient='linear(to-r, gray.300, yellow.400, pink.200)'
         >
-          <Box fontWeight='bold' color='black'>
+          <Box fontWeight='bold' p='4'>
             <Heading
               as='h1'
               fontSize='4xl'
               fontWeight='bolder'
               color='purple.300'
+              textAlign={['center', 'start', 'start']}
             >
               OpenMe
             </Heading>
@@ -61,11 +63,11 @@ const Home = () => {
           </Box>
 
           <Box
-            border='4px'
-            borderColor='white'
+            border={['', '', '4px']}
+            borderColor={['', '', 'white']}
             borderRadius='8px'
-            h='90%'
-            w='30%'
+            h={['30%', '30%', '90%']}
+            w='40%'
             d='flex'
             justifyContent='center'
             alignItems='center'
