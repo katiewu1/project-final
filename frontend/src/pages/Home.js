@@ -44,13 +44,18 @@ const Home = () => {
           bgGradient='linear(to-r, gray.300, yellow.400, pink.200)'
         >
           <Box fontWeight='bold' color='black'>
-            <Heading as='h1' fontSize='4xl'>
+            <Heading
+              as='h1'
+              fontSize='4xl'
+              fontWeight='bolder'
+              color='purple.400'
+            >
               OpenMe
             </Heading>
-            <Text mt='3' fontSize='md'>
+            <Text mt='3' fontSize='md' color='gray.700'>
               Customize your own surprise OpenMe to someone...
             </Text>
-            <Text mt='1' fontSize='md'>
+            <Text mt='1' fontSize='md' color='gray.700'>
               Write a Poem, send a Meme, pick a date to send an OpenMe!
             </Text>
           </Box>
@@ -68,10 +73,10 @@ const Home = () => {
             <ButtonGroup variant='outline' spacing='4'>
               <Link as={ReachLink} to='/signup'>
                 <Button
-                  colorScheme='messenger'
+                  colorScheme='purple'
                   variant='outline'
                   border='2px'
-                  size='md'
+                  // size='md'
                   rightIcon={<CgProfile />}
                 >
                   Sign Up
@@ -79,10 +84,10 @@ const Home = () => {
               </Link>
               <Link as={ReachLink} to='/login'>
                 <Button
-                  colorScheme='orange'
+                  colorScheme='pink'
                   variant='outline'
                   border='2px'
-                  size='md'
+                  // size='md'
                   rightIcon={<MdLogin />}
                 >
                   Log In
@@ -92,9 +97,6 @@ const Home = () => {
           </Box>
         </Box>
       </LightMode>
-      {/* <Link as={ReachLink} to='/user/:id'>
-        /user/:id
-      </Link> */}
     </Box>
   )
 }

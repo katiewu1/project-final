@@ -9,8 +9,8 @@ const LogIn = () => {
       <Heading
         as='h2'
         textAlign='center'
-        fontSize='3xl'
-        fontWeight='semi'
+        fontSize='4xl'
+        fontWeight='bold'
         m='10'
       >
         Log In

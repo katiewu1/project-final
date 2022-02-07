@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { useDispatch, batch } from 'react-redux'
+import { useDispatch, batch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import {
   Box,
@@ -13,6 +13,7 @@ import {
   Button,
   Text,
   Link,
+  chakra,
 } from '@chakra-ui/react'
 
 import { API_URL } from '../utils/urls'
@@ -23,8 +24,9 @@ const FormSignupLogin = ({ mode }) => {
   // const [input, setInput] = useState('')
   // const handleInputChange = (e) => setInput(e.target.value)
   // // const isError = input === ''
-
-  // password show password
+  const errorMessage = useSelector((store) => store.user.error)
+  console.log('errorMessage: ', errorMessage)
+  // password show/hide password
   const [show, setShow] = useState(false)
   const handleClick = () => setShow(!show)
 
@@ -78,7 +80,7 @@ const FormSignupLogin = ({ mode }) => {
             dispatch(user.actions.setLastname(null))
             dispatch(user.actions.setEmail(null))
             dispatch(user.actions.setAccessToken(null))
-            dispatch(user.actions.setError(data.response))
+            dispatch(user.actions.setError(data.message))
           })
         }
       })
@@ -115,7 +117,7 @@ const FormSignupLogin = ({ mode }) => {
             dispatch(user.actions.setUserId(null))
             dispatch(user.actions.setEmail(null))
             dispatch(user.actions.setAccessToken(null))
-            dispatch(user.actions.setError(data.response))
+            dispatch(user.actions.setError(data.message))
           })
         }
       })
@@ -136,33 +138,33 @@ const FormSignupLogin = ({ mode }) => {
     >
       {mode === 'login' ? (
         <>
-          <form onSubmit={handleLogin}>
-            <FormControl
-              // isInvalid={!isError}
-              isRequired
-              d='flex'
-              flexDirection='column'
-              justifyContent='center'
-              alignItems='center'
-              color='black'
-            >
+          <form
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+            }}
+            onSubmit={handleLogin}
+          >
+            <FormControl isRequired isInvalid={errorMessage} color='black'>
               <FormLabel htmlFor='email'>Email</FormLabel>
               <Input
                 id='email'
                 type='email'
-                w='16rem'
+                // w='16rem'
                 mb='2'
                 variant='outline'
                 placeholder='email@example.com'
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
               />
-              {/* password input */}
+            </FormControl>
+            {/* password input */}
+            <FormControl isRequired isInvalid={errorMessage} color='black'>
               <FormLabel htmlFor='password'>Password</FormLabel>
               <InputGroup size='md' width='16rem'>
                 <Input
                   id='password'
-                  pr='4.5rem'
+                  // pr='4.5rem'
                   type={show ? 'text' : 'password'}
                   // variant='filled'
                   variant='outline'
@@ -170,21 +172,34 @@ const FormSignupLogin = ({ mode }) => {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                 />
+
                 <InputRightElement width='4.5rem'>
                   <Button h='1.75rem' size='sm' onClick={handleClick}>
                     {show ? 'Hide' : 'Show'}
                   </Button>
                 </InputRightElement>
               </InputGroup>
-              <Button
-                mt={4}
-                colorScheme='teal'
-                // isLoading={props.isSubmitting}
-                type='submit'
-              >
-                Log in
-              </Button>
             </FormControl>
+
+            <Text fontSize='12px' fontStyle='italic' color='black'>
+              Fields marked <chakra.span color='red'>*</chakra.span> are
+              required
+            </Text>
+
+            {errorMessage && (
+              <Text fontSize='12px' fontStyle='italic' color='red'>
+                *{errorMessage}
+              </Text>
+            )}
+            <Button
+              mt={4}
+              w='100%'
+              colorScheme='teal'
+              // isLoading={props.isSubmitting}
+              type='submit'
+            >
+              Log in
+            </Button>
           </form>
           <Text textAlign='center' mt='4' color='black'>
             Need an account?{' '}
@@ -195,55 +210,61 @@ const FormSignupLogin = ({ mode }) => {
         </>
       ) : (
         <>
-          <form onSubmit={handleSubmit}>
-            <FormControl
-              // isInvalid={!isError}
-              isRequired
-              d='flex'
-              flexDirection='column'
-              justifyContent='center'
-              alignItems='center'
-              color='black'
-            >
+          <form
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+            }}
+            onSubmit={handleSubmit}
+          >
+            <FormControl isRequired color='black'>
               <FormLabel htmlFor='firstname'>First name</FormLabel>
               <Input
                 id='firstname'
-                w='16rem'
+                // w='16rem'
                 mb='2'
                 variant='outline'
                 placeholder='First name'
                 value={firstname}
                 onChange={(e) => setFirstname(e.target.value)}
               />
+            </FormControl>
+            <FormControl isRequired color='black'>
               <FormLabel htmlFor='lastname'>Last name</FormLabel>
               <Input
                 id='lastname'
-                w='16rem'
-                pr='4.5rem'
+                mb='2'
+                // w='16rem'
+                // pr='4.5rem'
                 // variant='filled'
                 variant='outline'
                 placeholder='Last name'
                 value={lastname}
                 onChange={(e) => setLastname(e.target.value)}
               />
+            </FormControl>
+            <FormControl isRequired isInvalid={errorMessage} color='black'>
               <FormLabel htmlFor='email'>Email</FormLabel>
               <Input
                 id='email'
+                mb='2'
                 type='email'
-                w='16rem'
+                // w='16rem'
                 variant='outline'
                 placeholder='email@example.com'
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
               />
-              {/* {!isError ? (
+            </FormControl>
+            {/* {!isError ? (
             <FormHelperText>
               Enter the email you'd like to receive the newsletter on.
             </FormHelperText>
           ) : (
             <FormErrorMessage>Email is required.</FormErrorMessage>
           )} */}
-              {/* password input */}
+            {/* password input */}
+            <FormControl isRequired color='black'>
               <FormLabel htmlFor='password'>Password</FormLabel>
               <InputGroup size='md' width='16rem'>
                 <Input
@@ -262,15 +283,27 @@ const FormSignupLogin = ({ mode }) => {
                   </Button>
                 </InputRightElement>
               </InputGroup>
-              <Button
-                mt={4}
-                colorScheme='teal'
-                // isLoading={props.isSubmitting}
-                type='submit'
-              >
-                Submit
-              </Button>
             </FormControl>
+
+            <Text fontSize='12px' fontStyle='italic' color='black'>
+              Fields marked <chakra.span color='red'>*</chakra.span> are
+              required
+            </Text>
+
+            {errorMessage && (
+              <Text fontSize='12px' fontStyle='italic' color='red'>
+                *{errorMessage}
+              </Text>
+            )}
+            <Button
+              mt={4}
+              w='100%'
+              colorScheme='teal'
+              // isLoading={props.isSubmitting}
+              type='submit'
+            >
+              Submit
+            </Button>
           </form>
           <Text textAlign='center' mt='4' color='black'>
             Already a user?{' '}
