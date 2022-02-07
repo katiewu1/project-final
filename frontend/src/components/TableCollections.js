@@ -9,16 +9,15 @@ import {
   Td,
   TableCaption,
   Text,
-  Button,
 } from '@chakra-ui/react'
-import { EditIcon } from '@chakra-ui/icons'
 import moment from 'moment'
 
+import EditCollectionBtn from './EditCollectionBtn'
 import CopyLinkBtn from './CopyLinkBtn'
 import SendEmailBtn from './SendEmailBtn'
 import DeleteCollectionBtn from './DeleteCollectionBtn'
 
-const TableCollections = ({ userProfile, handleEditCollection }) => {
+const TableCollections = ({ userProfile }) => {
   return (
     <>
       <Table variant='striped' colorScheme='gray'>
@@ -42,14 +41,7 @@ const TableCollections = ({ userProfile, handleEditCollection }) => {
                 </Text>
               </Td>
               <Td textAlign='center'>
-                <Button
-                  size='sm'
-                  border='1px'
-                  borderColor='white'
-                  onClick={() => handleEditCollection(collection)}
-                >
-                  <EditIcon />
-                </Button>
+                <EditCollectionBtn collection={collection} />
               </Td>
               <Td textAlign='center'>
                 <CopyLinkBtn collectionId={collection._id} />

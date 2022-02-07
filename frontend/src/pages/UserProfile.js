@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useEffect } from 'react'
 import { useSelector, useDispatch, batch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import {
@@ -22,18 +22,13 @@ import { EditIcon, SmallAddIcon } from '@chakra-ui/icons'
 import { MdLogin } from 'react-icons/md'
 
 import { API_URL_USER } from '../utils/urls'
-// import { API_URL_COLLECTION } from '../utils/urls'
 import user from '../reducers/user'
 import EditProfile from '../components/EditProfile'
 import AddCollection from '../components/AddCollection'
 import TableCollections from '../components/TableCollections'
-import EditCollection from '../components/EditCollection'
 
 const UserProfile = () => {
   const userProfile = useSelector((store) => store.user)
-
-  const [editingCollection, setEditingCollection] = useState(null)
-  // const [deleteCollectionId, setDeleteCollectionId] = useState(null)
 
   // Modal - EditProfile, AddCollection and EditCollection
   const {
@@ -45,11 +40,6 @@ const UserProfile = () => {
     isOpen: isOpenAddCollection,
     onOpen: onOpenAddCollection,
     onClose: onCloseAddCollection,
-  } = useDisclosure()
-  const {
-    isOpen: isOpenEditCollection,
-    onOpen: onOpenEditCollection,
-    onClose: onCloseEditCollection,
   } = useDisclosure()
 
   const navigate = useNavigate()
@@ -97,12 +87,6 @@ const UserProfile = () => {
         }
       })
   }, [dispatch, userProfile.accessToken, userProfile.userId])
-
-  // Function to edit a Collection
-  const handleEditCollection = (collection) => {
-    setEditingCollection(collection)
-    onOpenEditCollection()
-  }
 
   return (
     <Flex direction='column' pt='20vh' align='center' minHeight='100vh'>
@@ -214,11 +198,8 @@ const UserProfile = () => {
                 {userProfile &&
                 userProfile.collections &&
                 userProfile.collections.length > 0 ? (
-                  // TableCollections component -> Modal for EditCollection in UserProfile page
-                  <TableCollections
-                    userProfile={userProfile}
-                    handleEditCollection={handleEditCollection}
-                  />
+                  // TableCollections component
+                  <TableCollections userProfile={userProfile} />
                 ) : (
                   <Text>No collection(s) yet</Text>
                 )}
@@ -226,16 +207,6 @@ const UserProfile = () => {
             </AccordionItem>
           </Accordion>
         </Box>
-        {/* Modal */}
-        {/* use key to reset the states in the EditCollection component when opening another collection */}
-        {editingCollection && (
-          <EditCollection
-            key={editingCollection._id}
-            isOpen={isOpenEditCollection}
-            onClose={onCloseEditCollection}
-            collection={editingCollection}
-          />
-        )}
       </>
     </Flex>
   )
