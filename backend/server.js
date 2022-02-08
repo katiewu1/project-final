@@ -139,23 +139,25 @@ app.get('/', (req, res) => {
   res.send(listEndpoints(app))
 })
 
-// authenticate user
+// Authenticate user and retrieve the user info
 app.get('/user', authenticateUser)
-// find all users store in the DB
 app.get('/user', async (req, res) => {
-  // http://localhost:8080/user?id=61e5df19d37e482c297f9e06
   const userId = req.query.id
+
   try {
     if (userId) {
       const user = await User.findById(userId).populate('collections')
       res.status(200).json({ response: user, success: true })
     } else {
-      const allUsers = await User.find().populate('collections')
-      res.status(200).json({ response: allUsers, success: true })
+      res.status(404).json({
+        message: 'User not found',
+        response: 'User not found',
+        success: false,
+      })
     }
   } catch (err) {
     res.status(400).json({
-      message: 'No user(s) found',
+      message: 'Invalid entry',
       response: err,
       success: false,
     })
@@ -164,7 +166,6 @@ app.get('/user', async (req, res) => {
 
 // edit user profile
 app.patch('/user', async (req, res) => {
-  // req.query - ?user=id?
   const userId = req.query.id
 
   try {
@@ -203,19 +204,52 @@ app.patch('/user', async (req, res) => {
 
 // TODO: delete user account
 app.delete('/user', async (req, res) => {
-  // req.query - ?user=id?
+  // req.query - /user?id=?
   const userId = req.query.id
+
+  try {
+    // Delete all the collections connected to the user
+    const deletedCollections = await Collection.deleteMany({ user: userId })
+
+    // Delete the user account
+    const deletedUser = await User.findOneAndDelete({
+      _id: userId,
+    })
+
+    // console.log('deletedUser: ', deletedUser)
+    // console.log('collection: ', deletedCollections)
+
+    if (deletedUser) {
+      res
+        .status(200)
+        .json({
+          message: 'User account and collections are all deleted',
+          response: deletedCollections,
+          success: true,
+        })
+    } else {
+      res.status(404).json({
+        message: 'User not found',
+        response: 'User not found',
+        success: false,
+      })
+    }
+  } catch (err) {
+    res.status(400).json({
+      message: 'Could not delete the user, invalid request',
+      response: err,
+      success: false,
+    })
+  }
 })
 
-// create a collection
+// Create a collection
 app.post('/user', async (req, res) => {
-  // app.post('/user/:userId', async (req, res) => {
-  // req.query - ?compose=new
-  // req.query - ?user=id?
   const { title, date, sendTo, image, message } = req.body
   const userId = req.query.id
+
   try {
-    // create a new collection
+    // Create a new collection
     const newCollection = await new Collection({
       title,
       date,
@@ -242,14 +276,14 @@ app.post('/user', async (req, res) => {
     res.status(201).json({ response: newCollection, success: true })
   } catch (err) {
     res.status(400).json({
-      message: 'Could not create collection',
+      message: 'Could not create collection, invalid request',
       response: err,
       success: false,
     })
   }
 })
 
-// edit the collection
+// Edit the collection
 app.patch('/user/collections', async (req, res) => {
   const collectionId = req.query.collection
 
@@ -278,16 +312,10 @@ app.patch('/user/collections', async (req, res) => {
   }
 })
 
-// app.patch('/user/:userId/:messageId', async (req, res) => {
-//   // edit the collection
-// })
-
-// delete a collection
-// app.delete('/user/:userId/:collectionId', async (req, res) => {
+// Delete a collection
 app.delete('/user/collections', async (req, res) => {
-  // delete the collection
-  // http://localhost:8080/user/collections?collection=61ee9d8d838687e8adc2338b
   const collectionId = req.query.collection
+
   try {
     const deletedCollection = await Collection.findOneAndDelete({
       _id: collectionId,
@@ -413,7 +441,7 @@ app.get('/open/:collectionId', async (req, res) => {
   }
 })
 
-// create a user account
+// Create a user account
 app.post('/signup', async (req, res) => {
   const { firstname, lastname, email, password } = req.body
 
@@ -421,7 +449,7 @@ app.post('/signup', async (req, res) => {
     // salt -> randomizer
     const salt = bcrypt.genSaltSync()
 
-    // // stop the executing of try block with throw
+    // // Stop the executing of try block with throw
     if (password === '') {
       throw 'Please provide password'
     }
@@ -473,7 +501,7 @@ app.post('/signup', async (req, res) => {
   }
 })
 
-// user log in
+// User login
 app.post('/login', async (req, res) => {
   const { email, password } = req.body
 
