@@ -130,7 +130,7 @@ const FormCollection = ({
         />
       </Flex>
 
-      <Text fontSize='12px' fontStyle='italic' color='black' mt='1'>
+      <Text fontSize='12px' fontStyle='italic' mt='1'>
         Fields marked <chakra.span color='red'>*</chakra.span> are required
       </Text>
     </Stack>
