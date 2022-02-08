@@ -9,7 +9,9 @@ import {
   Td,
   TableCaption,
   Text,
+  Tooltip,
 } from '@chakra-ui/react'
+import { QuestionOutlineIcon } from '@chakra-ui/icons'
 import moment from 'moment'
 
 import EditCollectionBtn from './EditCollectionBtn'
@@ -30,8 +32,17 @@ const TableCollections = ({ userProfile }) => {
             <Th p='1' textAlign='center'>
               Edit
             </Th>
+
             <Th p='1' textAlign='center'>
               Link
+              <Tooltip
+                hasArrow
+                label='Copy URL to view OpenMe message'
+                aria-label='A tooltip'
+                bg='purple.300'
+              >
+                <QuestionOutlineIcon w='3' h='3' ml='2px' />
+              </Tooltip>
             </Th>
             <Th p='1' textAlign='center'>
               Email
@@ -90,6 +101,14 @@ const TableCollections = ({ userProfile }) => {
             </Th>
             <Th p='1' textAlign='center'>
               Link
+              <Tooltip
+                hasArrow
+                label='Copy URL to view OpenMe message'
+                aria-label='A tooltip'
+                bg='purple.300'
+              >
+                <QuestionOutlineIcon w='3' h='3' ml='2px' />
+              </Tooltip>
             </Th>
             <Th p='1' textAlign='center'>
               Email
