@@ -5,7 +5,6 @@ import crypto from 'crypto'
 import bcrypt from 'bcrypt-nodejs'
 import listEndpoints from 'express-list-endpoints'
 import nodemailer from 'nodemailer'
-import cron from 'node-cron'
 import dotenv from 'dotenv'
 import moment from 'moment'
 
@@ -43,7 +42,6 @@ const UserSchema = new mongoose.Schema({
     type: String,
     default: () => crypto.randomBytes(128).toString('hex'),
   },
-  // Array collections
   collections: [
     {
       type: mongoose.Schema.Types.ObjectId,
@@ -52,30 +50,27 @@ const UserSchema = new mongoose.Schema({
   ],
 })
 
-const User = mongoose.model('User', UserSchema)
-
 const CollectionSchema = new mongoose.Schema({
   title: {
     type: String,
     required: true,
   },
   date: {
-    // set a date when the receiver will get access to the "OpenMe"
+    // Set a date when the recipient will get access to the "OpenMe"
     type: String,
     required: true,
   },
   sendTo: {
-    // receiver's email address
+    // Recipient's email address
     type: String,
     required: true,
   },
   image: {
-    type: String, // Link or upload image?
-    // required: true,
+    type: String,
+    required: true,
   },
   message: {
     type: String,
-    // required: true
   },
   hasSentEmail: {
     type: Boolean,
@@ -88,11 +83,11 @@ const CollectionSchema = new mongoose.Schema({
   user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
 })
 
+const User = mongoose.model('User', UserSchema)
 const Collection = mongoose.model('Collection', CollectionSchema)
 
 // Defines the port the app will run on. Defaults to 8080, but can be
 // overridden when starting the server. For example:
-//
 //   PORT=9000 npm start
 const port = process.env.PORT || 8080
 const app = express()
@@ -164,15 +159,15 @@ app.get('/user', async (req, res) => {
   }
 })
 
-// edit user profile
+// Edit user profile
 app.patch('/user', async (req, res) => {
   const userId = req.query.id
 
   try {
     // salt -> randomizer
     const salt = bcrypt.genSaltSync()
-    // if user change password -> hashing the password
-    // if the req.body.password is empty (no change at all by user) -> delete the req.body
+    // If user change password -> hashing the password
+    // If the req.body.password is empty (user did not change the password) -> delete the req.body
     if (req.body.password) {
       req.body.password = bcrypt.hashSync(req.body.password, salt)
     } else {
@@ -202,9 +197,8 @@ app.patch('/user', async (req, res) => {
   }
 })
 
-// TODO: delete user account
+// Delete user account
 app.delete('/user', async (req, res) => {
-  // req.query - /user?id=?
   const userId = req.query.id
 
   try {
@@ -216,27 +210,22 @@ app.delete('/user', async (req, res) => {
       _id: userId,
     })
 
-    // console.log('deletedUser: ', deletedUser)
-    // console.log('collection: ', deletedCollections)
-
     if (deletedUser) {
-      res
-        .status(200)
-        .json({
-          message: 'User account and collections are all deleted',
-          response: deletedCollections,
-          success: true,
-        })
+      res.status(200).json({
+        message: 'User account and collections are all deleted',
+        response: deletedCollections,
+        success: true,
+      })
     } else {
       res.status(404).json({
-        message: 'User not found',
-        response: 'User not found',
+        message: 'User account not found',
+        response: 'User account not found',
         success: false,
       })
     }
   } catch (err) {
     res.status(400).json({
-      message: 'Could not delete the user, invalid request',
+      message: 'Could not delete user account, invalid request',
       response: err,
       success: false,
     })
@@ -259,7 +248,7 @@ app.post('/user', async (req, res) => {
       user: userId,
     }).save()
 
-    // find the user and update the user with the new collection
+    // Find the user and update the user with the new collection
     const queriedUser = await User.findById(userId)
     if (queriedUser) {
       const updatedUser = await User.findByIdAndUpdate(
@@ -276,14 +265,14 @@ app.post('/user', async (req, res) => {
     res.status(201).json({ response: newCollection, success: true })
   } catch (err) {
     res.status(400).json({
-      message: 'Could not create collection, invalid request',
+      message: 'Could not create new collection, invalid request',
       response: err,
       success: false,
     })
   }
 })
 
-// Edit the collection
+// Edit a collection
 app.patch('/user/collections', async (req, res) => {
   const collectionId = req.query.collection
 
@@ -317,20 +306,12 @@ app.delete('/user/collections', async (req, res) => {
   const collectionId = req.query.collection
 
   try {
+    // Delete the collection
     const deletedCollection = await Collection.findOneAndDelete({
       _id: collectionId,
     })
 
-    // console.log(deletedCollection.user)
-
-    // const user = await User.findOne({ _id: deletedCollection.user })
-    // console.log('user', user)
-    // console.log('before', user.collections)
-    // user.collections.splice(user.collections.indexOf(collectionId), 1)
-    // console.log('after', user.collections)
-    // user.save()
-
-    // find the user and delete the collection from the collections array
+    // Find the user and delete the collection from the collections array
     await User.findByIdAndUpdate(deletedCollection.user, {
       $pull: {
         collections: collectionId,
@@ -348,15 +329,15 @@ app.delete('/user/collections', async (req, res) => {
     }
   } catch (err) {
     res.status(400).json({
-      message: 'Could not delete the collection, invalid request',
+      message: 'Could not delete collection, invalid request',
       response: err,
       success: false,
     })
   }
 })
 
-// view the collection
-// TODO: can only be open on a specific date, the owner of the collection can always view the collection
+// View a collection
+// Can only be open on a specific date or later, the owner of the collection can always view the collection
 // If owner is logged in and the accessToken matched with the Collection.accessToken -> can view the collection
 // Or if the today's date matched the Collection.date or after -> everyone can view the collection if they've the link
 app.get('/open/:collectionId', async (req, res) => {
@@ -370,27 +351,15 @@ app.get('/open/:collectionId', async (req, res) => {
         collectionId
       ).populate('user')
 
-      // if user is logged in it will send it's accessToken to this route
+      // If user is logged in it will send it's accessToken to this route
       // compare the accessToken with the owner of the collection's accessToken
       const user = await User.findOne({
         accessToken: req.header('Authorization'),
       })
 
-      // console.log('user: ', user)
-      // console.log(
-      //   'showCollection.date: ',
-      //   new Date(showCollection.date).getTime()
-      // )
-      // console.log('new date: ', new Date().getTime())
-      // console.log(
-      //   'showCollection.populate(): ',
-      //   showCollection.user.accessToken
-      // )
-      // console.log('user.accesToken: ', user.accessToken)
-
-      // if we have a user logged in and the accessToken match with the owner of the collection -> authorized
-      // or if the date match with today's date or have passed > authorized
-      // otherwise can't view the collection
+      // If we have a user logged in and the accessToken match with the owner of the collection -> authorized
+      // Or if the date match with today's date or have passed > authorized
+      // Otherwise can't view the collection
       if (user) {
         if (user.accessToken === showCollectionAndUser.user.accessToken) {
           res.status(200).json({ response: showCollection, success: true })
@@ -434,7 +403,7 @@ app.get('/open/:collectionId', async (req, res) => {
     }
   } catch (err) {
     res.status(400).json({
-      message: 'Invalid link - collection not found',
+      message: 'Collection not found, invalid link',
       response: err,
       success: false,
     })
@@ -472,29 +441,29 @@ app.post('/signup', async (req, res) => {
       },
       success: true,
     })
-  } catch (error) {
+  } catch (err) {
     if (firstname === '' || lastname === '') {
       res.status(400).json({
         message: 'Validation failed: provide name',
-        response: error,
+        response: err,
         success: false,
       })
-    } else if (error.code === 11000 && error.keyPattern.email) {
+    } else if (err.code === 11000 && err.keyPattern.email) {
       res.status(400).json({
         message: 'Validation failed: email already exist',
-        response: error,
+        response: err,
         success: false,
       })
     } else if (password === '') {
       res.status(400).json({
         message: 'Validation failed: provide password',
-        response: error,
+        response: err,
         success: false,
       })
     } else {
       res.status(400).json({
         message: 'Validation failed: please provide name, email and password',
-        response: error,
+        response: err,
         success: false,
       })
     }
@@ -538,40 +507,31 @@ app.post('/login', async (req, res) => {
         })
       }
     }
-  } catch (error) {
+  } catch (err) {
     res.status(400).json({
       message: 'Invalid entry',
-      response: error,
+      response: err,
       success: false,
     })
   }
 })
 
-// * * * * * *
-// | | | | | |
-// | | | | | day of week
-// | | | | month
-// | | | day of month
-// | | hour
-// | minute
-// second ( optional )
+// Send email to recipient
 app.post('/sendemail', (req, res) => {
   const { email, link, date } = req.body
-  // console.log('email, link: ', email, link)
 
-  // Create a Nodemailer transporter using either SMTP(this is default) or some other transport mechanism
+  // Create a Nodemailer transporter using SMTP (this is default)
   let transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
-      user: `${process.env.EMAIL}`,
-      pass: `${process.env.EMAIL_PASSWORD}`, // use env variable
+      user: `${process.env.EMAIL}`, // env variable
+      pass: `${process.env.EMAIL_PASSWORD}`, // env variable
     },
     // reject because we are running from localhost
     // tls: {
     //   rejectUnauthorized: false,
     // },
   })
-  //Note: In the above example, we have mentioned the service as gmail. It is just an example. You can specify the name of the e-mail services you want to use.
 
   const output = `<div style="background-image: linear-gradient(to bottom left, pink, yellow); padding: 10px;">
     <h2>What an OpenMe:ly day!</h2>
@@ -591,19 +551,8 @@ app.post('/sendemail', (req, res) => {
     from: `"OpenMe" <${process.env.EMAIL}>`,
     to: `${email}`,
     subject: 'Message from OpenMe',
-    //     text: `What an OpenMe:ly day!
-
-    // You got a surprise OpenMe message from someone.
-
-    // Here's the link to view the message:
-    // ${link}
-
-    // Kind regards,
-    // OpenMe Team
-    // `,
     html: output, //html body
   }
-  // Note: The to property above can have multiple email ids separated by commas(,).
 
   transporter.sendMail(mailOptions, (error, info) => {
     if (error) {
@@ -614,12 +563,6 @@ app.post('/sendemail', (req, res) => {
       res.status(200).json({ response: 'Email sent', success: true })
     }
   })
-
-  // // schedule 12:00 0'clock,
-  // const mailing = cron.schedule('59 17-20 * * *', () => {
-  //   // Send e-mail
-  //   mailing.stop()
-  // })
 })
 
 // Start the server

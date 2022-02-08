@@ -9,6 +9,8 @@ import {
   Icon,
   Textarea,
   Flex,
+  Text,
+  chakra,
 } from '@chakra-ui/react'
 import { ImImages } from 'react-icons/im'
 import { MdTitle } from 'react-icons/md'
@@ -100,7 +102,7 @@ const FormCollection = ({
         {/* <FormHelperText>Receiver's email address</FormHelperText> */}
       </FormControl>
 
-      <InputGroup>
+      <FormControl isRequired display='flex'>
         <FormLabel htmlFor='image' display='flex' alignItems='center' w='100px'>
           Image
         </FormLabel>
@@ -117,7 +119,7 @@ const FormCollection = ({
             onChange={(e) => setImage(e.target.value)}
           />
         </InputGroup>
-      </InputGroup>
+      </FormControl>
 
       <Flex>
         <FormLabel
@@ -136,6 +138,10 @@ const FormCollection = ({
           onChange={(e) => setMessage(e.target.value)}
         />
       </Flex>
+
+      <Text fontSize='12px' fontStyle='italic' color='black' mt='1'>
+        Fields marked <chakra.span color='red'>*</chakra.span> are required
+      </Text>
     </Stack>
   )
 }
