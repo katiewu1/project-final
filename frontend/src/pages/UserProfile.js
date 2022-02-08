@@ -140,7 +140,7 @@ const UserProfile = () => {
                   <Button
                     variant='link'
                     size='sm'
-                    color='teal'
+                    color='teal.600'
                     rightIcon={<EditIcon />}
                     onClick={onOpenEditProfile}
                   >
@@ -154,7 +154,7 @@ const UserProfile = () => {
                   <Button
                     variant='link'
                     size='sm'
-                    color='teal'
+                    color='purple.600'
                     rightIcon={<MdLogin />}
                     // border='1px'
                     onClick={() => dispatch(user.actions.signout())}

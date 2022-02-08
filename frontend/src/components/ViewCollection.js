@@ -48,6 +48,7 @@ const ViewCollection = ({ collection, isLive, error }) => {
         // if it's live 100vh, preview -> 500px
         h={isLive ? '100vh' : '500px'}
         bgGradient={error ? '' : 'linear(to-r, gray.300, yellow.400, pink.200)'}
+        overflow='auto'
       >
         {/* <Box bgGradient={['linear(to-tr, teal.300, yellow.400)','linear(to-t, blue.200, teal.500)','linear(to-b, orange.100, purple.300)',]}> */}
         {collection && (
@@ -55,7 +56,11 @@ const ViewCollection = ({ collection, isLive, error }) => {
             <Heading as='h2'>{collection.title}</Heading>
             <Text>{moment.utc(collection.date).format('LL')}</Text>
             <Image src={collection.image} maxWidth='300px' alt='image' />
-            <Text fontStyle='italic' whiteSpace='pre-wrap'>
+            <Text
+              fontStyle='italic'
+              whiteSpace='pre-wrap'
+              noOfLines={isLive ? '' : '5'}
+            >
               {collection.message}
             </Text>
           </>
