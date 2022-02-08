@@ -21,7 +21,6 @@
     "express-list-endpoints": "^6.0.0",
     "moment": "^2.29.1",
     "mongoose": "^5.13.14",
-    "node-cron": "^3.0.0",
     "nodemailer": "^6.7.2",
     "nodemon": "^2.0.15"
   },
