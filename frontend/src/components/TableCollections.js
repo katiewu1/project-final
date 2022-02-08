@@ -46,6 +46,14 @@ const TableCollections = ({ userProfile }) => {
             </Th>
             <Th p='1' textAlign='center'>
               Email
+              <Tooltip
+                hasArrow
+                label='Send email to recipient'
+                aria-label='A tooltip'
+                bg='purple.300'
+              >
+                <QuestionOutlineIcon w='3' h='3' ml='2px' />
+              </Tooltip>
             </Th>
             <Th p='1' textAlign='center'>
               Delete
@@ -112,6 +120,14 @@ const TableCollections = ({ userProfile }) => {
             </Th>
             <Th p='1' textAlign='center'>
               Email
+              <Tooltip
+                hasArrow
+                label='Send email to recipient'
+                aria-label='A tooltip'
+                bg='purple.300'
+              >
+                <QuestionOutlineIcon w='3' h='3' ml='2px' />
+              </Tooltip>
             </Th>
             <Th p='1' textAlign='center'>
               Delete
