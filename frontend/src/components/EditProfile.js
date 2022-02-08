@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useSelector, useDispatch, batch } from 'react-redux'
 import {
   Modal,
@@ -16,12 +16,6 @@ import {
   InputLeftElement,
   Icon,
   useToast,
-  AlertDialog,
-  AlertDialogBody,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogContent,
-  AlertDialogOverlay,
   Text,
 } from '@chakra-ui/react'
 import { FaUserEdit } from 'react-icons/fa'
@@ -30,6 +24,7 @@ import { AtSignIcon } from '@chakra-ui/icons'
 import { RiLockPasswordFill } from 'react-icons/ri'
 
 import { API_URL_USER } from '../utils/urls'
+import DeleteUserAccountBtn from './DeleteUserAccountBtn'
 import user from '../reducers/user'
 
 const EditProfile = ({ isOpen, onClose }) => {
@@ -42,15 +37,10 @@ const EditProfile = ({ isOpen, onClose }) => {
   const [email, setEmail] = useState()
   const [password, setPassword] = useState()
 
-  // Alert Dialog - Delete User account
-  const [isOpenDelete, setIsOpenDelete] = useState(false)
-  const onCloseDelete = () => setIsOpenDelete(false)
-  const cancelRefDelete = useRef()
-
   const dispatch = useDispatch()
   const toast = useToast()
 
-  // when we have data in the userProfile -> set firstname, lastname and email
+  // When we have data in the userProfile -> set firstname, lastname and email
   useEffect(() => {
     setFirstname(userProfile.firstname)
     setLastname(userProfile.lastname)
@@ -86,12 +76,6 @@ const EditProfile = ({ isOpen, onClose }) => {
             isClosable: true,
           })
         } else {
-          batch(() => {
-            // dispatch(user.actions.setFirstname(null))
-            // dispatch(user.actions.setLastname(null))
-            // dispatch(user.actions.setEmail(null))
-            dispatch(user.actions.setError(data.message))
-          })
           toast({
             title: 'Error.',
             description: "We couldn't save your changes for you.",
@@ -101,31 +85,7 @@ const EditProfile = ({ isOpen, onClose }) => {
           })
         }
       })
-      .catch((err) => console.log('error: ', err))
-  } // show a message when the request is succeeded? And show error messages?
-
-  //   console.log('user error: ', userError)
-
-  const handleDeleteAccount = () => {
-    const options = {
-      method: 'DELETE',
-      // headers: {
-      //   Authorization: accessToken,
-      // },
-    }
-
-    fetch(API_URL_USER('user', userId), options)
-      .then((res) => res.json())
-      .then((data) => {
-        if (data.success) {
-          console.log(data)
-          // if successful -> sign out and return to Home page
-          dispatch(user.actions.signout())
-        } else {
-          dispatch(user.actions.setError(data.message))
-        }
-      })
-      .catch((err) => console.log('error: ', err))
+      .catch((err) => dispatch(user.actions.setError(err)))
   }
 
   return (
@@ -136,7 +96,6 @@ const EditProfile = ({ isOpen, onClose }) => {
           <ModalHeader>Edit Profile</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            {/* TODO: add Delete user */}
             <Stack spacing={3}>
               <InputGroup>
                 <FormLabel
@@ -232,17 +191,9 @@ const EditProfile = ({ isOpen, onClose }) => {
                   />
                 </InputGroup>
               </InputGroup>
-              <Button
-                variant='ghost'
-                size='sm'
-                bg='red.200'
-                color='gray.700'
-                fontSize='sm'
-                _hover={{ bg: 'red.300' }}
-                onClick={() => setIsOpenDelete(true)}
-              >
-                Want to delete your account?
-              </Button>
+
+              <DeleteUserAccountBtn />
+
               {errorMessage && (
                 <Text fontSize='12px' fontStyle='italic' color='red'>
                   *{errorMessage}
@@ -254,12 +205,12 @@ const EditProfile = ({ isOpen, onClose }) => {
             <Button variant='ghost' mr={3} onClick={onClose}>
               Close
             </Button>
-            {/* Save the User profile, close the Modal, display toast */}
+            {/* Close the Modal, save the User profile */}
             <Button
               colorScheme='blue'
               onClick={() => {
-                handleSaveProfile()
                 onClose()
+                handleSaveProfile()
               }}
             >
               Save and exit
@@ -267,42 +218,6 @@ const EditProfile = ({ isOpen, onClose }) => {
           </ModalFooter>
         </ModalContent>
       </Modal>
-
-      {/* Alert Dialog - Delete Collection (render Alert Dialog only when the state isOpenDelete is true)  */}
-      {isOpenDelete && (
-        <AlertDialog
-          isOpen={isOpenDelete}
-          leastDestructiveRef={cancelRefDelete}
-          onClose={onCloseDelete}
-        >
-          <AlertDialogOverlay>
-            <AlertDialogContent>
-              <AlertDialogHeader fontSize='lg' fontWeight='bold'>
-                Delete User Account
-              </AlertDialogHeader>
-
-              <AlertDialogBody>
-                Are you sure? You can't undo this action afterwards.
-              </AlertDialogBody>
-              <AlertDialogFooter>
-                <Button ref={cancelRefDelete} onClick={onCloseDelete}>
-                  Cancel
-                </Button>
-                <Button
-                  colorScheme='red'
-                  onClick={() => {
-                    onCloseDelete()
-                    handleDeleteAccount()
-                  }}
-                  ml={3}
-                >
-                  Delete
-                </Button>
-              </AlertDialogFooter>
-            </AlertDialogContent>
-          </AlertDialogOverlay>
-        </AlertDialog>
-      )}
     </>
   )
 }

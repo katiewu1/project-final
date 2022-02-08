@@ -19,18 +19,16 @@ const reducer = combineReducers({
   user: user.reducer,
 })
 
-// const store = configureStore({ reducer })
-
-// get the localStorage in JSON string format
-const persistedStateJSON = localStorage.getItem('userReduxState')
+// Get the localStorage in JSON string format
+const persistedStateJSON = localStorage.getItem('openme-user-redux-state')
 let persistedState = {}
 
-// if we have data in persistedStateJSON -> convert to an object
+// If we have data in persistedStateJSON -> convert to an object
 if (persistedStateJSON) {
   persistedState = JSON.parse(persistedStateJSON)
 }
 
-// create a store with initial state
+// Create a store with initial state
 const store = createStore(
   reducer,
   { user: persistedState },
@@ -39,11 +37,10 @@ const store = createStore(
   window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
 )
 
-// store the state (only accessToken and userId) in localStorage as JSON string on Redux state change
+// Store the state (only accessToken and userId) in localStorage as JSON string on Redux state change
 store.subscribe(() => {
-  // console.log(store.getState())
   localStorage.setItem(
-    'userReduxState',
+    'openme-user-redux-state',
     JSON.stringify({
       accessToken: store.getState().user.accessToken,
       userId: store.getState().user.userId,

@@ -20,7 +20,6 @@ import {
   SkeletonCircle,
   SkeletonText,
 } from '@chakra-ui/react'
-// import { useBreakpointValue } from '@chakra-ui/media-query'
 import { EditIcon } from '@chakra-ui/icons'
 import { MdLogin } from 'react-icons/md'
 
@@ -32,6 +31,7 @@ import TableCollections from '../components/TableCollections'
 
 const UserProfile = () => {
   const userProfile = useSelector((store) => store.user)
+  const errorMessage = useSelector((store) => store.user.error)
 
   // Skeleton
   const [isLoading, setIsLoading] = useState(false)
@@ -53,7 +53,7 @@ const UserProfile = () => {
     }
   }, [userProfile.accessToken, navigate])
 
-  // When user is logged in -> retrieve the data and update the Redux state/store
+  // When user is logged in -> retrieve the data and update the Redux state
   useEffect(() => {
     setIsLoading(true) // "activate" skeleton
 
@@ -78,18 +78,10 @@ const UserProfile = () => {
             dispatch(user.actions.setError(null))
           })
         } else {
-          batch(() => {
-            dispatch(user.actions.setUserId(null))
-            dispatch(user.actions.setFirstname(null))
-            dispatch(user.actions.setLastname(null))
-            dispatch(user.actions.setEmail(null))
-            dispatch(user.actions.setCollections(null))
-            dispatch(user.actions.setAccessToken(null))
-            dispatch(user.actions.setError(data.response.error))
-          })
+          dispatch(user.actions.setError(data.message))
         }
       })
-      .catch((err) => console.log(err)) //TODO: error handling
+      .catch((err) => dispatch(user.actions.setError(err))) //TODO: error handling
       .finally(() => setIsLoading(false))
   }, [dispatch, userProfile.accessToken, userProfile.userId])
 
@@ -104,6 +96,14 @@ const UserProfile = () => {
         <Heading as='h2' fontSize={['3xl', '5xl', '5xl']} m='2' isTruncated>
           My Profile
         </Heading>
+
+        {/* If we have error -> display the error message */}
+        {errorMessage && (
+          <Text fontSize='12px' fontStyle='italic' color='red'>
+            *{errorMessage}
+          </Text>
+        )}
+
         {userProfile && (
           <Flex
             align='center'
@@ -136,7 +136,6 @@ const UserProfile = () => {
                   </Text>
                 </Stack>
                 <ButtonGroup mt='2'>
-                  {/* EditProfile component -> with Modal */}
                   <Button
                     variant='link'
                     size='sm'
@@ -146,7 +145,7 @@ const UserProfile = () => {
                   >
                     Edit profile
                   </Button>
-
+                  {/* EditProfile component */}
                   <EditProfile
                     isOpen={isOpenEditProfile}
                     onClose={onCloseEditProfile}
@@ -156,7 +155,6 @@ const UserProfile = () => {
                     size='sm'
                     color='purple.600'
                     rightIcon={<MdLogin />}
-                    // border='1px'
                     onClick={() => dispatch(user.actions.signout())}
                   >
                     Sign out
@@ -168,9 +166,9 @@ const UserProfile = () => {
         )}
         <Box mt={['2', '10', '10']} w={['95%', '80%', '80%']}>
           <Skeleton isLoaded={!isLoading}>
+            {/* AddCollectionBtn component */}
             <AddCollectionBtn userId={userProfile.userId} />
 
-            {/* defaultIndex={[0]} allowMultiple */}
             <Accordion allowToggle defaultIndex={[1]}>
               <AccordionItem>
                 <h2>

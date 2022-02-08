@@ -9,11 +9,8 @@ const ViewCollection = ({ collection, isLive, error }) => {
     setIsVisible(isLive)
   }, [isLive])
 
-  console.log('isLive: ', isLive)
+  // console.log('isLive: ', isLive)
   // console.log('isVisible', isVisible)
-
-  // To get the user's locale with javascript
-  // const locale = window.navigator.userLanguage || window.navigator.language
 
   return (
     // TODO: user can pick different bgGradient colors, font style?

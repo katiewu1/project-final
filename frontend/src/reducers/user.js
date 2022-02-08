@@ -14,9 +14,6 @@ const user = createSlice({
   name: 'user',
   initialState,
   reducers: {
-    // setUserprofile: (store, action) => {
-    //   store = { ...store, ...action.payload }
-    // },
     setUserId: (store, action) => {
       store.userId = action.payload
     },

@@ -6,8 +6,6 @@ import {
   Input,
   FormControl,
   FormLabel,
-  // FormErrorMessage,
-  // FormHelperText,
   InputGroup,
   InputRightElement,
   Button,
@@ -20,17 +18,13 @@ import { API_URL } from '../utils/urls'
 import user from '../reducers/user'
 
 const FormSignupLogin = ({ mode }) => {
-  // // email error message
-  // const [input, setInput] = useState('')
-  // const handleInputChange = (e) => setInput(e.target.value)
-  // // const isError = input === ''
   const errorMessage = useSelector((store) => store.user.error)
-  console.log('errorMessage: ', errorMessage)
-  // password show/hide password
+
+  // Password show/hide
   const [show, setShow] = useState(false)
   const handleClick = () => setShow(!show)
 
-  // useState sign up
+  // useState Sign up
   const [firstname, setFirstname] = useState('')
   const [lastname, setLastname] = useState('')
   const [email, setEmail] = useState('')
@@ -38,13 +32,6 @@ const FormSignupLogin = ({ mode }) => {
 
   const dispatch = useDispatch()
   const navigate = useNavigate()
-
-  // useEffect(() => {
-  //   // if we have accesstoken navigate to the Main
-  //   if (accessToken) {
-  //     navigate('/')
-  //   }
-  // }, [accessToken, navigate])
 
   const handleSubmit = (e) => {
     e.preventDefault()
@@ -84,7 +71,7 @@ const FormSignupLogin = ({ mode }) => {
           })
         }
       })
-      .catch((err) => console.log('error: ', err))
+      .catch((err) => console.log('error: ', err)) // TODO: error handling
   }
 
   const handleLogin = (e) => {
@@ -121,7 +108,7 @@ const FormSignupLogin = ({ mode }) => {
           })
         }
       })
-      .catch((err) => console.log('error: ', err))
+      .catch((err) => console.log('error: ', err)) // TODO: error handling
   }
 
   return (
@@ -150,7 +137,6 @@ const FormSignupLogin = ({ mode }) => {
               <Input
                 id='email'
                 type='email'
-                // w='16rem'
                 mb='2'
                 variant='outline'
                 placeholder='email@example.com'
@@ -158,15 +144,13 @@ const FormSignupLogin = ({ mode }) => {
                 onChange={(e) => setEmail(e.target.value)}
               />
             </FormControl>
-            {/* password input */}
+            {/* Password input */}
             <FormControl isRequired isInvalid={errorMessage} color='black'>
               <FormLabel htmlFor='password'>Password</FormLabel>
               <InputGroup size='md'>
                 <Input
                   id='password'
-                  // pr='4.5rem'
                   type={show ? 'text' : 'password'}
-                  // variant='filled'
                   variant='outline'
                   placeholder='Enter password'
                   value={password}
@@ -191,13 +175,7 @@ const FormSignupLogin = ({ mode }) => {
                 *{errorMessage}
               </Text>
             )}
-            <Button
-              mt={4}
-              w='100%'
-              colorScheme='teal'
-              // isLoading={props.isSubmitting}
-              type='submit'
-            >
+            <Button mt={4} w='100%' colorScheme='teal' type='submit'>
               Log in
             </Button>
           </form>
@@ -214,7 +192,6 @@ const FormSignupLogin = ({ mode }) => {
             style={{
               display: 'flex',
               flexDirection: 'column',
-              // maxWidth: '100vw',
             }}
             onSubmit={handleSubmit}
           >
@@ -222,7 +199,6 @@ const FormSignupLogin = ({ mode }) => {
               <FormLabel htmlFor='firstname'>First name</FormLabel>
               <Input
                 id='firstname'
-                // w='16rem'
                 mb='2'
                 variant='outline'
                 placeholder='First name'
@@ -235,9 +211,6 @@ const FormSignupLogin = ({ mode }) => {
               <Input
                 id='lastname'
                 mb='2'
-                // w='16rem'
-                // pr='4.5rem'
-                // variant='filled'
                 variant='outline'
                 placeholder='Last name'
                 value={lastname}
@@ -250,29 +223,19 @@ const FormSignupLogin = ({ mode }) => {
                 id='email'
                 mb='2'
                 type='email'
-                // w='16rem'
                 variant='outline'
                 placeholder='email@example.com'
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
               />
             </FormControl>
-            {/* {!isError ? (
-            <FormHelperText>
-              Enter the email you'd like to receive the newsletter on.
-            </FormHelperText>
-          ) : (
-            <FormErrorMessage>Email is required.</FormErrorMessage>
-          )} */}
-            {/* password input */}
+            {/* Password input */}
             <FormControl isRequired color='black'>
               <FormLabel htmlFor='password'>Password</FormLabel>
               <InputGroup size='md'>
                 <Input
                   id='password'
-                  // pr='4.5rem'
                   type={show ? 'text' : 'password'}
-                  // variant='filled'
                   variant='outline'
                   placeholder='Enter password'
                   value={password}
@@ -296,13 +259,7 @@ const FormSignupLogin = ({ mode }) => {
                 *{errorMessage}
               </Text>
             )}
-            <Button
-              mt={4}
-              w='100%'
-              colorScheme='teal'
-              // isLoading={props.isSubmitting}
-              type='submit'
-            >
+            <Button mt={4} w='100%' colorScheme='teal' type='submit'>
               Submit
             </Button>
           </form>

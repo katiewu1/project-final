@@ -260,9 +260,14 @@ app.post('/user', async (req, res) => {
         },
         { new: true }
       )
+      res.status(201).json({ response: newCollection, success: true })
+    } else {
+      res.status(404).json({
+        message: 'User not found',
+        response: 'User not found',
+        success: false,
+      })
     }
-
-    res.status(201).json({ response: newCollection, success: true })
   } catch (err) {
     res.status(400).json({
       message: 'Could not create new collection, invalid request',
@@ -557,7 +562,9 @@ app.post('/sendemail', (req, res) => {
   transporter.sendMail(mailOptions, (error, info) => {
     if (error) {
       console.log(error)
-      res.status(400).json({ response: 'error', success: false })
+      res
+        .status(400)
+        .json({ message: 'error', response: 'error', success: false })
     } else {
       console.log('Email sent: ' + info.response)
       res.status(200).json({ response: 'Email sent', success: true })

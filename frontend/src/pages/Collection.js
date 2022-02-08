@@ -7,16 +7,14 @@ import ViewCollection from '../components/ViewCollection'
 import { API_URL_OPEN } from '../utils/urls'
 
 const Collection = () => {
+  const accessToken = useSelector((store) => store.user.accessToken)
+
   const { id } = useParams()
   const [collection, setCollection] = useState(null)
   const [isLive, setIsLive] = useState(null)
   const [error, setError] = useState(null)
   // Skeleton
   const [isLoading, setIsLoading] = useState(false)
-
-  const accessToken = useSelector((store) => store.user.accessToken)
-
-  console.log('accessToken: ', accessToken)
 
   useEffect(() => {
     setIsLoading(true) // "activate" skeleton
@@ -35,14 +33,12 @@ const Collection = () => {
           setIsLive(true)
           setError(null)
         } else {
-          console.log('data.success = false')
           setError(data.message)
           setCollection(null)
           setIsLive(true)
         }
       })
       .catch((err) => {
-        console.log('error: ', err)
         setError(err.message)
         setCollection(null)
         setIsLive(false)

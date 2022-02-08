@@ -7,7 +7,6 @@ const Logo = () => {
   const { colorMode } = useColorMode()
 
   return (
-    // width 100% -> do a navbar
     <>
       <Link href='/'>
         <Box pos='absolute' top='0' left='0' pl='4'>

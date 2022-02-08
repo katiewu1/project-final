@@ -19,7 +19,7 @@ const Home = () => {
 
   const navigate = useNavigate()
 
-  // if the user is logged in -> go to the user profile
+  // If the user is logged in -> go to the user profile
   useEffect(() => {
     if (accessToken) {
       navigate('/user')
@@ -78,7 +78,6 @@ const Home = () => {
                   colorScheme='purple'
                   variant='outline'
                   border='2px'
-                  // size='md'
                   rightIcon={<CgProfile />}
                 >
                   Sign Up
@@ -89,7 +88,6 @@ const Home = () => {
                   colorScheme='pink'
                   variant='outline'
                   border='2px'
-                  // size='md'
                   rightIcon={<MdLogin />}
                 >
                   Log In

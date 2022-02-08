@@ -33,13 +33,14 @@ const AddCollectionBtn = ({ userId }) => {
 
   const collection = {
     title,
-    // change the date utc format to always be at 12:00 on that day
+    // Change the date utc format to always be at 12:00 on that day
     date: moment(date).utcOffset(0, true).add(12, 'hours').format(),
     sendTo,
     image,
     message,
   }
 
+  // Modal
   const { isOpen, onOpen, onClose } = useDisclosure()
 
   const dispatch = useDispatch()
@@ -61,24 +62,32 @@ const AddCollectionBtn = ({ userId }) => {
     fetch(API_URL_USER('user', userId), options)
       .then((res) => res.json())
       .then((data) => {
-        console.log(data)
-        dispatch(user.actions.addCollection(data.response))
-        // empty the input fields
-        setTitle('')
-        setDate(new Date(new Date().setHours(0, 0, 0, 0)))
-        setSendTo('')
-        setImage('')
-        setMessage('')
-        toast({
-          title: 'Collection added.',
-          description: "We've saved your collection for you.",
-          status: 'success',
-          duration: 5000,
-          isClosable: true,
-        })
+        if (data.success) {
+          dispatch(user.actions.addCollection(data.response))
+          // empty the input fields
+          setTitle('')
+          setDate(new Date(new Date().setHours(0, 0, 0, 0)))
+          setSendTo('')
+          setImage('')
+          setMessage('')
+          toast({
+            title: 'Collection added.',
+            description: "We've saved your collection for you.",
+            status: 'success',
+            duration: 5000,
+            isClosable: true,
+          })
+        } else {
+          toast({
+            title: 'Error.',
+            description: "We'couldn't save your collection for you.",
+            status: 'error',
+            duration: 5000,
+            isClosable: true,
+          })
+        }
       })
       .catch((err) => {
-        console.log('error: ', err)
         toast({
           title: 'Error.',
           description: "We'couldn't save your collection for you.",
@@ -87,7 +96,7 @@ const AddCollectionBtn = ({ userId }) => {
           isClosable: true,
         })
       })
-  } // TODO: show a message when the request is succeeded? And show error messages?
+  } // TODO: error handling
 
   return (
     <>
@@ -114,6 +123,8 @@ const AddCollectionBtn = ({ userId }) => {
           Add
         </Button>
       </Tooltip>
+
+      {/* Render Modal only when the state isOpen is true */}
       {isOpen && (
         <Modal isOpen={isOpen} onClose={onClose}>
           <form
@@ -152,7 +163,6 @@ const AddCollectionBtn = ({ userId }) => {
                 <Button variant='ghost' mr={3} onClick={onClose}>
                   Close
                 </Button>
-                {/* onSubmit: Close the Modal, save the collection -> successful: display toast */}
                 <Button colorScheme='blue' type='submit'>
                   Save and exit
                 </Button>

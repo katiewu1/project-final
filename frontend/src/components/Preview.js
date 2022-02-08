@@ -9,7 +9,6 @@ const Preview = ({ collection }) => {
       <Text mb='2' fontWeight='bold'>
         PREVIEW
       </Text>
-      {/* TODO: reuseable component, the same as in Collection page */}
       <ViewCollection collection={collection} isLive={false} />
     </Box>
   )

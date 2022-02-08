@@ -60,15 +60,12 @@ const TableCollections = ({ userProfile }) => {
             </Th>
           </Tr>
         </Thead>
+
         <Tbody>
           {userProfile.collections.map((collection) => (
             <Tr key={collection._id}>
               <Td p={['1', '2', '2']}>
-                <Text
-                  fontSize={['12px', '16px', '16px']}
-                  // isTruncated
-                  noOfLines='1'
-                >
+                <Text fontSize={['12px', '16px', '16px']} noOfLines='1'>
                   {collection.title}
                 </Text>
                 <Text
@@ -99,6 +96,7 @@ const TableCollections = ({ userProfile }) => {
             </Tr>
           ))}
         </Tbody>
+
         <Tfoot>
           <Tr>
             <Th p='1' textAlign='start'>

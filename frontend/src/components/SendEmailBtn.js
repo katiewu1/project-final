@@ -19,15 +19,15 @@ import user from '../reducers/user'
 const SendEmailBtn = ({ collectionId, sendTo, date }) => {
   const link = API_URL_OPENME(collectionId)
 
-  // Retrieve the hasSentEmail boolean value in the Redux store/state with useSelector
-  // Store the value with useState and if you change the value from false to true it'll update the button
+  // Retrieve the hasSentEmail boolean value from the Redux state with useSelector
+  // Store the value with useState and if you change the value from false to true it'll update the send-button
   const [collectionHasSentEmail, setCollectionHasSentEmail] = useState(
     useSelector((store) =>
       store.user.collections.find((item) => item._id === collectionId)
     ).hasSentEmail
   )
 
-  // Alert Dialog - Send Email to recipient
+  // Alert Dialog - Send Email to Recipient
   const [isOpenSendEmail, setIsOpenSendEmail] = useState(false)
   const onCloseSendEmail = () => setIsOpenSendEmail(false)
   const cancelRefSendEmail = useRef()
@@ -53,35 +53,47 @@ const SendEmailBtn = ({ collectionId, sendTo, date }) => {
     fetch(API_URL('sendemail'), options_sendEmail)
       .then((res) => res.json())
       .then((data) => {
-        console.log(data)
-        // onSend(true)
-        toast({
-          title: 'Sent.',
-          description: "We've sent an email to the recipient.",
-          status: 'success',
-          duration: 5000,
-          isClosable: true,
-        })
-
-        // PATCH request to update the collection, property hasSentEmail
-        const options = {
-          method: 'PATCH',
-          headers: {
-            // Authorization: accessToken,
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            hasSentEmail: true,
-          }),
-        }
-
-        fetch(API_URL_COLLECTION('user', collectionId), options)
-          .then((res) => res.json())
-          .then((data) => {
-            console.log(data)
-            dispatch(user.actions.editCollection(data.response))
-            setCollectionHasSentEmail(true)
+        if (data.success) {
+          toast({
+            title: 'Sent.',
+            description: "We've sent an email to the recipient.",
+            status: 'success',
+            duration: 5000,
+            isClosable: true,
           })
+
+          // PATCH request to update the collection, property hasSentEmail
+          const options = {
+            method: 'PATCH',
+            headers: {
+              // Authorization: accessToken,
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              hasSentEmail: true,
+            }),
+          }
+
+          fetch(API_URL_COLLECTION('user', collectionId), options)
+            .then((res) => res.json())
+            .then((data) => {
+              if (data.success) {
+                dispatch(user.actions.editCollection(data.response))
+                setCollectionHasSentEmail(true)
+              }
+            })
+            .catch((err) => {
+              console.log('error: ', err)
+            })
+        } else {
+          toast({
+            title: 'Error.',
+            description: "We'couldn't sent an email to the recipient.",
+            status: 'error',
+            duration: 5000,
+            isClosable: true,
+          })
+        }
       })
       .catch((err) => {
         console.log('error: ', err)
@@ -93,7 +105,6 @@ const SendEmailBtn = ({ collectionId, sendTo, date }) => {
           isClosable: true,
         })
       })
-
     // TODO: error handling
   }
 
@@ -112,7 +123,7 @@ const SendEmailBtn = ({ collectionId, sendTo, date }) => {
         {collectionHasSentEmail ? 'Sent' : 'Send'}
       </Button>
 
-      {/* Alert Dialog - Send Email to recipient (render Alert Dialog only when the state isOpenSendEmail is true) */}
+      {/* Alert Dialog - Send Email to Recipient (render Alert Dialog only when the state isOpenSendEmail is true) */}
       {isOpenSendEmail && (
         <AlertDialog
           isOpen={isOpenSendEmail}

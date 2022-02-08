@@ -1,4 +1,4 @@
-// 1. import `extendTheme` function
+// 1. Import `extendTheme` function
 import { extendTheme } from '@chakra-ui/react'
 
 // 2. Add your color mode config
@@ -7,7 +7,7 @@ const config = {
   useSystemColorMode: false,
 }
 
-// 3. extend the theme
+// 3. Extend the theme
 const theme = extendTheme({ config })
 
 export default theme

@@ -34,14 +34,14 @@ const EditCollectionBtn = ({ collection }) => {
 
   const editedCollection = {
     title,
-    // change the date utc format to always be at 12:00 on that day
+    // Change the date utc format to always be at 12:00 on that day
     date: moment(date).utcOffset(0, true).add(12, 'hours').format(),
     sendTo,
     image,
     message,
   }
 
-  // Modal -  EditCollection
+  // Modal
   const { isOpen, onOpen, onClose } = useDisclosure()
 
   const dispatch = useDispatch()
@@ -62,15 +62,25 @@ const EditCollectionBtn = ({ collection }) => {
     fetch(API_URL_COLLECTION('user', collection._id), options)
       .then((res) => res.json())
       .then((data) => {
-        console.log(data)
-        dispatch(user.actions.editCollection(data.response))
-        toast({
-          title: 'Collection updated.',
-          description: "We've saved your collection for you.",
-          status: 'success',
-          duration: 5000,
-          isClosable: true,
-        })
+        if (data.success) {
+          dispatch(user.actions.editCollection(data.response))
+          toast({
+            title: 'Collection updated.',
+            description: "We've saved your collection for you.",
+            status: 'success',
+            duration: 5000,
+            isClosable: true,
+          })
+        } else {
+          dispatch(user.actions.setError(data.message))
+          toast({
+            title: 'Error.',
+            description: "We'couldn't save your collection for you.",
+            status: 'error',
+            duration: 5000,
+            isClosable: true,
+          })
+        }
       })
       .catch((err) => {
         console.log('error: ', err)
@@ -95,8 +105,10 @@ const EditCollectionBtn = ({ collection }) => {
         <EditIcon />
       </Button>
 
+      {/* Render Modal only when the state isOpen is true */}
       {isOpen && (
         <Modal isOpen={isOpen} onClose={onClose}>
+          {/* onSubmit: Close the Modal, save the collection -> successful: display toast */}
           <form
             onSubmit={(e) => {
               onClose()
@@ -133,7 +145,6 @@ const EditCollectionBtn = ({ collection }) => {
                 <Button variant='ghost' mr={3} onClick={onClose}>
                   Close
                 </Button>
-                {/* onSubmit: Close the Modal, save the collection -> successful: display toast */}
                 <Button colorScheme='blue' type='submit'>
                   Save and exit
                 </Button>

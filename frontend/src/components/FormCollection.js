@@ -60,13 +60,6 @@ const FormCollection = ({
             pointerEvents='none'
             children={<CalendarIcon color='gray.300' />}
           />
-          {/* <Input
-        variant='filled'
-        id='date'
-        value={date}
-        onChange={(e) => setDate(e.target.value)}
-      /> */}
-
           <SingleDatepicker
             name='date-input'
             id='date'
@@ -98,8 +91,6 @@ const FormCollection = ({
             onChange={(e) => setSendTo(e.target.value)}
           />
         </InputGroup>
-
-        {/* <FormHelperText>Receiver's email address</FormHelperText> */}
       </FormControl>
 
       <FormControl isRequired display='flex'>
