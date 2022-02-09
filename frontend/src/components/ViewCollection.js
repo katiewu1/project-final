@@ -63,9 +63,13 @@ const ViewCollection = ({ collection, isLive, error }) => {
           </>
         )}
         {error && (
-          <Flex>
-            <Text fontWeight='bold' textAlign='center'>
-              {error}
+          <Flex d='column' fontWeight='bold' textAlign='center'>
+            <Text>{error}</Text>
+            <Text>
+              If the problem continues, please contact the OpenMe team.
+            </Text>
+            <Text mt='4' fontStyle='italic'>
+              openme.team@gmail.com
             </Text>
           </Flex>
         )}

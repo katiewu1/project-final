@@ -81,9 +81,13 @@ const UserProfile = () => {
           dispatch(user.actions.setError(data.message))
         }
       })
-      .catch((err) => dispatch(user.actions.setError(err))) //TODO: error handling
+      .catch((err) => {
+        dispatch(user.actions.setError(err.message))
+        console.log('catch err', err.message)
+        navigate('*')
+      }) //TODO: error handling
       .finally(() => setIsLoading(false))
-  }, [dispatch, userProfile.accessToken, userProfile.userId])
+  }, [dispatch, userProfile.accessToken, userProfile.userId, navigate])
 
   return (
     <Flex

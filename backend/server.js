@@ -120,10 +120,10 @@ const authenticateUser = async (req, res, next) => {
         success: false,
       })
     }
-  } catch (error) {
+  } catch (err) {
     res.status(400).json({
       message: 'Error, could not authenticate user',
-      response: error,
+      response: err,
       success: false,
     })
   }
@@ -538,6 +538,7 @@ app.post('/sendemail', (req, res) => {
     // },
   })
 
+  // TODO: a tag around the img
   const output = `<div style="background-image: linear-gradient(to bottom left, pink, yellow); padding: 10px;">
     <h2>What an OpenMe:ly day!</h2>
     <p>You got a surprise OpenMe message from someone.</p>

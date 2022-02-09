@@ -85,7 +85,7 @@ const EditProfile = ({ isOpen, onClose }) => {
           })
         }
       })
-      .catch((err) => dispatch(user.actions.setError(err)))
+      .catch((err) => dispatch(user.actions.setError(err.message)))
   }
 
   return (

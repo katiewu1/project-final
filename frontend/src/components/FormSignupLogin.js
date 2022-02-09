@@ -71,7 +71,10 @@ const FormSignupLogin = ({ mode }) => {
           })
         }
       })
-      .catch((err) => console.log('error: ', err)) // TODO: error handling
+      .catch((err) => {
+        dispatch(user.actions.setError(err.message))
+        navigate('*')
+      }) // TODO: error handling
   }
 
   const handleLogin = (e) => {
@@ -108,7 +111,10 @@ const FormSignupLogin = ({ mode }) => {
           })
         }
       })
-      .catch((err) => console.log('error: ', err)) // TODO: error handling
+      .catch((err) => {
+        dispatch(user.actions.setError(err.message))
+        navigate('*')
+      }) // TODO: error handling
   }
 
   return (

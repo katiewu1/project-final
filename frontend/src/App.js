@@ -12,6 +12,7 @@ import SignUp from './pages/SignUp'
 import LogIn from './pages/LogIn'
 import UserProfile from './pages/UserProfile'
 import Collection from './pages/Collection'
+import NotFound from './pages/NotFound'
 
 import user from './reducers/user'
 
@@ -60,6 +61,7 @@ export const App = () => {
             <Route path='/login' element={<LogIn />} />
             <Route path='/user' element={<UserProfile />} />
             <Route path='/open/:id' element={<Collection />} />
+            <Route path='*' element={<NotFound />} />
           </Routes>
           <Footer />
         </BrowserRouter>
