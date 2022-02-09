@@ -50,7 +50,9 @@ const ViewCollection = ({ collection, isLive, error }) => {
         {/* <Box bgGradient={['linear(to-tr, teal.300, yellow.400)','linear(to-t, blue.200, teal.500)','linear(to-b, orange.100, purple.300)',]}> */}
         {collection && (
           <>
-            <Heading as='h2'>{collection.title}</Heading>
+            <Heading as='h2' textAlign='center'>
+              {collection.title}
+            </Heading>
             <Text>{moment.utc(collection.date).format('LL')}</Text>
             <Image src={collection.image} maxWidth='300px' alt='image' />
             <Text
