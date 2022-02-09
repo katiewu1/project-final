@@ -11,6 +11,7 @@ const CopyLinkBtn = ({ collectionId }) => {
     <Button
       size='sm'
       fontSize={['12px', '14px', '14px']}
+      w='58px'
       border='1px'
       borderColor='white'
       onClick={onCopy}

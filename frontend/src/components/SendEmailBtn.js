@@ -115,6 +115,7 @@ const SendEmailBtn = ({ collectionId, sendTo, date }) => {
       <Button
         size='sm'
         fontSize={['12px', '14px', '14px']}
+        w='70px'
         border='1px'
         borderColor='white'
         onClick={() => setIsOpenSendEmail(true)}
