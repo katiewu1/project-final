@@ -548,7 +548,9 @@ app.post('/sendemail', (req, res) => {
     <p>${link}</p>
     <p>Kind regards,</p>
     <p>OpenMe Team</p>
+    <a href="https://openme-team.netlify.app/" target="_blank" rel="noopener noreferrer">
     <img src="https://i.ibb.co/Wc6Drhx/openme-icon.png" alt="OpenMe logo"/>
+    </a>
  </div>
  `
 
