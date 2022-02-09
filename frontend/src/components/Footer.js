@@ -13,7 +13,7 @@ const Footer = () => {
         >
           Katie Wu
         </Link>{' '}
-        | Technigo
+        | Technigo Bootcamp Fall 2021
       </Text>
     </Box>
   )
