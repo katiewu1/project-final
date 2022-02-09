@@ -542,9 +542,9 @@ app.post('/sendemail', (req, res) => {
   const output = `<div style="background-image: linear-gradient(to bottom left, pink, yellow); padding: 10px;">
     <h2>What an OpenMe:ly day!</h2>
     <p>You got a surprise OpenMe message from someone.</p>
-    <p>Here's the link and you can view the message from this date ${moment
+    <p>Here's the link and you can view the message from this date <span style="font-weight: bold;">${moment
       .utc(date)
-      .format('ll')} (12:00 UTC):</p>
+      .format('ll')} (12:00 UTC)</span>:</p>
     <p>${link}</p>
     <p>Kind regards,</p>
     <p>OpenMe Team</p>
