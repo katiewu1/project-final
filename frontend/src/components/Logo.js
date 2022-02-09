@@ -1,11 +1,16 @@
 import React from 'react'
+import { useLocation } from 'react-router-dom'
 import { Box, Image, Link, useColorMode } from '@chakra-ui/react'
 
 import ToggleTheme from './ToggleTheme'
 
 const Logo = () => {
   const { colorMode } = useColorMode()
-
+  // Find which path you are on
+  const location = useLocation()
+  // If it's the Collection page -> don't add a filter on the logo image
+  const isCollectionPage = location.pathname.startsWith('/open')
+  // console.log({ location })
   return (
     <>
       <Link href='/'>
@@ -14,7 +19,11 @@ const Logo = () => {
             src='/assets/logo.svg'
             w={['84px', '84px', '134px']}
             alt='OpenMe logo'
-            filter={colorMode === 'light' ? 'invert(0)' : 'invert(80%)'}
+            filter={
+              colorMode === 'light' || isCollectionPage
+                ? 'invert(0)'
+                : 'invert(80%)'
+            }
           />
         </Box>
       </Link>

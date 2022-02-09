@@ -62,6 +62,8 @@ const SendEmailBtn = ({ collectionId, sendTo, date }) => {
             isClosable: true,
           })
 
+          // TODO: setCollectionHasSentEmail(true), can skip the patch request here and do it in the BE instead
+
           // PATCH request to update the collection, property hasSentEmail
           const options = {
             method: 'PATCH',
@@ -126,7 +128,7 @@ const SendEmailBtn = ({ collectionId, sendTo, date }) => {
       {/* Alert Dialog - Send Email to Recipient (render Alert Dialog only when the state isOpenSendEmail is true) */}
       {isOpenSendEmail && (
         <AlertDialog
-          isOpen={isOpenSendEmail}
+          isOpen
           leastDestructiveRef={cancelRefSendEmail}
           onClose={onCloseSendEmail}
         >

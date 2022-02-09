@@ -5,7 +5,12 @@ import FormSignupLogin from '../components/FormSignupLogin'
 
 const LogIn = () => {
   return (
-    <Flex direction='column' justify='center' align='center' h='100vh'>
+    <Flex
+      direction='column'
+      justify='center'
+      align='center'
+      h='calc(100vh - 18px)'
+    >
       <Heading
         as='h2'
         textAlign='center'

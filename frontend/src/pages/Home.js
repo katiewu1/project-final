@@ -32,7 +32,7 @@ const Home = () => {
       d='flex'
       justifyContent='center'
       alignItems='center'
-      h='96vh'
+      h='calc(100vh - 18px)'
     >
       <LightMode>
         <Box

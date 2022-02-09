@@ -18,6 +18,7 @@ import { API_URL } from '../utils/urls'
 import user from '../reducers/user'
 
 const FormSignupLogin = ({ mode }) => {
+  // TODO: split up this form to two different (FormSignUp and FormLogin)
   const errorMessage = useSelector((store) => store.user.error)
 
   // Password show/hide

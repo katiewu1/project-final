@@ -126,7 +126,7 @@ const AddCollectionBtn = ({ userId }) => {
 
       {/* Render Modal only when the state isOpen is true */}
       {isOpen && (
-        <Modal isOpen={isOpen} onClose={onClose}>
+        <Modal isOpen onClose={onClose}>
           <form
             onSubmit={(e) => {
               onClose()
@@ -139,7 +139,7 @@ const AddCollectionBtn = ({ userId }) => {
               <ModalCloseButton />
               <ModalBody
                 display='flex'
-                flexDirection={['column', 'row', 'row']}
+                flexDirection={['column', 'column', 'row']}
               >
                 <Box>
                   <Text mb='4'>Create your own surprise OpenMe</Text>

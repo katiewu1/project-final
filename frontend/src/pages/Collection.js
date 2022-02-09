@@ -49,7 +49,7 @@ const Collection = () => {
   return (
     <Skeleton
       isLoaded={!isLoading}
-      h='100vh'
+      h='calc(100vh - 18px)'
       startColor='purple.300'
       endColor='yellow.400'
     >

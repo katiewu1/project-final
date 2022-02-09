@@ -73,7 +73,7 @@ const DeleteCollectionBtn = ({ collectionId }) => {
       {/* Alert Dialog - Delete Collection (render Alert Dialog only when the state isOpenDelete is true)  */}
       {isOpenDelete && (
         <AlertDialog
-          isOpen={isOpenDelete}
+          isOpen
           leastDestructiveRef={cancelRefDelete}
           onClose={onCloseDelete}
         >

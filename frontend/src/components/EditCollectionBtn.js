@@ -107,7 +107,7 @@ const EditCollectionBtn = ({ collection }) => {
 
       {/* Render Modal only when the state isOpen is true */}
       {isOpen && (
-        <Modal isOpen={isOpen} onClose={onClose}>
+        <Modal isOpen onClose={onClose}>
           {/* onSubmit: Close the Modal, save the collection -> successful: display toast */}
           <form
             onSubmit={(e) => {

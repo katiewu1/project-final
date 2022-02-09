@@ -159,6 +159,7 @@ app.get('/user', async (req, res) => {
   }
 })
 
+// TODO: authentication
 // Edit user profile
 app.patch('/user', async (req, res) => {
   const userId = req.query.id
@@ -197,6 +198,7 @@ app.patch('/user', async (req, res) => {
   }
 })
 
+// TODO: authentication
 // Delete user account
 app.delete('/user', async (req, res) => {
   const userId = req.query.id
@@ -232,6 +234,7 @@ app.delete('/user', async (req, res) => {
   }
 })
 
+// TODO: authentication
 // Create a collection
 app.post('/user', async (req, res) => {
   const { title, date, sendTo, image, message } = req.body
@@ -277,6 +280,7 @@ app.post('/user', async (req, res) => {
   }
 })
 
+// TODO: authentication
 // Edit a collection
 app.patch('/user/collections', async (req, res) => {
   const collectionId = req.query.collection
@@ -306,6 +310,7 @@ app.patch('/user/collections', async (req, res) => {
   }
 })
 
+// TODO: authentication
 // Delete a collection
 app.delete('/user/collections', async (req, res) => {
   const collectionId = req.query.collection
@@ -368,9 +373,7 @@ app.get('/open/:collectionId', async (req, res) => {
       if (user) {
         if (user.accessToken === showCollectionAndUser.user.accessToken) {
           res.status(200).json({ response: showCollection, success: true })
-        } else if (
-          user.accessToken !== showCollectionAndUser.user.accessToken
-        ) {
+        } else {
           // convert the UTC time & date to ms
           if (new Date(showCollection.date).getTime() <= new Date().getTime()) {
             res.status(200).json({ response: showCollection, success: true })
@@ -521,9 +524,12 @@ app.post('/login', async (req, res) => {
   }
 })
 
+// TODO: authentication
 // Send email to recipient
 app.post('/sendemail', (req, res) => {
   const { email, link, date } = req.body
+
+  //TODO: add collectionId as req.body and update the hasSentEmail to true when successful
 
   // Create a Nodemailer transporter using SMTP (this is default)
   let transporter = nodemailer.createTransport({
@@ -538,7 +544,6 @@ app.post('/sendemail', (req, res) => {
     // },
   })
 
-  // TODO: a tag around the img
   const output = `<div style="background-image: linear-gradient(to bottom left, pink, yellow); padding: 10px;">
     <h2>What an OpenMe:ly day!</h2>
     <p>You got a surprise OpenMe message from someone.</p>
@@ -570,6 +575,7 @@ app.post('/sendemail', (req, res) => {
         .json({ message: 'error', response: 'error', success: false })
     } else {
       console.log('Email sent: ' + info.response)
+      // TODO:
       res.status(200).json({ response: 'Email sent', success: true })
     }
   })

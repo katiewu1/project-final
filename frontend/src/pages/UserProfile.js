@@ -94,7 +94,7 @@ const UserProfile = () => {
       direction='column'
       pt={['14vh', '20vh', '20vh']}
       align='center'
-      minHeight='100vh'
+      minHeight='calc(100vh - 18px)'
     >
       <>
         <Heading as='h2' fontSize={['3xl', '5xl', '5xl']} m='2' isTruncated>
