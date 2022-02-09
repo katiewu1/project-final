@@ -1,7 +1,7 @@
 import React from 'react'
 import { Flex, Heading } from '@chakra-ui/react'
 
-import FormSignupLogin from '../components/FormSignupLogin'
+import FormLogin from '../components/FormLogin'
 
 const LogIn = () => {
   return (
@@ -20,7 +20,7 @@ const LogIn = () => {
       >
         Log In
       </Heading>
-      <FormSignupLogin mode={'login'} />
+      <FormLogin />
     </Flex>
   )
 }
