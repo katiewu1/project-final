@@ -24,15 +24,16 @@ const FormLogin = () => {
   const [show, setShow] = useState(false)
   const handleClick = () => setShow(!show)
 
-  // useState Login
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const [isLoading, setIsLoading] = useState(false)
 
   const dispatch = useDispatch()
   const navigate = useNavigate()
 
   const handleLogin = (e) => {
     e.preventDefault()
+    setIsLoading(true)
 
     const options = {
       method: 'POST',
@@ -65,6 +66,7 @@ const FormLogin = () => {
           })
         }
       })
+      .finally(() => setIsLoading(false))
       .catch((err) => {
         dispatch(user.actions.setError(err.message))
         navigate('*')
@@ -131,7 +133,13 @@ const FormLogin = () => {
             *{errorMessage}
           </Text>
         )}
-        <Button mt={4} w='100%' colorScheme='teal' type='submit'>
+        <Button
+          mt={4}
+          w='100%'
+          colorScheme='teal'
+          type='submit'
+          isLoading={isLoading}
+        >
           Log in
         </Button>
       </form>

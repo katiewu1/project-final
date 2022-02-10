@@ -24,17 +24,18 @@ const FormSignup = () => {
   const [show, setShow] = useState(false)
   const handleClick = () => setShow(!show)
 
-  // useState Sign up
   const [firstname, setFirstname] = useState('')
   const [lastname, setLastname] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const [isLoading, setIsLoading] = useState(false)
 
   const dispatch = useDispatch()
   const navigate = useNavigate()
 
   const handleSubmit = (e) => {
     e.preventDefault()
+    setIsLoading(true)
 
     const options = {
       method: 'POST',
@@ -71,6 +72,7 @@ const FormSignup = () => {
           })
         }
       })
+      .finally(() => setIsLoading(false))
       .catch((err) => {
         dispatch(user.actions.setError(err.message))
         navigate('*')
@@ -159,7 +161,13 @@ const FormSignup = () => {
             *{errorMessage}
           </Text>
         )}
-        <Button mt={4} w='100%' colorScheme='teal' type='submit'>
+        <Button
+          mt={4}
+          w='100%'
+          colorScheme='teal'
+          type='submit'
+          isLoading={isLoading}
+        >
           Submit
         </Button>
       </form>
