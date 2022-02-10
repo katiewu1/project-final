@@ -527,7 +527,7 @@ app.post('/login', async (req, res) => {
 // TODO: authentication
 // Send email to recipient
 app.post('/sendemail', (req, res) => {
-  const { email, link, date } = req.body
+  const { email, link, date, id } = req.body
 
   //TODO: add collectionId as req.body and update the hasSentEmail to true when successful
 
@@ -576,6 +576,12 @@ app.post('/sendemail', (req, res) => {
     } else {
       console.log('Email sent: ' + info.response)
       // TODO:
+      // const updatedHasSentEmail = Collection.findOneAndUpdate(
+      //   { _id: id },
+      //   { hasSentEmail: true },
+      //   { new: true }
+      // ).save()
+      // console.log(updatedHasSentEmail)
       res.status(200).json({ response: 'Email sent', success: true })
     }
   })

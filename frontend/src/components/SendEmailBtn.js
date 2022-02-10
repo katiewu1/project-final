@@ -47,6 +47,7 @@ const SendEmailBtn = ({ collectionId, sendTo, date }) => {
         email: sendTo,
         link,
         date,
+        // id: collectionId,
       }),
     }
 

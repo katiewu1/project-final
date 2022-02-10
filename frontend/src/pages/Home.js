@@ -40,8 +40,9 @@ const Home = () => {
           flexDirection={['column', 'column', 'row']}
           justifyContent={['center', 'center', 'space-evenly']}
           alignItems={['center', 'center', 'space-evenly']}
-          h='60%'
+          h={['70%', '60%', '60%']}
           w='100%'
+          p='4'
           bgGradient='linear(to-r, gray.300, yellow.400, pink.200)'
         >
           <Box fontWeight='bold' p='4'>
@@ -50,7 +51,7 @@ const Home = () => {
               fontSize='4xl'
               fontWeight='bolder'
               color='purple.300'
-              textAlign={['center', 'start', 'start']}
+              textAlign={['center', 'center', 'start']}
             >
               OpenMe
             </Heading>
@@ -60,19 +61,13 @@ const Home = () => {
             <Text mt='1' fontSize='md' color='gray.700'>
               Write a Poem, send a Meme, pick a date to send an OpenMe!
             </Text>
-          </Box>
-
-          <Box
-            border={['', '', '4px']}
-            borderColor={['', '', 'white']}
-            borderRadius='8px'
-            h={['30%', '30%', '90%']}
-            w='40%'
-            d='flex'
-            justifyContent='center'
-            alignItems='center'
-          >
-            <ButtonGroup variant='outline' spacing='4'>
+            <ButtonGroup
+              variant='outline'
+              spacing='4'
+              mt={['6', '6', '8']}
+              display='flex'
+              justifyContent={['center', 'center', 'start']}
+            >
               <Link as={ReachLink} to='/signup'>
                 <Button
                   colorScheme='purple'
@@ -95,6 +90,24 @@ const Home = () => {
               </Link>
             </ButtonGroup>
           </Box>
+
+          <Box
+            border='4px'
+            borderColor='white'
+            borderRadius='10px'
+            boxShadow='2xl'
+            h={['40%', '40%', '90%']}
+            w={['70%', '60%', '50%']}
+            my={['4', '', '']}
+            bgImage={[
+              "url('/assets/mockup_phone.png')",
+              "url('/assets/mockup_phone.png')",
+              "url('/assets/mockup.png')",
+            ]}
+            bgPosition='center'
+            bgRepeat='no-repeat'
+            bgSize='cover'
+          ></Box>
         </Box>
       </LightMode>
     </Box>
