@@ -18,6 +18,7 @@ const NotFound = () => {
       alignItems='center'
       h='calc(100vh - 18px)'
       color='gray.700'
+      textAlign='center'
       fontWeight='bold'
       bgGradient='linear(to-r, gray.300, yellow.400, pink.200)'
     >

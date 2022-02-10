@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import {
   useDisclosure,
   Modal,
@@ -24,6 +24,8 @@ import { API_URL_COLLECTION } from '../utils/urls'
 import user from '../reducers/user'
 
 const EditCollectionBtn = ({ collection }) => {
+  const accessToken = useSelector((store) => store.user.accessToken)
+
   const [title, setTitle] = useState(collection.title)
   const [date, setDate] = useState(
     new Date(parseISO(collection.date).setHours(0, 0, 0, 0))
@@ -53,7 +55,7 @@ const EditCollectionBtn = ({ collection }) => {
     const options = {
       method: 'PATCH',
       headers: {
-        // Authorization: accessToken,
+        Authorization: accessToken,
         'Content-Type': 'application/json',
       },
       // editedCollection is a Object already - don't need the {}!
@@ -72,7 +74,7 @@ const EditCollectionBtn = ({ collection }) => {
             isClosable: true,
           })
         } else {
-          dispatch(user.actions.setError(data.message))
+          dispatch(user.actions.setError(data.response))
           toast({
             title: 'Error.',
             description: "We'couldn't save your collection for you.",
@@ -92,7 +94,7 @@ const EditCollectionBtn = ({ collection }) => {
           isClosable: true,
         })
       })
-  } // TODO: error handling
+  }
 
   return (
     <>

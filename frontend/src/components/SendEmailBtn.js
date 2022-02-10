@@ -26,6 +26,7 @@ const SendEmailBtn = ({ collectionId, sendTo, date }) => {
       store.user.collections.find((item) => item._id === collectionId)
     ).hasSentEmail
   )
+  const accessToken = useSelector((store) => store.user.accessToken)
 
   // Alert Dialog - Send Email to Recipient
   const [isOpenSendEmail, setIsOpenSendEmail] = useState(false)
@@ -40,7 +41,7 @@ const SendEmailBtn = ({ collectionId, sendTo, date }) => {
     const options_sendEmail = {
       method: 'POST',
       headers: {
-        // Authorization: accessToken,
+        Authorization: accessToken,
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
@@ -62,14 +63,13 @@ const SendEmailBtn = ({ collectionId, sendTo, date }) => {
             duration: 5000,
             isClosable: true,
           })
-
           // TODO: setCollectionHasSentEmail(true), can skip the patch request here and do it in the BE instead
 
           // PATCH request to update the collection, property hasSentEmail
           const options = {
             method: 'PATCH',
             headers: {
-              // Authorization: accessToken,
+              Authorization: accessToken,
               'Content-Type': 'application/json',
             },
             body: JSON.stringify({
@@ -89,6 +89,7 @@ const SendEmailBtn = ({ collectionId, sendTo, date }) => {
               console.log('error: ', err)
             })
         } else {
+          dispatch(user.actions.setError(data.response))
           toast({
             title: 'Error.',
             description: "We'couldn't sent an email to the recipient.",
@@ -108,7 +109,6 @@ const SendEmailBtn = ({ collectionId, sendTo, date }) => {
           isClosable: true,
         })
       })
-    // TODO: error handling
   }
 
   return (

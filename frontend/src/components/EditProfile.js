@@ -36,22 +36,24 @@ const EditProfile = ({ isOpen, onClose }) => {
   const [lastname, setLastname] = useState()
   const [email, setEmail] = useState()
   const [password, setPassword] = useState()
+  const [accessToken, setAccessToken] = useState()
 
   const dispatch = useDispatch()
   const toast = useToast()
 
-  // When we have data in the userProfile -> set firstname, lastname and email
+  // When we have data in the userProfile -> set firstname, lastname, email and accessToken
   useEffect(() => {
     setFirstname(userProfile.firstname)
     setLastname(userProfile.lastname)
     setEmail(userProfile.email)
+    setAccessToken(userProfile.accessToken)
   }, [userProfile])
 
   const handleSaveProfile = () => {
     const options = {
       method: 'PATCH',
       headers: {
-        // Authorization: accessToken,
+        Authorization: accessToken,
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({ firstname, lastname, email, password }),
@@ -60,7 +62,6 @@ const EditProfile = ({ isOpen, onClose }) => {
     fetch(API_URL_USER('user', userId), options)
       .then((res) => res.json())
       .then((data) => {
-        console.log(data)
         if (data.success) {
           batch(() => {
             dispatch(user.actions.setFirstname(data.response.firstname))
@@ -76,6 +77,7 @@ const EditProfile = ({ isOpen, onClose }) => {
             isClosable: true,
           })
         } else {
+          dispatch(user.actions.setError(data.response))
           toast({
             title: 'Error.',
             description: "We couldn't save your changes for you.",
@@ -85,7 +87,16 @@ const EditProfile = ({ isOpen, onClose }) => {
           })
         }
       })
-      .catch((err) => dispatch(user.actions.setError(err.message)))
+      .catch((err) => {
+        console.log('error: ', err)
+        toast({
+          title: 'Error.',
+          description: "We couldn't save your changes for you.",
+          status: 'error',
+          duration: 5000,
+          isClosable: true,
+        })
+      })
   }
 
   return (

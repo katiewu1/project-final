@@ -56,12 +56,10 @@ const CollectionSchema = new mongoose.Schema({
     required: true,
   },
   date: {
-    // Set a date when the recipient will get access to the "OpenMe"
     type: String,
     required: true,
   },
   sendTo: {
-    // Recipient's email address
     type: String,
     required: true,
   },
@@ -115,7 +113,6 @@ const authenticateUser = async (req, res, next) => {
       next()
     } else {
       res.status(401).json({
-        message: 'Please, log in',
         response: 'Please, log in',
         success: false,
       })
@@ -159,8 +156,8 @@ app.get('/user', async (req, res) => {
   }
 })
 
-// TODO: authentication
 // Edit user profile
+app.patch('/user', authenticateUser)
 app.patch('/user', async (req, res) => {
   const userId = req.query.id
 
@@ -198,8 +195,8 @@ app.patch('/user', async (req, res) => {
   }
 })
 
-// TODO: authentication
 // Delete user account
+app.delete('/user', authenticateUser)
 app.delete('/user', async (req, res) => {
   const userId = req.query.id
 
@@ -234,8 +231,8 @@ app.delete('/user', async (req, res) => {
   }
 })
 
-// TODO: authentication
 // Create a collection
+app.post('/user', authenticateUser)
 app.post('/user', async (req, res) => {
   const { title, date, sendTo, image, message } = req.body
   const userId = req.query.id
@@ -280,8 +277,8 @@ app.post('/user', async (req, res) => {
   }
 })
 
-// TODO: authentication
 // Edit a collection
+app.patch('/user/collections', authenticateUser)
 app.patch('/user/collections', async (req, res) => {
   const collectionId = req.query.collection
 
@@ -310,8 +307,8 @@ app.patch('/user/collections', async (req, res) => {
   }
 })
 
-// TODO: authentication
 // Delete a collection
+app.delete('/user/collections', authenticateUser)
 app.delete('/user/collections', async (req, res) => {
   const collectionId = req.query.collection
 
@@ -524,11 +521,10 @@ app.post('/login', async (req, res) => {
   }
 })
 
-// TODO: authentication
 // Send email to recipient
+app.post('/sendemail', authenticateUser)
 app.post('/sendemail', (req, res) => {
-  const { email, link, date, id } = req.body
-
+  const { email, link, date } = req.body
   //TODO: add collectionId as req.body and update the hasSentEmail to true when successful
 
   // Create a Nodemailer transporter using SMTP (this is default)
@@ -538,10 +534,6 @@ app.post('/sendemail', (req, res) => {
       user: `${process.env.EMAIL}`, // env variable
       pass: `${process.env.EMAIL_PASSWORD}`, // env variable
     },
-    // reject because we are running from localhost
-    // tls: {
-    //   rejectUnauthorized: false,
-    // },
   })
 
   const output = `<div style="background-image: linear-gradient(to bottom left, pink, yellow); padding: 10px;">
@@ -575,14 +567,8 @@ app.post('/sendemail', (req, res) => {
         .json({ message: 'error', response: 'error', success: false })
     } else {
       console.log('Email sent: ' + info.response)
-      // TODO:
-      // const updatedHasSentEmail = Collection.findOneAndUpdate(
-      //   { _id: id },
-      //   { hasSentEmail: true },
-      //   { new: true }
-      // ).save()
-      // console.log(updatedHasSentEmail)
       res.status(200).json({ response: 'Email sent', success: true })
+      // TODO: update the selected collection property hasSentEmail to true
     }
   })
 })

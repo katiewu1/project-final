@@ -1,5 +1,5 @@
-const BASE_URL_API = 'https://openme-team.herokuapp.com' // 'http://localhost:8080' // Heroku
-const BASE_URL_FE = 'https://openme-team.netlify.app' // 'http://localhost:3000' // Netlify
+const BASE_URL_API = 'https://openme-team.herokuapp.com' // 'http://localhost:8080'
+const BASE_URL_FE = 'https://openme-team.netlify.app' // 'http://localhost:3000'
 
 export const API_URL = (slug) => `${BASE_URL_API}/${slug}`
 

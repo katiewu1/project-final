@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import {
   Button,
   useToast,
@@ -16,6 +16,8 @@ import user from '../reducers/user'
 import { API_URL_COLLECTION } from '../utils/urls'
 
 const DeleteCollectionBtn = ({ collectionId }) => {
+  const accessToken = useSelector((store) => store.user.accessToken)
+
   // Alert Dialog - Delete Collection
   const [isOpenDelete, setIsOpenDelete] = useState(false)
   const onCloseDelete = () => setIsOpenDelete(false)
@@ -28,23 +30,33 @@ const DeleteCollectionBtn = ({ collectionId }) => {
   const handleDeleteCollection = (id) => {
     const options = {
       method: 'DELETE',
-      // headers: {
-      //   Authorization: accessToken,
-      // },
+      headers: {
+        Authorization: accessToken,
+      },
     }
 
     return fetch(API_URL_COLLECTION('user', id), options)
       .then((res) => res.json())
       .then((data) => {
-        console.log(data)
-        dispatch(user.actions.deleteCollection(id))
-        toast({
-          title: 'Collection deleted.',
-          description: "We've deleted your collection for you.",
-          status: 'success',
-          duration: 5000,
-          isClosable: true,
-        })
+        if (data.success) {
+          dispatch(user.actions.deleteCollection(id))
+          toast({
+            title: 'Collection deleted.',
+            description: "We've deleted your collection for you.",
+            status: 'success',
+            duration: 5000,
+            isClosable: true,
+          })
+        } else {
+          dispatch(user.actions.setError(data.response))
+          toast({
+            title: 'Error.',
+            description: "We'couldn't delete your collection for you",
+            status: 'error',
+            duration: 5000,
+            isClosable: true,
+          })
+        }
       })
       .catch((err) => {
         console.log('error: ', err)
@@ -56,7 +68,6 @@ const DeleteCollectionBtn = ({ collectionId }) => {
           isClosable: true,
         })
       })
-    // TODO: error handling
   }
 
   return (

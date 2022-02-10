@@ -15,6 +15,7 @@ import user from '../reducers/user'
 
 const DeleteUserAccountBtn = () => {
   const userId = useSelector((store) => store.user.userId)
+  const accessToken = useSelector((store) => store.user.accessToken)
 
   // Alert Dialog - Delete User Account
   const [isOpenDelete, setIsOpenDelete] = useState(false)
@@ -26,20 +27,19 @@ const DeleteUserAccountBtn = () => {
   const handleDeleteAccount = () => {
     const options = {
       method: 'DELETE',
-      // headers: {
-      //   Authorization: accessToken,
-      // },
+      headers: {
+        Authorization: accessToken,
+      },
     }
 
     fetch(API_URL_USER('user', userId), options)
       .then((res) => res.json())
       .then((data) => {
         if (data.success) {
-          console.log(data)
           // If successful -> sign out and return to Home page
           dispatch(user.actions.signout())
         } else {
-          dispatch(user.actions.setError(data.message))
+          dispatch(user.actions.setError(data.response))
         }
       })
       .catch((err) => console.log('error: ', err))

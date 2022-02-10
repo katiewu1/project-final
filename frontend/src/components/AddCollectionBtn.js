@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import {
   useDisclosure,
   Modal,
@@ -25,6 +25,8 @@ import { API_URL_USER } from '../utils/urls'
 import user from '../reducers/user'
 
 const AddCollectionBtn = ({ userId }) => {
+  const accessToken = useSelector((store) => store.user.accessToken)
+
   const [title, setTitle] = useState('')
   const [date, setDate] = useState(new Date(new Date().setHours(0, 0, 0, 0))) // reset the time to 00:00
   const [sendTo, setSendTo] = useState('')
@@ -52,7 +54,7 @@ const AddCollectionBtn = ({ userId }) => {
     const options = {
       method: 'POST',
       headers: {
-        // Authorization: accessToken,
+        Authorization: accessToken,
         'Content-Type': 'application/json',
       },
       // collection is a Object already - don't need the {}!
@@ -78,6 +80,7 @@ const AddCollectionBtn = ({ userId }) => {
             isClosable: true,
           })
         } else {
+          dispatch(user.actions.setError(data.response))
           toast({
             title: 'Error.',
             description: "We'couldn't save your collection for you.",
@@ -88,6 +91,7 @@ const AddCollectionBtn = ({ userId }) => {
         }
       })
       .catch((err) => {
+        console.log('error: ', err)
         toast({
           title: 'Error.',
           description: "We'couldn't save your collection for you.",
@@ -96,7 +100,7 @@ const AddCollectionBtn = ({ userId }) => {
           isClosable: true,
         })
       })
-  } // TODO: error handling
+  }
 
   return (
     <>
