@@ -38,21 +38,25 @@ const Home = () => {
         <Box
           d='flex'
           flexDirection={['column', 'column', 'row']}
-          // justifyContent={['center', 'center', 'space-evenly']}
-          // alignItems={['center', 'center', 'space-evenly']}
           h={['70%', '60%', '60%']}
           w='100%'
           p='4'
           bgGradient='linear(to-r, gray.300, yellow.400, pink.200)'
           overflow='auto'
         >
-          <Box fontWeight='bold' p='4'>
+          <Box
+            fontWeight='bold'
+            p='4'
+            display='flex'
+            flexDirection='column'
+            justifyContent='center'
+            textAlign={['center', 'center', 'start']}
+          >
             <Heading
               as='h1'
               fontSize='4xl'
               fontWeight='bolder'
               color='purple.300'
-              textAlign={['center', 'center', 'start']}
             >
               OpenMe
             </Heading>
@@ -100,6 +104,7 @@ const Home = () => {
             h={['40%', '40%', '90%']}
             w={['70%', '60%', '50%']}
             my={['4', '', '']}
+            mx='auto'
             bgImage={[
               "url('/assets/mockup_phone.png')",
               "url('/assets/mockup_phone.png')",
