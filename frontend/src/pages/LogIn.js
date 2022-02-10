@@ -7,7 +7,6 @@ const LogIn = () => {
   return (
     <Flex
       direction='column'
-      // justify='center'
       align='center'
       h='calc(100vh - 18px)'
       overflow='auto'

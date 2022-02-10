@@ -19,6 +19,8 @@ import user from '../reducers/user'
 const SendEmailBtn = ({ collectionId, sendTo, date }) => {
   const link = API_URL_OPENME(collectionId)
 
+  const accessToken = useSelector((store) => store.user.accessToken)
+
   // Retrieve the hasSentEmail boolean value from the Redux state with useSelector
   // Store the value with useState and if you change the value from false to true it'll update the send-button
   const [collectionHasSentEmail, setCollectionHasSentEmail] = useState(
@@ -26,7 +28,6 @@ const SendEmailBtn = ({ collectionId, sendTo, date }) => {
       store.user.collections.find((item) => item._id === collectionId)
     ).hasSentEmail
   )
-  const accessToken = useSelector((store) => store.user.accessToken)
 
   // Alert Dialog - Send Email to Recipient
   const [isOpenSendEmail, setIsOpenSendEmail] = useState(false)

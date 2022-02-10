@@ -19,6 +19,7 @@ import {
   Skeleton,
   SkeletonCircle,
   SkeletonText,
+  useToast,
 } from '@chakra-ui/react'
 import { EditIcon } from '@chakra-ui/icons'
 import { MdLogin } from 'react-icons/md'
@@ -45,6 +46,7 @@ const UserProfile = () => {
 
   const navigate = useNavigate()
   const dispatch = useDispatch()
+  const toast = useToast()
 
   // accessToken === null -> go to Home page
   useEffect(() => {
@@ -82,12 +84,12 @@ const UserProfile = () => {
         }
       })
       .catch((err) => {
+        console.log('error: ', err)
         dispatch(user.actions.setError(err.message))
-        console.log('catch err', err.message)
         navigate('*')
-      }) //TODO: error handling
+      })
       .finally(() => setIsLoading(false))
-  }, [dispatch, userProfile.accessToken, userProfile.userId, navigate])
+  }, [dispatch, userProfile.accessToken, userProfile.userId, navigate, toast])
 
   return (
     <Flex

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useDispatch, batch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import {
@@ -19,6 +19,7 @@ import user from '../reducers/user'
 
 const FormLogin = () => {
   const errorMessage = useSelector((store) => store.user.error)
+  const accessToken = useSelector((store) => store.user.accessToken)
 
   // Password show/hide
   const [show, setShow] = useState(false)
@@ -30,6 +31,13 @@ const FormLogin = () => {
 
   const dispatch = useDispatch()
   const navigate = useNavigate()
+
+  // If the user is logged in -> go to the user profile
+  useEffect(() => {
+    if (accessToken) {
+      navigate('/user')
+    }
+  }, [accessToken, navigate])
 
   const handleLogin = (e) => {
     e.preventDefault()
@@ -54,8 +62,6 @@ const FormLogin = () => {
             // wipe out the prev. errors
             dispatch(user.actions.setError(null))
           })
-          // move this to an useEffect when I implement accessToken
-          navigate('/user')
         } else {
           batch(() => {
             //  wipe out the prev. saved information, and save only the errors
@@ -70,7 +76,7 @@ const FormLogin = () => {
       .catch((err) => {
         dispatch(user.actions.setError(err.message))
         navigate('*')
-      }) // TODO: error handling
+      })
   }
   return (
     <Box
@@ -103,7 +109,7 @@ const FormLogin = () => {
             onChange={(e) => setEmail(e.target.value)}
           />
         </FormControl>
-        {/* Password input */}
+
         <FormControl isRequired isInvalid={errorMessage} color='black'>
           <FormLabel htmlFor='password'>Password</FormLabel>
           <InputGroup size='md'>

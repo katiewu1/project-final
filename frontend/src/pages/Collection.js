@@ -13,7 +13,6 @@ const Collection = () => {
   const [collection, setCollection] = useState(null)
   const [isLive, setIsLive] = useState(null)
   const [error, setError] = useState(null)
-  // Skeleton
   const [isLoading, setIsLoading] = useState(false)
 
   useEffect(() => {

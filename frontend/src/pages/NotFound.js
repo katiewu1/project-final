@@ -1,14 +1,9 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
-// import { useNavigate } from 'react-router-dom'
 import { Box, Text } from '@chakra-ui/react'
 
 const NotFound = () => {
   const errorMessage = useSelector((store) => store.user.error)
-
-  //   const navigate = useNavigate()
-
-  console.log(errorMessage)
 
   return (
     <Box
@@ -35,7 +30,6 @@ const NotFound = () => {
       <Text mt='4' fontStyle='italic'>
         openme.team@gmail.com
       </Text>
-      {/* <Button onClick={() => navigate('/')}>Home</Button> */}
     </Box>
   )
 }
