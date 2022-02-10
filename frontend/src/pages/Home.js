@@ -38,12 +38,13 @@ const Home = () => {
         <Box
           d='flex'
           flexDirection={['column', 'column', 'row']}
-          justifyContent={['center', 'center', 'space-evenly']}
-          alignItems={['center', 'center', 'space-evenly']}
+          // justifyContent={['center', 'center', 'space-evenly']}
+          // alignItems={['center', 'center', 'space-evenly']}
           h={['70%', '60%', '60%']}
           w='100%'
           p='4'
           bgGradient='linear(to-r, gray.300, yellow.400, pink.200)'
+          overflow='auto'
         >
           <Box fontWeight='bold' p='4'>
             <Heading
@@ -107,7 +108,7 @@ const Home = () => {
             bgPosition='center'
             bgRepeat='no-repeat'
             bgSize='cover'
-          ></Box>
+          />
         </Box>
       </LightMode>
     </Box>
