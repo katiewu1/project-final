@@ -56,7 +56,13 @@ const ViewCollection = ({ collection, isLive, error }) => {
           </>
         )}
         {error && (
-          <Flex d='column' fontWeight='bold' textAlign='center'>
+          <Flex
+            d='column'
+            pt='200px'
+            pb='100px'
+            fontWeight='bold'
+            textAlign='center'
+          >
             <Text>{error}</Text>
           </Flex>
         )}

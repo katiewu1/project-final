@@ -344,9 +344,6 @@ app.delete('/user/collections', async (req, res) => {
 })
 
 // View a collection
-// Can only be open on a specific date or later, the owner of the collection can always view the collection
-// If owner is logged in and the accessToken matched with the Collection.accessToken -> can view the collection
-// Or if the today's date matched the Collection.date or after -> everyone can view the collection if they've the link
 app.get('/open/:collectionId', async (req, res) => {
   const { collectionId } = req.params
 
@@ -359,13 +356,13 @@ app.get('/open/:collectionId', async (req, res) => {
       ).populate('user')
 
       // If user is logged in it will send it's accessToken to this route
-      // compare the accessToken with the owner of the collection's accessToken
+      // Compare the accessToken with the owner of the collection's accessToken
       const user = await User.findOne({
         accessToken: req.header('Authorization'),
       })
 
       // If we have a user logged in and the accessToken match with the owner of the collection -> authorized
-      // Or if the date match with today's date or have passed > authorized
+      // Or if the date match with today's date or after > authorized
       // Otherwise can't view the collection
       if (user) {
         if (user.accessToken === showCollectionAndUser.user.accessToken) {
