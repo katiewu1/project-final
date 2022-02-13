@@ -58,7 +58,6 @@ const EditCollectionBtn = ({ collection }) => {
         Authorization: accessToken,
         'Content-Type': 'application/json',
       },
-      // editedCollection is a Object already - don't need the {}!
       body: JSON.stringify(editedCollection),
     }
     fetch(API_URL_COLLECTION('user', collection._id), options)
@@ -110,7 +109,7 @@ const EditCollectionBtn = ({ collection }) => {
       {/* Render Modal only when the state isOpen is true */}
       {isOpen && (
         <Modal isOpen onClose={onClose}>
-          {/* onSubmit: Close the Modal, save the collection -> successful: display toast */}
+          {/* onSubmit: Close the Modal, save the collection -> display toast */}
           <form
             onSubmit={(e) => {
               onClose()

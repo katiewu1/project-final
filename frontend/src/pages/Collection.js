@@ -41,7 +41,7 @@ const Collection = () => {
         setError(err.message)
         setCollection(null)
         setIsLive(false)
-      }) //TODO: error handling
+      })
       .finally(() => setIsLoading(false))
   }, [id, accessToken])
 

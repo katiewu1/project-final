@@ -216,7 +216,7 @@ const EditProfile = ({ isOpen, onClose }) => {
             <Button variant='ghost' mr={3} onClick={onClose}>
               Close
             </Button>
-            {/* Close the Modal, save the User profile */}
+            {/* Close the Modal, save the User profile -> display toast */}
             <Button
               colorScheme='blue'
               onClick={() => {

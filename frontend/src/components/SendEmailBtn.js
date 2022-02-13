@@ -49,7 +49,6 @@ const SendEmailBtn = ({ collectionId, sendTo, date }) => {
         email: sendTo,
         link,
         date,
-        // id: collectionId,
       }),
     }
 
@@ -64,7 +63,6 @@ const SendEmailBtn = ({ collectionId, sendTo, date }) => {
             duration: 5000,
             isClosable: true,
           })
-          // TODO: setCollectionHasSentEmail(true), can skip the patch request here and do it in the BE instead
 
           // PATCH request to update the collection, property hasSentEmail
           const options = {

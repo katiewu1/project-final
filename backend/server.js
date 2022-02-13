@@ -420,7 +420,7 @@ app.post('/signup', async (req, res) => {
     // salt -> randomizer
     const salt = bcrypt.genSaltSync()
 
-    // // Stop the executing of try block with throw
+    // Stop the executing of try block with throw
     if (password === '') {
       throw 'Please provide password'
     }
@@ -522,14 +522,13 @@ app.post('/login', async (req, res) => {
 app.post('/sendemail', authenticateUser)
 app.post('/sendemail', (req, res) => {
   const { email, link, date } = req.body
-  //TODO: add collectionId as req.body and update the hasSentEmail to true when successful
 
   // Create a Nodemailer transporter using SMTP (this is default)
   let transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
-      user: `${process.env.EMAIL}`, // env variable
-      pass: `${process.env.EMAIL_PASSWORD}`, // env variable
+      user: `${process.env.EMAIL}`,
+      pass: `${process.env.EMAIL_PASSWORD}`,
     },
   })
 
@@ -565,7 +564,6 @@ app.post('/sendemail', (req, res) => {
     } else {
       console.log('Email sent: ' + info.response)
       res.status(200).json({ response: 'Email sent', success: true })
-      // TODO: update the selected collection property hasSentEmail to true
     }
   })
 })

@@ -57,7 +57,6 @@ const AddCollectionBtn = ({ userId }) => {
         Authorization: accessToken,
         'Content-Type': 'application/json',
       },
-      // collection is a Object already - don't need the {}!
       body: JSON.stringify(collection),
     }
 

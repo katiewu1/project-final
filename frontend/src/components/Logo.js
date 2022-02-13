@@ -7,8 +7,7 @@ import ToggleTheme from './ToggleTheme'
 const Logo = () => {
   const { colorMode } = useColorMode()
   const location = useLocation() // Find which path you are on
-  // If it's the Collection page -> don't add a filter on the logo image
-  const isCollectionPage = location.pathname.startsWith('/open')
+  const isCollectionPage = location.pathname.startsWith('/open') // If it's the Collection page -> don't add a filter on the logo image
 
   return (
     <>

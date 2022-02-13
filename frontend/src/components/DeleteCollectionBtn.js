@@ -76,7 +76,6 @@ const DeleteCollectionBtn = ({ collectionId }) => {
         size='sm'
         border='1px'
         borderColor='white'
-        // colorScheme='red'
         onClick={() => setIsOpenDelete(true)}
       >
         <DeleteIcon />
