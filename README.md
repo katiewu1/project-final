@@ -19,7 +19,7 @@ The application is called OpenMe and it generate customize eMessage/eCard to a r
 
 Tech stack I've used are:
 
-- BE: node.js, Express, Nodemailer, Mongoose, MongoDB, Heroku \
+- BE: node.js, Express, Nodemailer, Mongoose, MongoDB, Heroku
 - FE: React, React Router, React Redux, Redux Toolkit, Chakra UI, Netlify
 
 I decided to take on a few new challenges and played a bit with Nodemailer and used Chakra UI.
