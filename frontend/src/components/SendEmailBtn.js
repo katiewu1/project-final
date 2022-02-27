@@ -84,9 +84,7 @@ const SendEmailBtn = ({ collectionId, sendTo, date }) => {
                 setCollectionHasSentEmail(true)
               }
             })
-            .catch((err) => {
-              console.log('error: ', err)
-            })
+            .catch((err) => console.log('error: ', err))
         } else {
           dispatch(user.actions.setError(data.response))
           toast({
@@ -99,7 +97,6 @@ const SendEmailBtn = ({ collectionId, sendTo, date }) => {
         }
       })
       .catch((err) => {
-        console.log('error: ', err)
         toast({
           title: 'Error.',
           description: "We'couldn't sent an email to the recipient.",

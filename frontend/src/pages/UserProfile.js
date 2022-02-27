@@ -84,7 +84,6 @@ const UserProfile = () => {
         }
       })
       .catch((err) => {
-        console.log('error: ', err)
         dispatch(user.actions.setError(err.message))
         navigate('*')
       })

@@ -88,7 +88,6 @@ const EditProfile = ({ isOpen, onClose }) => {
         }
       })
       .catch((err) => {
-        console.log('error: ', err)
         toast({
           title: 'Error.',
           description: "We couldn't save your changes for you.",

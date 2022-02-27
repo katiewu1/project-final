@@ -35,7 +35,7 @@ const DeleteCollectionBtn = ({ collectionId }) => {
       },
     }
 
-    return fetch(API_URL_COLLECTION('user', id), options)
+    fetch(API_URL_COLLECTION('user', id), options)
       .then((res) => res.json())
       .then((data) => {
         if (data.success) {
@@ -59,7 +59,6 @@ const DeleteCollectionBtn = ({ collectionId }) => {
         }
       })
       .catch((err) => {
-        console.log('error: ', err)
         toast({
           title: 'Error.',
           description: "We'couldn't delete your collection for you.",

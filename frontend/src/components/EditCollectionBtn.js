@@ -84,7 +84,6 @@ const EditCollectionBtn = ({ collection }) => {
         }
       })
       .catch((err) => {
-        console.log('error: ', err)
         toast({
           title: 'Error.',
           description: "We'couldn't save your collection for you.",
