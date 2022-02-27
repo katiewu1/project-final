@@ -132,8 +132,7 @@ app.get('/', (req, res) => {
 })
 
 // Authenticate user and retrieve the user info
-app.get('/user', authenticateUser)
-app.get('/user', async (req, res) => {
+app.get('/user', authenticateUser, async (req, res) => {
   const userId = req.query.id
 
   try {
@@ -157,8 +156,7 @@ app.get('/user', async (req, res) => {
 })
 
 // Edit user profile
-app.patch('/user', authenticateUser)
-app.patch('/user', async (req, res) => {
+app.patch('/user', authenticateUser, async (req, res) => {
   const userId = req.query.id
 
   try {
@@ -196,8 +194,7 @@ app.patch('/user', async (req, res) => {
 })
 
 // Delete user account
-app.delete('/user', authenticateUser)
-app.delete('/user', async (req, res) => {
+app.delete('/user', authenticateUser, async (req, res) => {
   const userId = req.query.id
 
   try {
@@ -205,9 +202,7 @@ app.delete('/user', async (req, res) => {
     const deletedCollections = await Collection.deleteMany({ user: userId })
 
     // Delete the user account
-    const deletedUser = await User.findOneAndDelete({
-      _id: userId,
-    })
+    const deletedUser = await User.findByIdAndDelete(userId)
 
     if (deletedUser) {
       res.status(200).json({
@@ -232,8 +227,7 @@ app.delete('/user', async (req, res) => {
 })
 
 // Create a collection
-app.post('/user', authenticateUser)
-app.post('/user', async (req, res) => {
+app.post('/user', authenticateUser, async (req, res) => {
   const { title, date, sendTo, image, message } = req.body
   const userId = req.query.id
 
@@ -278,8 +272,7 @@ app.post('/user', async (req, res) => {
 })
 
 // Edit a collection
-app.patch('/user/collections', authenticateUser)
-app.patch('/user/collections', async (req, res) => {
+app.patch('/user/collections', authenticateUser, async (req, res) => {
   const collectionId = req.query.collection
 
   try {
@@ -308,8 +301,7 @@ app.patch('/user/collections', async (req, res) => {
 })
 
 // Delete a collection
-app.delete('/user/collections', authenticateUser)
-app.delete('/user/collections', async (req, res) => {
+app.delete('/user/collections', authenticateUser, async (req, res) => {
   const collectionId = req.query.collection
 
   try {
@@ -519,8 +511,7 @@ app.post('/login', async (req, res) => {
 })
 
 // Send email to recipient
-app.post('/sendemail', authenticateUser)
-app.post('/sendemail', (req, res) => {
+app.post('/sendemail', authenticateUser, (req, res) => {
   const { email, link, date } = req.body
 
   // Create a Nodemailer transporter using SMTP (this is default)

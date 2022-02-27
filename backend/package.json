@@ -7,7 +7,7 @@
     "dev": "nodemon server.js --exec babel-node",
     "lint": "eslint ."
   },
-  "author": "",
+  "author": "Katie Wu",
   "license": "ISC",
   "dependencies": {
     "@babel/core": "^7.16.7",
