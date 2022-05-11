@@ -36,3 +36,8 @@ Example for improvement:
 
 FE (Netlify): https://openme-team.netlify.app/ \
 BE/API (Heroku): https://openme-team.herokuapp.com/
+
+## Please note
+
+Starting May 30, 2022, Google will no longer support the use of third-party apps or devices. Which means the OpenMe app cannot send emails anymore, but you can still copy and share the message link.
+Suggestion for keeping this project updated is to use oAuth 2.0.
