@@ -41,3 +41,7 @@ BE/API (Heroku): https://openme-team.herokuapp.com/
 
 Starting May 30, 2022, Google will no longer support the use of third-party apps or devices. Which means the OpenMe app cannot send emails anymore, but you can still copy and share the message link.
 Suggestion for keeping this project updated is to use oAuth 2.0.
+
+### How the email looks like before
+
+![email example](/frontend/public/assets/openme-email.png)
