@@ -19,7 +19,7 @@ The application is called OpenMe and it generate customize eMessage/eCard to a r
 
 Tech stack I've used are:
 
-- BE: node.js, Express, Nodemailer, Mongoose, MongoDB, Heroku
+- BE: node.js, Express, Nodemailer, Mongoose, MongoDB, (~Heroku~) Google Cloud Platform
 - FE: React, React Router, React Redux, Redux Toolkit, Chakra UI, Netlify
 
 I decided to take on a few new challenges and played a bit with Nodemailer and used Chakra UI.
@@ -35,7 +35,8 @@ Example for improvement:
 ## View it live
 
 FE (Netlify): https://openme-team.netlify.app/ \
-BE/API (Heroku): https://openme-team.herokuapp.com/
+~BE/API (Heroku): https://openme-team.herokuapp.com/~
+BE/API (GCP): https://project-final-iz4xutcdmq-lz.a.run.app/ (updated 2023-05-18)
 
 ## Please note
 
