@@ -35,7 +35,7 @@ Example for improvement:
 ## View it live
 
 FE (Netlify): https://openme-team.netlify.app/ \
-~BE/API (Heroku): https://openme-team.herokuapp.com/~
+~BE/API (Heroku): https://openme-team.herokuapp.com/~ \
 BE/API (GCP): https://project-final-iz4xutcdmq-lz.a.run.app/ (updated 2023-05-18)
 
 ## Please note
