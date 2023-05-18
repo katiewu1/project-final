@@ -1,4 +1,4 @@
-const BASE_URL_API = 'https://openme-team.herokuapp.com'
+const BASE_URL_API = 'https://project-final-iz4xutcdmq-lz.a.run.app'
 const BASE_URL_FE = 'https://openme-team.netlify.app'
 
 export const API_URL = (slug) => `${BASE_URL_API}/${slug}`
